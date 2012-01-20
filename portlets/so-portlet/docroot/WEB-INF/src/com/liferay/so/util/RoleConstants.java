@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
  *
@@ -15,10 +14,14 @@
  * You should have received a copy of the GNU General Public License along with
  * Liferay Social Office. If not, see http://www.gnu.org/licenses/agpl-3.0.html.
  */
---%>
 
-<%@ include file="/html/portlet/message_boards/init.jsp" %>
+package com.liferay.so.util;
 
-<liferay-util:include page="/html/portlet/message_boards/sidebar.jsp" />
+/**
+ * @author Jonathan Lee
+ */
+public class RoleConstants extends com.liferay.portal.model.RoleConstants {
 
-<liferay-util:include page="/html/portlet/message_boards/edit_category.jsp" useCustomPage="<%= false %>" />
+	public static final String SOCIAL_OFFICE_USER = "Social Office User";
+
+}
