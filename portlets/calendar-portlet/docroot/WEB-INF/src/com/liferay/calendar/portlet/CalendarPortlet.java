@@ -308,6 +308,7 @@ public class CalendarPortlet extends MVCPortlet {
 		redirect = HttpUtil.setParameter(
 			redirect, actionResponse.getNamespace() + "calendarBookingId",
 			calendarBookingId);
+		redirect = HttpUtil.setParameter(redirect, "success", true);
 		redirect = HttpUtil.setParameter(
 			redirect, actionResponse.getNamespace() + "calendarId", calendarId);
 		redirect = HttpUtil.removeParameter(

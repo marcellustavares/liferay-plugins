@@ -42,6 +42,8 @@ long endTime = BeanParamUtil.getLong(calendarBooking, request, "endTime", defaul
 
 java.util.Calendar endTimeJCalendar = JCalendarUtil.getJCalendar(endTime, userTimeZone);
 
+boolean success = ParamUtil.getBoolean(request, "success", false);
+
 boolean allDay = BeanParamUtil.getBoolean(calendarBooking, request, "allDay");
 
 if (!allDay) {
@@ -105,6 +107,12 @@ List<Calendar> manageableCalendars = CalendarServiceUtil.search(themeDisplay.get
 	<aui:input name="oldStartTime" type="hidden" value="<%= startTimeJCalendar.getTimeInMillis() %>" />
 	<aui:input name="allFollowing" type="hidden" />
 	<aui:input name="updateCalendarBookingInstance" type="hidden" />
+
+	<c:if test="<%= success %>">
+		<div class="portlet-msg-success">
+			<liferay-ui:message key="your-request-completed-successfully" />
+		</div>
+	</c:if>
 
 	<liferay-ui:asset-categories-error />
 
