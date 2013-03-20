@@ -586,10 +586,8 @@ AUI.add(
 					startDate = instance.toUserTimeZone(startDate);
 					endDate = instance.toUserTimeZone(endDate);
 				} else {
-					var offset = new Date().getTimezoneOffset();
-					var offsetInMilliseconds = offset*60*1000;
-					startDate = new Date(startDate + offsetInMilliseconds);
-					endDate = new Date(endDate + offsetInMilliseconds);
+					startDate = instance.toUTCPlusUserTimeZone(startDate);
+					endDate = instance.toUTCPlusUserTimeZone(endDate);
 				}
 
 				return new Liferay.SchedulerEvent(
@@ -631,6 +629,16 @@ AUI.add(
 				}
 
 				return DateMath.subtract(date, DateMath.MINUTES, date.getTimezoneOffset() + instance.USER_TIMEZONE_OFFSET / DateMath.ONE_MINUTE_MS);
+			},
+
+			toUTCPlusUserTimeZone: function(date) {
+				var instance = this;
+
+				if (!isDate(date)) {
+					date = new Date(date);
+				}
+
+				return DateMath.add(date, DateMath.MINUTES, date.getTimezoneOffset());
 			},
 
 			updateEvent: function(schedulerEvent, success) {
