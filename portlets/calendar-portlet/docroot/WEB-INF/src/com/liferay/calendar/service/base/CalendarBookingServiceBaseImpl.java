@@ -18,12 +18,14 @@ import com.liferay.calendar.model.CalendarBooking;
 import com.liferay.calendar.service.CalendarBookingLocalService;
 import com.liferay.calendar.service.CalendarBookingService;
 import com.liferay.calendar.service.CalendarLocalService;
+import com.liferay.calendar.service.CalendarNotificationTemplateLocalService;
 import com.liferay.calendar.service.CalendarResourceLocalService;
 import com.liferay.calendar.service.CalendarResourceService;
 import com.liferay.calendar.service.CalendarService;
 import com.liferay.calendar.service.persistence.CalendarBookingFinder;
 import com.liferay.calendar.service.persistence.CalendarBookingPersistence;
 import com.liferay.calendar.service.persistence.CalendarFinder;
+import com.liferay.calendar.service.persistence.CalendarNotificationTemplatePersistence;
 import com.liferay.calendar.service.persistence.CalendarPersistence;
 import com.liferay.calendar.service.persistence.CalendarResourceFinder;
 import com.liferay.calendar.service.persistence.CalendarResourcePersistence;
@@ -218,6 +220,44 @@ public abstract class CalendarBookingServiceBaseImpl extends BaseServiceImpl
 	public void setCalendarBookingFinder(
 		CalendarBookingFinder calendarBookingFinder) {
 		this.calendarBookingFinder = calendarBookingFinder;
+	}
+
+	/**
+	 * Returns the calendar notification template local service.
+	 *
+	 * @return the calendar notification template local service
+	 */
+	public CalendarNotificationTemplateLocalService getCalendarNotificationTemplateLocalService() {
+		return calendarNotificationTemplateLocalService;
+	}
+
+	/**
+	 * Sets the calendar notification template local service.
+	 *
+	 * @param calendarNotificationTemplateLocalService the calendar notification template local service
+	 */
+	public void setCalendarNotificationTemplateLocalService(
+		CalendarNotificationTemplateLocalService calendarNotificationTemplateLocalService) {
+		this.calendarNotificationTemplateLocalService = calendarNotificationTemplateLocalService;
+	}
+
+	/**
+	 * Returns the calendar notification template persistence.
+	 *
+	 * @return the calendar notification template persistence
+	 */
+	public CalendarNotificationTemplatePersistence getCalendarNotificationTemplatePersistence() {
+		return calendarNotificationTemplatePersistence;
+	}
+
+	/**
+	 * Sets the calendar notification template persistence.
+	 *
+	 * @param calendarNotificationTemplatePersistence the calendar notification template persistence
+	 */
+	public void setCalendarNotificationTemplatePersistence(
+		CalendarNotificationTemplatePersistence calendarNotificationTemplatePersistence) {
+		this.calendarNotificationTemplatePersistence = calendarNotificationTemplatePersistence;
 	}
 
 	/**
@@ -589,6 +629,10 @@ public abstract class CalendarBookingServiceBaseImpl extends BaseServiceImpl
 	protected CalendarBookingPersistence calendarBookingPersistence;
 	@BeanReference(type = CalendarBookingFinder.class)
 	protected CalendarBookingFinder calendarBookingFinder;
+	@BeanReference(type = CalendarNotificationTemplateLocalService.class)
+	protected CalendarNotificationTemplateLocalService calendarNotificationTemplateLocalService;
+	@BeanReference(type = CalendarNotificationTemplatePersistence.class)
+	protected CalendarNotificationTemplatePersistence calendarNotificationTemplatePersistence;
 	@BeanReference(type = CalendarResourceLocalService.class)
 	protected CalendarResourceLocalService calendarResourceLocalService;
 	@BeanReference(type = CalendarResourceService.class)

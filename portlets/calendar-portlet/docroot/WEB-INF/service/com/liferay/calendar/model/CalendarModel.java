@@ -458,6 +458,36 @@ public interface CalendarModel extends BaseModel<Calendar>, GroupedModel,
 	 */
 	public void setDefaultCalendar(boolean defaultCalendar);
 
+	/**
+	 * Returns the email from address of this calendar.
+	 *
+	 * @return the email from address of this calendar
+	 */
+	@AutoEscape
+	public String getEmailFromAddress();
+
+	/**
+	 * Sets the email from address of this calendar.
+	 *
+	 * @param emailFromAddress the email from address of this calendar
+	 */
+	public void setEmailFromAddress(String emailFromAddress);
+
+	/**
+	 * Returns the email from name of this calendar.
+	 *
+	 * @return the email from name of this calendar
+	 */
+	@AutoEscape
+	public String getEmailFromName();
+
+	/**
+	 * Sets the email from name of this calendar.
+	 *
+	 * @param emailFromName the email from name of this calendar
+	 */
+	public void setEmailFromName(String emailFromName);
+
 	public boolean isNew();
 
 	public void setNew(boolean n);

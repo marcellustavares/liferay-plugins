@@ -42,6 +42,7 @@ public class CalendarServiceImpl extends CalendarServiceBaseImpl {
 	public Calendar addCalendar(
 			long groupId, long calendarResourceId, Map<Locale, String> nameMap,
 			Map<Locale, String> descriptionMap, int color,
+			String emailFromAddress, String emailFromName,
 			boolean defaultCalendar, ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
@@ -51,7 +52,19 @@ public class CalendarServiceImpl extends CalendarServiceBaseImpl {
 
 		return calendarLocalService.addCalendar(
 			getUserId(), groupId, calendarResourceId, nameMap, descriptionMap,
-			color, defaultCalendar, serviceContext);
+			color, emailFromAddress, emailFromName, defaultCalendar, 
+			serviceContext);
+	}
+	
+	public Calendar addCalendar(
+			long groupId, long calendarResourceId, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, int color,
+			boolean defaultCalendar, ServiceContext serviceContext)
+		throws PortalException, SystemException {
+
+		return addCalendar(
+			groupId, calendarResourceId, nameMap, descriptionMap,
+			color, null, null, defaultCalendar, serviceContext);
 	}
 
 	public Calendar deleteCalendar(long calendarId)
@@ -184,6 +197,7 @@ public class CalendarServiceImpl extends CalendarServiceBaseImpl {
 	public Calendar updateCalendar(
 			long calendarId, Map<Locale, String> nameMap,
 			Map<Locale, String> descriptionMap, int color,
+			String emailFromAddress, String emailFromName,
 			boolean defaultCalendar, ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
@@ -191,7 +205,23 @@ public class CalendarServiceImpl extends CalendarServiceBaseImpl {
 			getPermissionChecker(), calendarId, ActionKeys.UPDATE);
 
 		return calendarLocalService.updateCalendar(
-			calendarId, nameMap, descriptionMap, color, defaultCalendar,
+			calendarId, nameMap, descriptionMap, color, 
+			emailFromAddress, emailFromName, defaultCalendar,
+			serviceContext);
+	}
+	
+	public Calendar updateCalendar(
+			long calendarId, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, int color,
+			boolean defaultCalendar, ServiceContext serviceContext)
+		throws PortalException, SystemException {
+
+		CalendarPermission.check(
+			getPermissionChecker(), calendarId, ActionKeys.UPDATE);
+
+		return updateCalendar(
+			calendarId, nameMap, descriptionMap, color, 
+			null, null, defaultCalendar,
 			serviceContext);
 	}
 

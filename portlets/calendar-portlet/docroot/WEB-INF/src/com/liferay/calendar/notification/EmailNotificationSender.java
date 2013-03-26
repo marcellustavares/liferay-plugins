@@ -14,13 +14,12 @@
 
 package com.liferay.calendar.notification;
 
+import javax.mail.internet.InternetAddress;
+
 import com.liferay.calendar.util.NotificationUtil;
-import com.liferay.calendar.util.PortletPropsKeys;
 import com.liferay.mail.service.MailServiceUtil;
 import com.liferay.portal.kernel.mail.MailMessage;
 import com.liferay.portal.kernel.util.StringUtil;
-
-import javax.mail.internet.InternetAddress;
 
 /**
  * @author Eduardo Lundgren
@@ -85,9 +84,9 @@ public class EmailNotificationSender implements NotificationSender {
 
 		String notificationTemplateContent =
 			NotificationUtil.getNotificationTemplateContent(
-				PortletPropsKeys.CALENDAR_NOTIFICATION_BODY,
+				notificationTemplateContext.getCalendarId(),
 				NotificationType.EMAIL, notificationTemplateType,
-				notificationTemplateContext);
+				NotificationField.BODY);
 
 		return processNotificationTemplateContent(
 			notificationTemplateContent, notificationTemplateContext);
@@ -100,9 +99,9 @@ public class EmailNotificationSender implements NotificationSender {
 
 		String notificationTemplateContent =
 			NotificationUtil.getNotificationTemplateContent(
-				PortletPropsKeys.CALENDAR_NOTIFICATION_SUBJECT,
+				notificationTemplateContext.getCalendarId(),
 				NotificationType.EMAIL, notificationTemplateType,
-				notificationTemplateContext);
+				NotificationField.SUBJECT);
 
 		return processNotificationTemplateContent(
 			notificationTemplateContent, notificationTemplateContext);

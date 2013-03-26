@@ -42,7 +42,8 @@ public class CalendarLocalServiceImpl extends CalendarLocalServiceBaseImpl {
 	public Calendar addCalendar(
 			long userId, long groupId, long calendarResourceId,
 			Map<Locale, String> nameMap, Map<Locale, String> descriptionMap,
-			int color, boolean defaultCalendar, ServiceContext serviceContext)
+			int color, String emailFromAddress, String emailFromName,
+			boolean defaultCalendar, ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
 		// Calendar
@@ -72,6 +73,8 @@ public class CalendarLocalServiceImpl extends CalendarLocalServiceBaseImpl {
 		calendar.setNameMap(nameMap);
 		calendar.setDescriptionMap(descriptionMap);
 		calendar.setColor(color);
+		calendar.setEmailFromAddress(emailFromAddress);
+		calendar.setEmailFromName(emailFromName);
 		calendar.setDefaultCalendar(defaultCalendar);
 
 		calendarPersistence.update(calendar);
@@ -87,6 +90,16 @@ public class CalendarLocalServiceImpl extends CalendarLocalServiceBaseImpl {
 		return calendar;
 	}
 
+	public Calendar addCalendar(
+			long userId, long groupId, long calendarResourceId,
+			Map<Locale, String> nameMap, Map<Locale, String> descriptionMap,
+			int color, boolean defaultCalendar, ServiceContext serviceContext)
+		throws PortalException, SystemException {
+		
+		return addCalendar(userId, groupId, calendarResourceId, nameMap,
+				descriptionMap, color, null, null, defaultCalendar, serviceContext);
+	}
+	
 	@Override
 	public Calendar deleteCalendar(Calendar calendar)
 		throws PortalException, SystemException {
@@ -200,6 +213,7 @@ public class CalendarLocalServiceImpl extends CalendarLocalServiceBaseImpl {
 	public Calendar updateCalendar(
 			long calendarId, Map<Locale, String> nameMap,
 			Map<Locale, String> descriptionMap, int color,
+			String emailFromAddress, String emailFromName,
 			boolean defaultCalendar, ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
@@ -217,6 +231,8 @@ public class CalendarLocalServiceImpl extends CalendarLocalServiceBaseImpl {
 		calendar.setNameMap(nameMap);
 		calendar.setDescriptionMap(descriptionMap);
 		calendar.setColor(color);
+		calendar.setEmailFromAddress(emailFromAddress);
+		calendar.setEmailFromName(emailFromName);
 		calendar.setDefaultCalendar(defaultCalendar);
 
 		calendarPersistence.update(calendar);
@@ -228,6 +244,16 @@ public class CalendarLocalServiceImpl extends CalendarLocalServiceBaseImpl {
 		return calendar;
 	}
 
+	public Calendar updateCalendar(
+			long calendarId, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, int color,
+			boolean defaultCalendar, ServiceContext serviceContext)
+		throws PortalException, SystemException {
+	
+		return updateCalendar(calendarId, nameMap, descriptionMap, color, null,
+				null, defaultCalendar, serviceContext);
+	}
+	
 	public Calendar updateCalendar(
 			long calendarId, Map<Locale, String> nameMap,
 			Map<Locale, String> descriptionMap, int color,
