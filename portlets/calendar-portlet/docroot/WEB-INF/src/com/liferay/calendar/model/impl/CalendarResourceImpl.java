@@ -44,7 +44,11 @@ public class CalendarResourceImpl extends CalendarResourceBaseImpl {
 				getGroupId(), getCalendarResourceId(), true);
 
 		if (!calendars.isEmpty()) {
-			return calendars.get(0);
+			for (Calendar calendar : calendars) {
+				if (calendar.isDefaultCalendar()) {
+					return calendar;
+				}
+			}
 		}
 
 		return null;
