@@ -503,7 +503,7 @@ public class CalendarBookingLocalServiceImpl
 			Map<Locale, String> descriptionMap, String location, long startTime,
 			long endTime, boolean allDay, String recurrence, long firstReminder,
 			String firstReminderType, long secondReminder,
-			String secondReminderType, int status,
+			String secondReminderType, int status, boolean updateAssets,
 			ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
@@ -559,10 +559,12 @@ public class CalendarBookingLocalServiceImpl
 
 		// Asset
 
-		updateAsset(
-			userId, calendarBooking, serviceContext.getAssetCategoryIds(),
-			serviceContext.getAssetTagNames(),
-			serviceContext.getAssetLinkEntryIds());
+		if (updateAssets) {
+			updateAsset(
+				userId, calendarBooking, serviceContext.getAssetCategoryIds(),
+				serviceContext.getAssetTagNames(),
+				serviceContext.getAssetLinkEntryIds());
+		}
 
 		// Workflow
 
@@ -571,6 +573,24 @@ public class CalendarBookingLocalServiceImpl
 			CalendarBookingWorkflowConstants.toLabel(status), serviceContext);
 
 		return calendarBooking;
+
+	}
+
+	public CalendarBooking updateCalendarBooking(
+			long userId, long calendarBookingId, long calendarId,
+			long[] childCalendarIds, Map<Locale, String> titleMap,
+			Map<Locale, String> descriptionMap, String location, long startTime,
+			long endTime, boolean allDay, String recurrence, long firstReminder,
+			String firstReminderType, long secondReminder,
+			String secondReminderType, int status,
+			ServiceContext serviceContext)
+		throws PortalException, SystemException {
+
+		return updateCalendarBooking(
+			userId, calendarBookingId, calendarId, childCalendarIds, titleMap,
+			descriptionMap, location, startTime, endTime, allDay, recurrence,
+			firstReminder, firstReminderType, secondReminder,
+			secondReminderType, status, true, serviceContext);
 	}
 
 	public CalendarBooking updateCalendarBooking(
@@ -589,7 +609,7 @@ public class CalendarBookingLocalServiceImpl
 			userId, calendarBookingId, calendarId, childCalendarIds, titleMap,
 			descriptionMap, location, startTime, endTime, allDay, recurrence,
 			firstReminder, firstReminderType, secondReminder,
-			secondReminderType, status, serviceContext);
+			secondReminderType, status, false, serviceContext);
 	}
 
 	public CalendarBooking updateCalendarBookingInstance(
