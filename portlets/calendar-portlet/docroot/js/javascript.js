@@ -1651,6 +1651,7 @@ AUI.add(
 										},
 										render: function(event) {
 											var zIndexBase = A.DialogManager.get('zIndexBase');
+
 											this.set('zIndex', zIndexBase + 1);
 										}
 									},
