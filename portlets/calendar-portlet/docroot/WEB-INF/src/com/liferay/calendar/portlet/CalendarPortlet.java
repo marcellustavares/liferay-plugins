@@ -14,6 +14,7 @@
 
 package com.liferay.calendar.portlet;
 
+import com.liferay.calendar.CalendarBookingDurationException;
 import com.liferay.calendar.CalendarNameException;
 import com.liferay.calendar.CalendarResourceCodeException;
 import com.liferay.calendar.CalendarResourceNameException;
@@ -256,73 +257,80 @@ public class CalendarPortlet extends MVCPortlet {
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			CalendarBooking.class.getName(), actionRequest);
 
-		if (calendarBookingId <= 0) {
-			CalendarBooking calendarBooking =
-				CalendarBookingServiceUtil.addCalendarBooking(
-					calendarId, childCalendarIds,
-					CalendarBookingConstants.PARENT_CALENDAR_BOOKING_ID_DEFAULT,
-					titleMap, descriptionMap, location,
-					startTimeJCalendar.getTimeInMillis(),
-					endTimeJCalendar.getTimeInMillis(), allDay, recurrence,
-					reminders[0], remindersType[0], reminders[1],
-					remindersType[1], serviceContext);
-
-			calendarBookingId = calendarBooking.getCalendarBookingId();
-		}
-		else {
-			boolean updateCalendarBookingInstance = ParamUtil.getBoolean(
-				actionRequest, "updateCalendarBookingInstance");
-
-			if (updateCalendarBookingInstance) {
-				boolean allFollowing = ParamUtil.getBoolean(
-					actionRequest, "allFollowing");
-
-				CalendarBookingServiceUtil.updateCalendarBookingInstance(
-					calendarBookingId, calendarId, childCalendarIds, titleMap,
-					descriptionMap, location,
-					startTimeJCalendar.getTimeInMillis(),
-					endTimeJCalendar.getTimeInMillis(), allDay, recurrence,
-					allFollowing, reminders[0], remindersType[0], reminders[1],
-					remindersType[1], status, serviceContext);
+		try {
+			if (calendarBookingId <= 0) {
+				CalendarBooking calendarBooking =
+					CalendarBookingServiceUtil.addCalendarBooking(
+						calendarId, childCalendarIds,
+						CalendarBookingConstants.PARENT_CALENDAR_BOOKING_ID_DEFAULT,
+						titleMap, descriptionMap, location,
+						startTimeJCalendar.getTimeInMillis(),
+						endTimeJCalendar.getTimeInMillis(), allDay, recurrence,
+						reminders[0], remindersType[0], reminders[1],
+						remindersType[1], serviceContext);
+	
+				calendarBookingId = calendarBooking.getCalendarBookingId();
 			}
 			else {
-				CalendarBooking calendarBooking =
-					CalendarBookingServiceUtil.getCalendarBooking(
-						calendarBookingId);
-
-				long duration =
-					(endTimeJCalendar.getTimeInMillis() -
-						startTimeJCalendar.getTimeInMillis());
-				long offset =
-					(startTimeJCalendar.getTimeInMillis() - oldStartTime);
-
-				CalendarBookingServiceUtil.updateCalendarBooking(
-					calendarBookingId, calendarId, childCalendarIds, titleMap,
-					descriptionMap, location,
-					(calendarBooking.getStartTime() + offset),
-					(calendarBooking.getStartTime() + offset + duration),
-					allDay, recurrence, reminders[0], remindersType[0],
-					reminders[1], remindersType[1], status, serviceContext);
+				boolean updateCalendarBookingInstance = ParamUtil.getBoolean(
+					actionRequest, "updateCalendarBookingInstance");
+	
+				if (updateCalendarBookingInstance) {
+					boolean allFollowing = ParamUtil.getBoolean(
+						actionRequest, "allFollowing");
+	
+					CalendarBookingServiceUtil.updateCalendarBookingInstance(
+						calendarBookingId, calendarId, childCalendarIds, titleMap,
+						descriptionMap, location,
+						startTimeJCalendar.getTimeInMillis(),
+						endTimeJCalendar.getTimeInMillis(), allDay, recurrence,
+						allFollowing, reminders[0], remindersType[0], reminders[1],
+						remindersType[1], status, serviceContext);
+				}
+				else {
+					CalendarBooking calendarBooking =
+						CalendarBookingServiceUtil.getCalendarBooking(
+							calendarBookingId);
+	
+					long duration =
+						(endTimeJCalendar.getTimeInMillis() -
+							startTimeJCalendar.getTimeInMillis());
+					long offset =
+						(startTimeJCalendar.getTimeInMillis() - oldStartTime);
+	
+					CalendarBookingServiceUtil.updateCalendarBooking(
+						calendarBookingId, calendarId, childCalendarIds, titleMap,
+						descriptionMap, location,
+						(calendarBooking.getStartTime() + offset),
+						(calendarBooking.getStartTime() + offset + duration),
+						allDay, recurrence, reminders[0], remindersType[0],
+						reminders[1], remindersType[1], status, serviceContext);
+				}
 			}
 		}
+		catch (Exception ex) {
+			throw ex;
+		}
+		finally {
+			String redirect = ParamUtil.getString(actionRequest, "redirect");
 
-		String redirect = ParamUtil.getString(actionRequest, "redirect");
+			redirect = HttpUtil.setParameter(
+				redirect, actionResponse.getNamespace() + "calendarBookingId",
+				calendarBookingId);
+			redirect = HttpUtil.setParameter(
+				redirect, actionResponse.getNamespace() + "calendarId", calendarId);
+			redirect = HttpUtil.removeParameter(
+				redirect, actionResponse.getNamespace() + "startTime");
+			redirect = HttpUtil.removeParameter(
+				redirect, actionResponse.getNamespace() + "endTime");
+			redirect = HttpUtil.removeParameter(
+				redirect, actionResponse.getNamespace() + "allDay");
+			redirect = HttpUtil.removeParameter(
+				redirect, actionResponse.getNamespace() + "repeat");
 
-		redirect = HttpUtil.setParameter(
-			redirect, actionResponse.getNamespace() + "calendarBookingId",
-			calendarBookingId);
-		redirect = HttpUtil.setParameter(
-			redirect, actionResponse.getNamespace() + "calendarId", calendarId);
-		redirect = HttpUtil.removeParameter(
-			redirect, actionResponse.getNamespace() + "startTime");
-		redirect = HttpUtil.removeParameter(
-			redirect, actionResponse.getNamespace() + "endTime");
-		redirect = HttpUtil.removeParameter(
-			redirect, actionResponse.getNamespace() + "allDay");
-		redirect = HttpUtil.removeParameter(
-			redirect, actionResponse.getNamespace() + "repeat");
-
-		actionRequest.setAttribute(WebKeys.REDIRECT, redirect);
+			actionRequest.setAttribute(WebKeys.REDIRECT, redirect);
+		}
+		
 	}
 
 	public void updateCalendarResource(
@@ -591,7 +599,8 @@ public class CalendarPortlet extends MVCPortlet {
 
 	@Override
 	protected boolean isSessionErrorException(Throwable cause) {
-		if (cause instanceof CalendarNameException ||
+		if (cause instanceof CalendarBookingDurationException ||
+			cause instanceof CalendarNameException ||
 			cause instanceof CalendarResourceCodeException ||
 			cause instanceof CalendarResourceNameException ||
 			cause instanceof DuplicateCalendarResourceException ||
