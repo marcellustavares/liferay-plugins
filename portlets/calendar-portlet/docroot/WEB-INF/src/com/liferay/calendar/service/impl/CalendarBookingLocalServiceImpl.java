@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -705,6 +707,7 @@ public class CalendarBookingLocalServiceImpl
 					childCalendarBooking, notificationType);
 			}
 			catch (Exception e) {
+				_log.warn("Failed at trying to register notifications", e);
 			}
 		}
 	}
@@ -754,5 +757,7 @@ public class CalendarBookingLocalServiceImpl
 
 	@BeanReference(type = CalendarBookingApprovalWorkflow.class)
 	protected CalendarBookingApprovalWorkflow calendarBookingApprovalWorkflow;
+	
+	protected static Log _log = LogFactoryUtil.getLog(CalendarBookingLocalServiceImpl.class);
 
 }

@@ -23,9 +23,9 @@ public class PortletPropsKeys {
 
 	public static final String CALENDAR_COLOR_DEFAULT =
 		"calendar.color.default";
-
-	public static final String CALENDAR_NOTIFICATION_BODY =
-		"calendar.notification.body";
+	
+	public static final String CALENDAR_NOTIFICATION_PREFIX =
+			"calendar.notification";
 
 	public static final String CALENDAR_NOTIFICATION_CHECK_INTERVAL =
 		"calendar.notification.check.interval";
@@ -41,9 +41,6 @@ public class PortletPropsKeys {
 
 	public static final String CALENDAR_NOTIFICATION_FROM_NAME =
 		"calendar.notification.from.name";
-
-	public static final String CALENDAR_NOTIFICATION_SUBJECT =
-		"calendar.notification.subject";
 
 	public static final String CALENDAR_RESOURCE_FORCE_AUTOGENERATE_CODE =
 		"calendar.resource.force.autogenerate.code";
