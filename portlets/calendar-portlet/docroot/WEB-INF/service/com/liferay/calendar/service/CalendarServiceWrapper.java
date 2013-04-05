@@ -59,6 +59,20 @@ public class CalendarServiceWrapper implements CalendarService,
 		long calendarResourceId,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		int color, java.lang.String emailFromAddress,
+		java.lang.String emailFromName, boolean defaultCalendar,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _calendarService.addCalendar(groupId, calendarResourceId,
+			nameMap, descriptionMap, color, emailFromAddress, emailFromName,
+			defaultCalendar, serviceContext);
+	}
+
+	public com.liferay.calendar.model.Calendar addCalendar(long groupId,
+		long calendarResourceId,
+		java.util.Map<java.util.Locale, java.lang.String> nameMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		int color, boolean defaultCalendar,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -168,6 +182,19 @@ public class CalendarServiceWrapper implements CalendarService,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _calendarService.searchCount(companyId, groupIds,
 			calendarResourceIds, name, description, andOperator, actionId);
+	}
+
+	public com.liferay.calendar.model.Calendar updateCalendar(long calendarId,
+		java.util.Map<java.util.Locale, java.lang.String> nameMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		int color, java.lang.String emailFromAddress,
+		java.lang.String emailFromName, boolean defaultCalendar,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _calendarService.updateCalendar(calendarId, nameMap,
+			descriptionMap, color, emailFromAddress, emailFromName,
+			defaultCalendar, serviceContext);
 	}
 
 	public com.liferay.calendar.model.Calendar updateCalendar(long calendarId,

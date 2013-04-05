@@ -59,6 +59,8 @@ public class CalendarWrapper implements Calendar, ModelWrapper<Calendar> {
 		attributes.put("description", getDescription());
 		attributes.put("color", getColor());
 		attributes.put("defaultCalendar", getDefaultCalendar());
+		attributes.put("emailFromAddress", getEmailFromAddress());
+		attributes.put("emailFromName", getEmailFromName());
 
 		return attributes;
 	}
@@ -146,6 +148,18 @@ public class CalendarWrapper implements Calendar, ModelWrapper<Calendar> {
 
 		if (defaultCalendar != null) {
 			setDefaultCalendar(defaultCalendar);
+		}
+
+		String emailFromAddress = (String)attributes.get("emailFromAddress");
+
+		if (emailFromAddress != null) {
+			setEmailFromAddress(emailFromAddress);
+		}
+
+		String emailFromName = (String)attributes.get("emailFromName");
+
+		if (emailFromName != null) {
+			setEmailFromName(emailFromName);
 		}
 	}
 
@@ -664,6 +678,42 @@ public class CalendarWrapper implements Calendar, ModelWrapper<Calendar> {
 	*/
 	public void setDefaultCalendar(boolean defaultCalendar) {
 		_calendar.setDefaultCalendar(defaultCalendar);
+	}
+
+	/**
+	* Returns the email from address of this calendar.
+	*
+	* @return the email from address of this calendar
+	*/
+	public java.lang.String getEmailFromAddress() {
+		return _calendar.getEmailFromAddress();
+	}
+
+	/**
+	* Sets the email from address of this calendar.
+	*
+	* @param emailFromAddress the email from address of this calendar
+	*/
+	public void setEmailFromAddress(java.lang.String emailFromAddress) {
+		_calendar.setEmailFromAddress(emailFromAddress);
+	}
+
+	/**
+	* Returns the email from name of this calendar.
+	*
+	* @return the email from name of this calendar
+	*/
+	public java.lang.String getEmailFromName() {
+		return _calendar.getEmailFromName();
+	}
+
+	/**
+	* Sets the email from name of this calendar.
+	*
+	* @param emailFromName the email from name of this calendar
+	*/
+	public void setEmailFromName(java.lang.String emailFromName) {
+		_calendar.setEmailFromName(emailFromName);
 	}
 
 	public boolean isNew() {

@@ -12,7 +12,9 @@ create table Calendar (
 	name STRING null,
 	description STRING null,
 	color INTEGER,
-	defaultCalendar BOOLEAN
+	defaultCalendar BOOLEAN,
+	emailFromAddress VARCHAR(75) null,
+	emailFromName VARCHAR(75) null
 );
 
 create table CalendarBooking (
@@ -42,6 +44,16 @@ create table CalendarBooking (
 	statusByUserId LONG,
 	statusByUserName VARCHAR(75) null,
 	statusDate DATE null
+);
+
+create table CalendarNotificationTemplate (
+	uuid_ VARCHAR(75) null,
+	calendarNotificationTemplateId LONG not null primary key,
+	calendarId LONG,
+	notificationType VARCHAR(75) null,
+	notificationTemplateType VARCHAR(75) null,
+	field VARCHAR(75) null,
+	content TEXT null
 );
 
 create table CalendarResource (
