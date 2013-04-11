@@ -114,6 +114,32 @@ public class RecurrenceUtil {
 		return expandedCalendarBookings;
 	}
 
+	public static Calendar getLastInstanceCalendar(
+			String recurrence, long endTime) {
+		Calendar calendar = null;
+		try {
+			RecurrenceIterator recurrenceIterator =
+				RecurrenceIteratorFactory.createRecurrenceIterator(recurrence,
+					_toDateValue(endTime), TimeUtils.utcTimezone());
+			DateValue dateValue = null;;
+			while (recurrenceIterator.hasNext()) {
+				dateValue = recurrenceIterator.next();
+			}
+			calendar = Calendar.getInstance();
+			calendar.clear();
+			if (dateValue != null) {
+				calendar.set(Calendar.YEAR, dateValue.year());
+				calendar.set(Calendar.MONTH, dateValue.month()-1);
+				calendar.set(Calendar.DAY_OF_MONTH, dateValue.day());
+			}
+			else {
+				calendar.setTimeInMillis(endTime);
+			}
+		} catch (ParseException e) {
+			_log.error("Unable to parse data ", e);
+		}
+		return calendar;
+	}
 	private static CalendarBooking _copyCalendarBooking(
 		CalendarBooking calendarBooking, DateValue startDateValue) {
 
