@@ -33,6 +33,8 @@
 		<column name="description" type="String" localized="true" />
 		<column name="color" type="int" />
 		<column name="defaultCalendar" type="boolean" />
+		<column name="emailFromAddress" type="String" />
+		<column name="emailFromName" type="String" />
 
 		<!-- Order -->
 
@@ -206,6 +208,29 @@
 		<!-- References -->
 
 		<reference package-path="com.liferay.portlet.asset" entity="AssetEntry" />
+	</entity>
+
+	<entity name="CalendarNotificationTemplate" uuid="true" local-service="true" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="calendarNotificationTemplateId" type="long" primary="true" />
+
+		<!-- Other fields -->
+		<column name="calendarId" type="long" />
+		<column name="notificationType" type="String" />
+		<column name="notificationTemplateType" type="String" />
+		<column name="field" type="String" />
+		<column name="content" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="C_NT_NTT_F" return-type="CalendarNotificationTemplate">
+			<finder-column name="calendarId" />
+			<finder-column name="notificationType" />
+			<finder-column name="notificationTemplateType" />
+			<finder-column name="field" />
+		</finder>
 	</entity>
 	<exceptions>
 		<exception>CalendarBookingDuration</exception>

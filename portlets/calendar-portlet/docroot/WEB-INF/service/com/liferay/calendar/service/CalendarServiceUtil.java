@@ -66,6 +66,21 @@ public class CalendarServiceUtil {
 		long groupId, long calendarResourceId,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		int color, java.lang.String emailFromAddress,
+		java.lang.String emailFromName, boolean defaultCalendar,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addCalendar(groupId, calendarResourceId, nameMap,
+			descriptionMap, color, emailFromAddress, emailFromName,
+			defaultCalendar, serviceContext);
+	}
+
+	public static com.liferay.calendar.model.Calendar addCalendar(
+		long groupId, long calendarResourceId,
+		java.util.Map<java.util.Locale, java.lang.String> nameMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		int color, boolean defaultCalendar,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -183,6 +198,20 @@ public class CalendarServiceUtil {
 		return getService()
 				   .searchCount(companyId, groupIds, calendarResourceIds, name,
 			description, andOperator, actionId);
+	}
+
+	public static com.liferay.calendar.model.Calendar updateCalendar(
+		long calendarId,
+		java.util.Map<java.util.Locale, java.lang.String> nameMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		int color, java.lang.String emailFromAddress,
+		java.lang.String emailFromName, boolean defaultCalendar,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateCalendar(calendarId, nameMap, descriptionMap, color,
+			emailFromAddress, emailFromName, defaultCalendar, serviceContext);
 	}
 
 	public static com.liferay.calendar.model.Calendar updateCalendar(

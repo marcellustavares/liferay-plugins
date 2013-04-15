@@ -45,6 +45,8 @@ public class CalendarSoap implements Serializable {
 		soapModel.setDescription(model.getDescription());
 		soapModel.setColor(model.getColor());
 		soapModel.setDefaultCalendar(model.getDefaultCalendar());
+		soapModel.setEmailFromAddress(model.getEmailFromAddress());
+		soapModel.setEmailFromName(model.getEmailFromName());
 
 		return soapModel;
 	}
@@ -213,6 +215,22 @@ public class CalendarSoap implements Serializable {
 		_defaultCalendar = defaultCalendar;
 	}
 
+	public String getEmailFromAddress() {
+		return _emailFromAddress;
+	}
+
+	public void setEmailFromAddress(String emailFromAddress) {
+		_emailFromAddress = emailFromAddress;
+	}
+
+	public String getEmailFromName() {
+		return _emailFromName;
+	}
+
+	public void setEmailFromName(String emailFromName) {
+		_emailFromName = emailFromName;
+	}
+
 	private String _uuid;
 	private long _calendarId;
 	private long _groupId;
@@ -227,4 +245,6 @@ public class CalendarSoap implements Serializable {
 	private String _description;
 	private int _color;
 	private boolean _defaultCalendar;
+	private String _emailFromAddress;
+	private String _emailFromName;
 }

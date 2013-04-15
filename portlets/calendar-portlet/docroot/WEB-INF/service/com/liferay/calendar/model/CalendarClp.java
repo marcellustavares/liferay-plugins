@@ -85,6 +85,8 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 		attributes.put("description", getDescription());
 		attributes.put("color", getColor());
 		attributes.put("defaultCalendar", getDefaultCalendar());
+		attributes.put("emailFromAddress", getEmailFromAddress());
+		attributes.put("emailFromName", getEmailFromName());
 
 		return attributes;
 	}
@@ -173,6 +175,18 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 
 		if (defaultCalendar != null) {
 			setDefaultCalendar(defaultCalendar);
+		}
+
+		String emailFromAddress = (String)attributes.get("emailFromAddress");
+
+		if (emailFromAddress != null) {
+			setEmailFromAddress(emailFromAddress);
+		}
+
+		String emailFromName = (String)attributes.get("emailFromName");
+
+		if (emailFromName != null) {
+			setEmailFromName(emailFromName);
 		}
 	}
 
@@ -478,6 +492,22 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 		_defaultCalendar = defaultCalendar;
 	}
 
+	public String getEmailFromAddress() {
+		return _emailFromAddress;
+	}
+
+	public void setEmailFromAddress(String emailFromAddress) {
+		_emailFromAddress = emailFromAddress;
+	}
+
+	public String getEmailFromName() {
+		return _emailFromName;
+	}
+
+	public void setEmailFromName(String emailFromName) {
+		_emailFromName = emailFromName;
+	}
+
 	public com.liferay.calendar.model.CalendarResource getCalendarResource() {
 		throw new UnsupportedOperationException();
 	}
@@ -532,6 +562,8 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 		clone.setDescription(getDescription());
 		clone.setColor(getColor());
 		clone.setDefaultCalendar(getDefaultCalendar());
+		clone.setEmailFromAddress(getEmailFromAddress());
+		clone.setEmailFromName(getEmailFromName());
 
 		return clone;
 	}
@@ -580,7 +612,7 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(33);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -610,13 +642,17 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 		sb.append(getColor());
 		sb.append(", defaultCalendar=");
 		sb.append(getDefaultCalendar());
+		sb.append(", emailFromAddress=");
+		sb.append(getEmailFromAddress());
+		sb.append(", emailFromName=");
+		sb.append(getEmailFromName());
 		sb.append("}");
 
 		return sb.toString();
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
+		StringBundler sb = new StringBundler(52);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.calendar.model.Calendar");
@@ -678,6 +714,14 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 			"<column><column-name>defaultCalendar</column-name><column-value><![CDATA[");
 		sb.append(getDefaultCalendar());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>emailFromAddress</column-name><column-value><![CDATA[");
+		sb.append(getEmailFromAddress());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>emailFromName</column-name><column-value><![CDATA[");
+		sb.append(getEmailFromName());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -701,5 +745,7 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 	private String _descriptionCurrentLanguageId;
 	private int _color;
 	private boolean _defaultCalendar;
+	private String _emailFromAddress;
+	private String _emailFromName;
 	private BaseModel<?> _calendarRemoteModel;
 }

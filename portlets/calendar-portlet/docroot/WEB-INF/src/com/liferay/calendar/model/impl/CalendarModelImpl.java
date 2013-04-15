@@ -84,9 +84,11 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 			{ "name", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
 			{ "color", Types.INTEGER },
-			{ "defaultCalendar", Types.BOOLEAN }
+			{ "defaultCalendar", Types.BOOLEAN },
+			{ "emailFromAddress", Types.VARCHAR },
+			{ "emailFromName", Types.VARCHAR }
 		};
-	public static final String TABLE_SQL_CREATE = "create table Calendar (uuid_ VARCHAR(75) null,calendarId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,resourceBlockId LONG,calendarResourceId LONG,name STRING null,description STRING null,color INTEGER,defaultCalendar BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table Calendar (uuid_ VARCHAR(75) null,calendarId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,resourceBlockId LONG,calendarResourceId LONG,name STRING null,description STRING null,color INTEGER,defaultCalendar BOOLEAN,emailFromAddress VARCHAR(75) null,emailFromName VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table Calendar";
 	public static final String ORDER_BY_JPQL = " ORDER BY calendar.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY Calendar.name ASC";
@@ -137,6 +139,8 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 		model.setDescription(soapModel.getDescription());
 		model.setColor(soapModel.getColor());
 		model.setDefaultCalendar(soapModel.getDefaultCalendar());
+		model.setEmailFromAddress(soapModel.getEmailFromAddress());
+		model.setEmailFromName(soapModel.getEmailFromName());
 
 		return model;
 	}
@@ -209,6 +213,8 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 		attributes.put("description", getDescription());
 		attributes.put("color", getColor());
 		attributes.put("defaultCalendar", getDefaultCalendar());
+		attributes.put("emailFromAddress", getEmailFromAddress());
+		attributes.put("emailFromName", getEmailFromName());
 
 		return attributes;
 	}
@@ -297,6 +303,18 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 
 		if (defaultCalendar != null) {
 			setDefaultCalendar(defaultCalendar);
+		}
+
+		String emailFromAddress = (String)attributes.get("emailFromAddress");
+
+		if (emailFromAddress != null) {
+			setEmailFromAddress(emailFromAddress);
+		}
+
+		String emailFromName = (String)attributes.get("emailFromName");
+
+		if (emailFromName != null) {
+			setEmailFromName(emailFromName);
 		}
 	}
 
@@ -674,6 +692,34 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 		return _originalDefaultCalendar;
 	}
 
+	@JSON
+	public String getEmailFromAddress() {
+		if (_emailFromAddress == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _emailFromAddress;
+		}
+	}
+
+	public void setEmailFromAddress(String emailFromAddress) {
+		_emailFromAddress = emailFromAddress;
+	}
+
+	@JSON
+	public String getEmailFromName() {
+		if (_emailFromName == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _emailFromName;
+		}
+	}
+
+	public void setEmailFromName(String emailFromName) {
+		_emailFromName = emailFromName;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -728,6 +774,8 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 		calendarImpl.setDescription(getDescription());
 		calendarImpl.setColor(getColor());
 		calendarImpl.setDefaultCalendar(getDefaultCalendar());
+		calendarImpl.setEmailFromAddress(getEmailFromAddress());
+		calendarImpl.setEmailFromName(getEmailFromName());
 
 		calendarImpl.resetOriginalValues();
 
@@ -875,12 +923,28 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 
 		calendarCacheModel.defaultCalendar = getDefaultCalendar();
 
+		calendarCacheModel.emailFromAddress = getEmailFromAddress();
+
+		String emailFromAddress = calendarCacheModel.emailFromAddress;
+
+		if ((emailFromAddress != null) && (emailFromAddress.length() == 0)) {
+			calendarCacheModel.emailFromAddress = null;
+		}
+
+		calendarCacheModel.emailFromName = getEmailFromName();
+
+		String emailFromName = calendarCacheModel.emailFromName;
+
+		if ((emailFromName != null) && (emailFromName.length() == 0)) {
+			calendarCacheModel.emailFromName = null;
+		}
+
 		return calendarCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(33);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -910,13 +974,17 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 		sb.append(getColor());
 		sb.append(", defaultCalendar=");
 		sb.append(getDefaultCalendar());
+		sb.append(", emailFromAddress=");
+		sb.append(getEmailFromAddress());
+		sb.append(", emailFromName=");
+		sb.append(getEmailFromName());
 		sb.append("}");
 
 		return sb.toString();
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
+		StringBundler sb = new StringBundler(52);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.calendar.model.Calendar");
@@ -978,6 +1046,14 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 			"<column><column-name>defaultCalendar</column-name><column-value><![CDATA[");
 		sb.append(getDefaultCalendar());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>emailFromAddress</column-name><column-value><![CDATA[");
+		sb.append(getEmailFromAddress());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>emailFromName</column-name><column-value><![CDATA[");
+		sb.append(getEmailFromName());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -1016,6 +1092,8 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 	private boolean _defaultCalendar;
 	private boolean _originalDefaultCalendar;
 	private boolean _setOriginalDefaultCalendar;
+	private String _emailFromAddress;
+	private String _emailFromName;
 	private long _columnBitmask;
 	private Calendar _escapedModel;
 }
