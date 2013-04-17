@@ -15,6 +15,10 @@ create index IX_F6E8EE73 on CalendarBooking (uuid_);
 create index IX_A21D9FD5 on CalendarBooking (uuid_, companyId);
 create unique index IX_F4C61797 on CalendarBooking (uuid_, groupId);
 
+create index IX_7727A482 on CalendarNotificationTemplate (calendarId, notificationType, notificationTemplateType);
+create index IX_14C88668 on CalendarNotificationTemplate (calendarId, notificationType, notificationTemplateType, field);
+create index IX_A2D4D78B on CalendarNotificationTemplate (uuid_);
+
 create index IX_76DDD0F7 on CalendarResource (active_);
 create unique index IX_16A12327 on CalendarResource (classNameId, classPK);
 create index IX_4470A59D on CalendarResource (companyId, code_, active_);
