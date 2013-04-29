@@ -66,8 +66,8 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 		sb.append(subject);
 		sb.append(", body=");
 		sb.append(body);
-		sb.append(", typeSettings=");
-		sb.append(typeSettings);
+		sb.append(", notificationTypeSettings=");
+		sb.append(notificationTypeSettings);
 		sb.append("}");
 
 		return sb.toString();
@@ -140,11 +140,11 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 			calendarNotificationTemplateImpl.setBody(body);
 		}
 
-		if (typeSettings == null) {
-			calendarNotificationTemplateImpl.setTypeSettings(StringPool.BLANK);
+		if (notificationTypeSettings == null) {
+			calendarNotificationTemplateImpl.setNotificationTypeSettings(StringPool.BLANK);
 		}
 		else {
-			calendarNotificationTemplateImpl.setTypeSettings(typeSettings);
+			calendarNotificationTemplateImpl.setNotificationTypeSettings(notificationTypeSettings);
 		}
 
 		calendarNotificationTemplateImpl.resetOriginalValues();
@@ -166,7 +166,7 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 		notificationTemplateType = objectInput.readUTF();
 		subject = objectInput.readUTF();
 		body = objectInput.readUTF();
-		typeSettings = objectInput.readUTF();
+		notificationTypeSettings = objectInput.readUTF();
 	}
 
 	public void writeExternal(ObjectOutput objectOutput)
@@ -222,11 +222,11 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 			objectOutput.writeUTF(body);
 		}
 
-		if (typeSettings == null) {
+		if (notificationTypeSettings == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeUTF(typeSettings);
+			objectOutput.writeUTF(notificationTypeSettings);
 		}
 	}
 
@@ -243,5 +243,5 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 	public String notificationTemplateType;
 	public String subject;
 	public String body;
-	public String typeSettings;
+	public String notificationTypeSettings;
 }

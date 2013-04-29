@@ -267,19 +267,19 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	public void setBody(String body);
 
 	/**
-	 * Returns the type settings of this calendar notification template.
+	 * Returns the notification type settings of this calendar notification template.
 	 *
-	 * @return the type settings of this calendar notification template
+	 * @return the notification type settings of this calendar notification template
 	 */
 	@AutoEscape
-	public String getTypeSettings();
+	public String getNotificationTypeSettings();
 
 	/**
-	 * Sets the type settings of this calendar notification template.
+	 * Sets the notification type settings of this calendar notification template.
 	 *
-	 * @param typeSettings the type settings of this calendar notification template
+	 * @param notificationTypeSettings the notification type settings of this calendar notification template
 	 */
-	public void setTypeSettings(String typeSettings);
+	public void setNotificationTypeSettings(String notificationTypeSettings);
 
 	public boolean isNew();
 

@@ -279,13 +279,13 @@ public class CalendarNotificationTemplateLocalServiceWrapper
 		com.liferay.calendar.notification.NotificationType notificationType,
 		com.liferay.calendar.notification.NotificationTemplateType notificationTemplateType,
 		java.lang.String subject, java.lang.String body,
-		java.lang.String typeSettings,
+		java.lang.String notificationTypeSettings,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _calendarNotificationTemplateLocalService.addCalendarNotificationTemplate(userId,
 			calendarId, notificationType, notificationTemplateType, subject,
-			body, typeSettings, serviceContext);
+			body, notificationTypeSettings, serviceContext);
 	}
 
 	public com.liferay.calendar.model.CalendarNotificationTemplate fetchCalendarNotificationTemplate(
@@ -299,12 +299,12 @@ public class CalendarNotificationTemplateLocalServiceWrapper
 
 	public com.liferay.calendar.model.CalendarNotificationTemplate updateCalendarNotificationTemplate(
 		long calendarNotificationTemplateId, java.lang.String subject,
-		java.lang.String body, java.lang.String typeSettings,
+		java.lang.String body, java.lang.String notificationTypeSettings,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _calendarNotificationTemplateLocalService.updateCalendarNotificationTemplate(calendarNotificationTemplateId,
-			subject, body, typeSettings, serviceContext);
+			subject, body, notificationTypeSettings, serviceContext);
 	}
 
 	/**

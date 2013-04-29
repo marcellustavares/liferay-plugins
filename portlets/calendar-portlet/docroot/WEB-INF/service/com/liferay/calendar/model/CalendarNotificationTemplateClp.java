@@ -83,7 +83,7 @@ public class CalendarNotificationTemplateClp extends BaseModelImpl<CalendarNotif
 		attributes.put("notificationTemplateType", getNotificationTemplateType());
 		attributes.put("subject", getSubject());
 		attributes.put("body", getBody());
-		attributes.put("typeSettings", getTypeSettings());
+		attributes.put("notificationTypeSettings", getNotificationTypeSettings());
 
 		return attributes;
 	}
@@ -170,10 +170,11 @@ public class CalendarNotificationTemplateClp extends BaseModelImpl<CalendarNotif
 			setBody(body);
 		}
 
-		String typeSettings = (String)attributes.get("typeSettings");
+		String notificationTypeSettings = (String)attributes.get(
+				"notificationTypeSettings");
 
-		if (typeSettings != null) {
-			setTypeSettings(typeSettings);
+		if (notificationTypeSettings != null) {
+			setNotificationTypeSettings(notificationTypeSettings);
 		}
 	}
 
@@ -469,21 +470,22 @@ public class CalendarNotificationTemplateClp extends BaseModelImpl<CalendarNotif
 		}
 	}
 
-	public String getTypeSettings() {
-		return _typeSettings;
+	public String getNotificationTypeSettings() {
+		return _notificationTypeSettings;
 	}
 
-	public void setTypeSettings(String typeSettings) {
-		_typeSettings = typeSettings;
+	public void setNotificationTypeSettings(String notificationTypeSettings) {
+		_notificationTypeSettings = notificationTypeSettings;
 
 		if (_calendarNotificationTemplateRemoteModel != null) {
 			try {
 				Class<?> clazz = _calendarNotificationTemplateRemoteModel.getClass();
 
-				Method method = clazz.getMethod("setTypeSettings", String.class);
+				Method method = clazz.getMethod("setNotificationTypeSettings",
+						String.class);
 
 				method.invoke(_calendarNotificationTemplateRemoteModel,
-					typeSettings);
+					notificationTypeSettings);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -491,9 +493,29 @@ public class CalendarNotificationTemplateClp extends BaseModelImpl<CalendarNotif
 		}
 	}
 
-	public com.liferay.portal.kernel.util.UnicodeProperties getTypeSettingsProperties() {
+	public void setTypeSettingsProperties(
+		com.liferay.portal.kernel.util.UnicodeProperties notificationTypeSettingsProperties) {
 		try {
-			String methodName = "getTypeSettingsProperties";
+			String methodName = "setTypeSettingsProperties";
+
+			Class<?>[] parameterTypes = new Class<?>[] {
+					com.liferay.portal.kernel.util.UnicodeProperties.class
+				};
+
+			Object[] parameterValues = new Object[] {
+					notificationTypeSettingsProperties
+				};
+
+			invokeOnRemoteModel(methodName, parameterTypes, parameterValues);
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	public com.liferay.portal.kernel.util.UnicodeProperties getNotificationTypeSettingsProperties() {
+		try {
+			String methodName = "getNotificationTypeSettingsProperties";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
@@ -503,24 +525,6 @@ public class CalendarNotificationTemplateClp extends BaseModelImpl<CalendarNotif
 					parameterTypes, parameterValues);
 
 			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	public void setTypeSettingsProperties(
-		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties) {
-		try {
-			String methodName = "setTypeSettingsProperties";
-
-			Class<?>[] parameterTypes = new Class<?>[] {
-					com.liferay.portal.kernel.util.UnicodeProperties.class
-				};
-
-			Object[] parameterValues = new Object[] { typeSettingsProperties };
-
-			invokeOnRemoteModel(methodName, parameterTypes, parameterValues);
 		}
 		catch (Exception e) {
 			throw new UnsupportedOperationException(e);
@@ -610,7 +614,7 @@ public class CalendarNotificationTemplateClp extends BaseModelImpl<CalendarNotif
 		clone.setNotificationTemplateType(getNotificationTemplateType());
 		clone.setSubject(getSubject());
 		clone.setBody(getBody());
-		clone.setTypeSettings(getTypeSettings());
+		clone.setNotificationTypeSettings(getNotificationTypeSettings());
 
 		return clone;
 	}
@@ -690,8 +694,8 @@ public class CalendarNotificationTemplateClp extends BaseModelImpl<CalendarNotif
 		sb.append(getSubject());
 		sb.append(", body=");
 		sb.append(getBody());
-		sb.append(", typeSettings=");
-		sb.append(getTypeSettings());
+		sb.append(", notificationTypeSettings=");
+		sb.append(getNotificationTypeSettings());
 		sb.append("}");
 
 		return sb.toString();
@@ -757,8 +761,8 @@ public class CalendarNotificationTemplateClp extends BaseModelImpl<CalendarNotif
 		sb.append(getBody());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>typeSettings</column-name><column-value><![CDATA[");
-		sb.append(getTypeSettings());
+			"<column><column-name>notificationTypeSettings</column-name><column-value><![CDATA[");
+		sb.append(getNotificationTypeSettings());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -780,6 +784,6 @@ public class CalendarNotificationTemplateClp extends BaseModelImpl<CalendarNotif
 	private String _notificationTemplateType;
 	private String _subject;
 	private String _body;
-	private String _typeSettings;
+	private String _notificationTypeSettings;
 	private BaseModel<?> _calendarNotificationTemplateRemoteModel;
 }

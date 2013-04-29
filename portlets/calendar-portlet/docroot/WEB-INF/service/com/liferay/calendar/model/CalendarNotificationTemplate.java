@@ -32,12 +32,13 @@ public interface CalendarNotificationTemplate
 	 *
 	 * Never modify this interface directly. Add methods to {@link com.liferay.calendar.model.impl.CalendarNotificationTemplateImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public java.lang.String getTypeSettings();
+	public java.lang.String getNotificationTypeSettings();
 
-	public com.liferay.portal.kernel.util.UnicodeProperties getTypeSettingsProperties();
+	public com.liferay.portal.kernel.util.UnicodeProperties getNotificationTypeSettingsProperties();
 
-	public void setTypeSettings(java.lang.String typeSettings);
+	public void setNotificationTypeSettings(
+		java.lang.String notificationTypeSettings);
 
 	public void setTypeSettingsProperties(
-		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties);
+		com.liferay.portal.kernel.util.UnicodeProperties notificationTypeSettingsProperties);
 }

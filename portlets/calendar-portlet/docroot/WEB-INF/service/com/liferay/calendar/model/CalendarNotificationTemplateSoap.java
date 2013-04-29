@@ -45,7 +45,7 @@ public class CalendarNotificationTemplateSoap implements Serializable {
 		soapModel.setNotificationTemplateType(model.getNotificationTemplateType());
 		soapModel.setSubject(model.getSubject());
 		soapModel.setBody(model.getBody());
-		soapModel.setTypeSettings(model.getTypeSettings());
+		soapModel.setNotificationTypeSettings(model.getNotificationTypeSettings());
 
 		return soapModel;
 	}
@@ -206,12 +206,12 @@ public class CalendarNotificationTemplateSoap implements Serializable {
 		_body = body;
 	}
 
-	public String getTypeSettings() {
-		return _typeSettings;
+	public String getNotificationTypeSettings() {
+		return _notificationTypeSettings;
 	}
 
-	public void setTypeSettings(String typeSettings) {
-		_typeSettings = typeSettings;
+	public void setNotificationTypeSettings(String notificationTypeSettings) {
+		_notificationTypeSettings = notificationTypeSettings;
 	}
 
 	private String _uuid;
@@ -227,5 +227,5 @@ public class CalendarNotificationTemplateSoap implements Serializable {
 	private String _notificationTemplateType;
 	private String _subject;
 	private String _body;
-	private String _typeSettings;
+	private String _notificationTypeSettings;
 }

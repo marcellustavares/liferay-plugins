@@ -58,7 +58,7 @@ create table CalendarNotificationTemplate (
 	notificationTemplateType VARCHAR(75) null,
 	subject VARCHAR(75) null,
 	body TEXT null,
-	typeSettings VARCHAR(75) null
+	notificationTypeSettings VARCHAR(75) null
 );
 
 create table CalendarResource (

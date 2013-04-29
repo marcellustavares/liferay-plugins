@@ -2226,7 +2226,7 @@ public class CalendarNotificationTemplatePersistenceImpl
 		calendarNotificationTemplateImpl.setNotificationTemplateType(calendarNotificationTemplate.getNotificationTemplateType());
 		calendarNotificationTemplateImpl.setSubject(calendarNotificationTemplate.getSubject());
 		calendarNotificationTemplateImpl.setBody(calendarNotificationTemplate.getBody());
-		calendarNotificationTemplateImpl.setTypeSettings(calendarNotificationTemplate.getTypeSettings());
+		calendarNotificationTemplateImpl.setNotificationTypeSettings(calendarNotificationTemplate.getNotificationTypeSettings());
 
 		return calendarNotificationTemplateImpl;
 	}

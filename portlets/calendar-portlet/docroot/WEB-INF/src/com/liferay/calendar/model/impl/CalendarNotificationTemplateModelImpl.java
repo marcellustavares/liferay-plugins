@@ -79,9 +79,9 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 			{ "notificationTemplateType", Types.VARCHAR },
 			{ "subject", Types.VARCHAR },
 			{ "body", Types.CLOB },
-			{ "typeSettings", Types.VARCHAR }
+			{ "notificationTypeSettings", Types.VARCHAR }
 		};
-	public static final String TABLE_SQL_CREATE = "create table CalendarNotificationTemplate (uuid_ VARCHAR(75) null,calendarNotificationTemplateId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,calendarId LONG,notificationType VARCHAR(75) null,notificationTemplateType VARCHAR(75) null,subject VARCHAR(75) null,body TEXT null,typeSettings VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table CalendarNotificationTemplate (uuid_ VARCHAR(75) null,calendarNotificationTemplateId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,calendarId LONG,notificationType VARCHAR(75) null,notificationTemplateType VARCHAR(75) null,subject VARCHAR(75) null,body TEXT null,notificationTypeSettings VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table CalendarNotificationTemplate";
 	public static final String ORDER_BY_JPQL = " ORDER BY calendarNotificationTemplate.calendarNotificationTemplateId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY CalendarNotificationTemplate.calendarNotificationTemplateId ASC";
@@ -132,7 +132,7 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		model.setNotificationTemplateType(soapModel.getNotificationTemplateType());
 		model.setSubject(soapModel.getSubject());
 		model.setBody(soapModel.getBody());
-		model.setTypeSettings(soapModel.getTypeSettings());
+		model.setNotificationTypeSettings(soapModel.getNotificationTypeSettings());
 
 		return model;
 	}
@@ -206,7 +206,7 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		attributes.put("notificationTemplateType", getNotificationTemplateType());
 		attributes.put("subject", getSubject());
 		attributes.put("body", getBody());
-		attributes.put("typeSettings", getTypeSettings());
+		attributes.put("notificationTypeSettings", getNotificationTypeSettings());
 
 		return attributes;
 	}
@@ -293,10 +293,11 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 			setBody(body);
 		}
 
-		String typeSettings = (String)attributes.get("typeSettings");
+		String notificationTypeSettings = (String)attributes.get(
+				"notificationTypeSettings");
 
-		if (typeSettings != null) {
-			setTypeSettings(typeSettings);
+		if (notificationTypeSettings != null) {
+			setNotificationTypeSettings(notificationTypeSettings);
 		}
 	}
 
@@ -521,17 +522,17 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 	}
 
 	@JSON
-	public String getTypeSettings() {
-		if (_typeSettings == null) {
+	public String getNotificationTypeSettings() {
+		if (_notificationTypeSettings == null) {
 			return StringPool.BLANK;
 		}
 		else {
-			return _typeSettings;
+			return _notificationTypeSettings;
 		}
 	}
 
-	public void setTypeSettings(String typeSettings) {
-		_typeSettings = typeSettings;
+	public void setNotificationTypeSettings(String notificationTypeSettings) {
+		_notificationTypeSettings = notificationTypeSettings;
 	}
 
 	public long getColumnBitmask() {
@@ -578,7 +579,7 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		calendarNotificationTemplateImpl.setNotificationTemplateType(getNotificationTemplateType());
 		calendarNotificationTemplateImpl.setSubject(getSubject());
 		calendarNotificationTemplateImpl.setBody(getBody());
-		calendarNotificationTemplateImpl.setTypeSettings(getTypeSettings());
+		calendarNotificationTemplateImpl.setNotificationTypeSettings(getNotificationTypeSettings());
 
 		calendarNotificationTemplateImpl.resetOriginalValues();
 
@@ -738,12 +739,13 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 			calendarNotificationTemplateCacheModel.body = null;
 		}
 
-		calendarNotificationTemplateCacheModel.typeSettings = getTypeSettings();
+		calendarNotificationTemplateCacheModel.notificationTypeSettings = getNotificationTypeSettings();
 
-		String typeSettings = calendarNotificationTemplateCacheModel.typeSettings;
+		String notificationTypeSettings = calendarNotificationTemplateCacheModel.notificationTypeSettings;
 
-		if ((typeSettings != null) && (typeSettings.length() == 0)) {
-			calendarNotificationTemplateCacheModel.typeSettings = null;
+		if ((notificationTypeSettings != null) &&
+				(notificationTypeSettings.length() == 0)) {
+			calendarNotificationTemplateCacheModel.notificationTypeSettings = null;
 		}
 
 		return calendarNotificationTemplateCacheModel;
@@ -779,8 +781,8 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		sb.append(getSubject());
 		sb.append(", body=");
 		sb.append(getBody());
-		sb.append(", typeSettings=");
-		sb.append(getTypeSettings());
+		sb.append(", notificationTypeSettings=");
+		sb.append(getNotificationTypeSettings());
 		sb.append("}");
 
 		return sb.toString();
@@ -846,8 +848,8 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		sb.append(getBody());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>typeSettings</column-name><column-value><![CDATA[");
-		sb.append(getTypeSettings());
+			"<column><column-name>notificationTypeSettings</column-name><column-value><![CDATA[");
+		sb.append(getNotificationTypeSettings());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -882,7 +884,7 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 	private String _originalNotificationTemplateType;
 	private String _subject;
 	private String _body;
-	private String _typeSettings;
+	private String _notificationTypeSettings;
 	private long _columnBitmask;
 	private CalendarNotificationTemplate _escapedModel;
 }

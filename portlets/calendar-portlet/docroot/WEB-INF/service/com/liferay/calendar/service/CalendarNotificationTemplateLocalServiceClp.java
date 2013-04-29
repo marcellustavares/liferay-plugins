@@ -686,7 +686,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 		com.liferay.calendar.notification.NotificationType notificationType,
 		com.liferay.calendar.notification.NotificationTemplateType notificationTemplateType,
 		java.lang.String subject, java.lang.String body,
-		java.lang.String typeSettings,
+		java.lang.String notificationTypeSettings,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
@@ -708,7 +708,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 						
 					ClpSerializer.translateInput(body),
 						
-					ClpSerializer.translateInput(typeSettings),
+					ClpSerializer.translateInput(notificationTypeSettings),
 						
 					ClpSerializer.translateInput(serviceContext)
 					});
@@ -775,7 +775,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 	public com.liferay.calendar.model.CalendarNotificationTemplate updateCalendarNotificationTemplate(
 		long calendarNotificationTemplateId, java.lang.String subject,
-		java.lang.String body, java.lang.String typeSettings,
+		java.lang.String body, java.lang.String notificationTypeSettings,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
@@ -791,7 +791,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 						
 					ClpSerializer.translateInput(body),
 						
-					ClpSerializer.translateInput(typeSettings),
+					ClpSerializer.translateInput(notificationTypeSettings),
 						
 					ClpSerializer.translateInput(serviceContext)
 					});

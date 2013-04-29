@@ -62,7 +62,7 @@ public class CalendarNotificationTemplateWrapper
 		attributes.put("notificationTemplateType", getNotificationTemplateType());
 		attributes.put("subject", getSubject());
 		attributes.put("body", getBody());
-		attributes.put("typeSettings", getTypeSettings());
+		attributes.put("notificationTypeSettings", getNotificationTypeSettings());
 
 		return attributes;
 	}
@@ -148,10 +148,11 @@ public class CalendarNotificationTemplateWrapper
 			setBody(body);
 		}
 
-		String typeSettings = (String)attributes.get("typeSettings");
+		String notificationTypeSettings = (String)attributes.get(
+				"notificationTypeSettings");
 
-		if (typeSettings != null) {
-			setTypeSettings(typeSettings);
+		if (notificationTypeSettings != null) {
+			setNotificationTypeSettings(notificationTypeSettings);
 		}
 	}
 
@@ -430,21 +431,22 @@ public class CalendarNotificationTemplateWrapper
 	}
 
 	/**
-	* Returns the type settings of this calendar notification template.
+	* Returns the notification type settings of this calendar notification template.
 	*
-	* @return the type settings of this calendar notification template
+	* @return the notification type settings of this calendar notification template
 	*/
-	public java.lang.String getTypeSettings() {
-		return _calendarNotificationTemplate.getTypeSettings();
+	public java.lang.String getNotificationTypeSettings() {
+		return _calendarNotificationTemplate.getNotificationTypeSettings();
 	}
 
 	/**
-	* Sets the type settings of this calendar notification template.
+	* Sets the notification type settings of this calendar notification template.
 	*
-	* @param typeSettings the type settings of this calendar notification template
+	* @param notificationTypeSettings the notification type settings of this calendar notification template
 	*/
-	public void setTypeSettings(java.lang.String typeSettings) {
-		_calendarNotificationTemplate.setTypeSettings(typeSettings);
+	public void setNotificationTypeSettings(
+		java.lang.String notificationTypeSettings) {
+		_calendarNotificationTemplate.setNotificationTypeSettings(notificationTypeSettings);
 	}
 
 	public boolean isNew() {
@@ -535,13 +537,13 @@ public class CalendarNotificationTemplateWrapper
 		_calendarNotificationTemplate.persist();
 	}
 
-	public com.liferay.portal.kernel.util.UnicodeProperties getTypeSettingsProperties() {
-		return _calendarNotificationTemplate.getTypeSettingsProperties();
+	public com.liferay.portal.kernel.util.UnicodeProperties getNotificationTypeSettingsProperties() {
+		return _calendarNotificationTemplate.getNotificationTypeSettingsProperties();
 	}
 
 	public void setTypeSettingsProperties(
-		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties) {
-		_calendarNotificationTemplate.setTypeSettingsProperties(typeSettingsProperties);
+		com.liferay.portal.kernel.util.UnicodeProperties notificationTypeSettingsProperties) {
+		_calendarNotificationTemplate.setTypeSettingsProperties(notificationTypeSettingsProperties);
 	}
 
 	/**

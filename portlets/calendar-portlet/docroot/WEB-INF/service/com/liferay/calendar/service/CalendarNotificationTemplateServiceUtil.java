@@ -67,25 +67,25 @@ public class CalendarNotificationTemplateServiceUtil {
 		com.liferay.calendar.notification.NotificationType notificationType,
 		com.liferay.calendar.notification.NotificationTemplateType notificationTemplateType,
 		java.lang.String subject, java.lang.String body,
-		java.lang.String typeSettings,
+		java.lang.String notificationTypeSettings,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return getService()
 				   .addCalendarNotificationTemplate(calendarId,
 			notificationType, notificationTemplateType, subject, body,
-			typeSettings, serviceContext);
+			notificationTypeSettings, serviceContext);
 	}
 
 	public static com.liferay.calendar.model.CalendarNotificationTemplate updateCalendarNotificationTemplate(
 		long calendarNotificationTemplateId, java.lang.String subject,
-		java.lang.String body, java.lang.String typeSettings,
+		java.lang.String body, java.lang.String notificationTypeSettings,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return getService()
 				   .updateCalendarNotificationTemplate(calendarNotificationTemplateId,
-			subject, body, typeSettings, serviceContext);
+			subject, body, notificationTypeSettings, serviceContext);
 	}
 
 	public static void clearService() {
