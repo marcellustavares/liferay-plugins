@@ -64,6 +64,7 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -82,6 +83,7 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.SubscriptionLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.service.persistence.PortletPreferencesUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.comparator.UserFirstNameComparator;
@@ -745,26 +747,45 @@ public class CalendarPortlet extends MVCPortlet {
 			return;
 		}
 
+		PortletPreferences preferences = resourceRequest.getPreferences();
+
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		long calendarId = ParamUtil.getLong(resourceRequest, "calendarId");
 
+		long configuredTimeInterval = GetterUtil.getLong(
+			preferences.getValue("rssTimeInterval", null),
+			RSSUtil.TIME_INTERVAL_DEFAULT);
 		long timeInterval = ParamUtil.getLong(
-			resourceRequest, "timeInterval", RSSUtil.TIME_INTERVAL_DEFAULT);
+			resourceRequest, "timeInterval", configuredTimeInterval);
 
 		long startTime = System.currentTimeMillis();
 
 		long endTime = startTime + timeInterval;
 
+		int configuredMax = GetterUtil.getInteger(
+				preferences.getValue("rssDelta", null),
+				SearchContainer.DEFAULT_DELTA);
 		int max = ParamUtil.getInteger(
-			resourceRequest, "max", SearchContainer.DEFAULT_DELTA);
+			resourceRequest, "max", configuredMax);
+
+		String configuredTypeAndVersion = preferences.getValue(
+				"rssFeedType", RSSUtil.FORMAT_DEFAULT);
+		String configuredType = com.liferay.util.RSSUtil.getFeedTypeFormat(
+				configuredTypeAndVersion);
+		double configuredVersion = com.liferay.util.RSSUtil.getFeedTypeVersion(
+				configuredTypeAndVersion);
+		
 		String type = ParamUtil.getString(
-			resourceRequest, "type", RSSUtil.FORMAT_DEFAULT);
+			resourceRequest, "type", configuredType);
 		double version = ParamUtil.getDouble(
-			resourceRequest, "version", RSSUtil.VERSION_DEFAULT);
+			resourceRequest, "version", configuredVersion);
+
+		String configuredDisplayStyle = preferences.getValue(
+				"rssDisplayStyle", RSSUtil.DISPLAY_STYLE_DEFAULT);
 		String displayStyle = ParamUtil.getString(
-			resourceRequest, "displayStyle", RSSUtil.DISPLAY_STYLE_DEFAULT);
+			resourceRequest, "displayStyle", configuredDisplayStyle);
 
 		String rss = CalendarBookingServiceUtil.getCalendarBookingsRSS(
 			calendarId, startTime, endTime, max, type, version, displayStyle,
