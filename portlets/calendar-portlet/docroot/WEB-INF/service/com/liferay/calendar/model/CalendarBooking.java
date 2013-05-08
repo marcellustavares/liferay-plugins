@@ -14,7 +14,7 @@
 
 package com.liferay.calendar.model;
 
-import com.liferay.portal.model.PersistedModel;
+import com.liferay.portal.model.PermissionedModel;
 
 /**
  * The extended model interface for the CalendarBooking service. Represents a row in the &quot;CalendarBooking&quot; database table, with each column mapped to a property of this class.
@@ -25,7 +25,7 @@ import com.liferay.portal.model.PersistedModel;
  * @see com.liferay.calendar.model.impl.CalendarBookingModelImpl
  * @generated
  */
-public interface CalendarBooking extends CalendarBookingModel, PersistedModel {
+public interface CalendarBooking extends CalendarBookingModel, PermissionedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -47,6 +47,10 @@ public interface CalendarBooking extends CalendarBookingModel, PersistedModel {
 	public com.liferay.calendar.notification.NotificationType getFirstReminderNotificationType();
 
 	public com.liferay.calendar.model.CalendarBooking getParentCalendarBooking()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public long getResourceGroupId()
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
 
