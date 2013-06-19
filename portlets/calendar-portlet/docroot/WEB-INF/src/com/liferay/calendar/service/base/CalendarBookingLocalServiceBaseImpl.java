@@ -46,7 +46,9 @@ import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
 import com.liferay.portlet.asset.service.persistence.AssetLinkPersistence;
 import com.liferay.portlet.messageboards.service.persistence.MBMessagePersistence;
 import com.liferay.portlet.ratings.service.persistence.RatingsStatsPersistence;
+import com.liferay.portlet.social.service.persistence.SocialActivityCounterPersistence;
 import com.liferay.portlet.social.service.persistence.SocialActivityPersistence;
+import com.liferay.portlet.trash.service.persistence.TrashEntryPersistence;
 
 import java.io.Serializable;
 
@@ -233,6 +235,35 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the calendar booking with the matching UUID and company.
+	 *
+	 * @param uuid the calendar booking's UUID
+	 * @param  companyId the primary key of the company
+	 * @return the matching calendar booking, or <code>null</code> if a matching calendar booking could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public CalendarBooking fetchCalendarBookingByUuidAndCompanyId(String uuid,
+		long companyId) throws SystemException {
+		return calendarBookingPersistence.fetchByUuid_C_First(uuid, companyId,
+			null);
+	}
+
+	/**
+	 * Returns the calendar booking matching the UUID and group.
+	 *
+	 * @param uuid the calendar booking's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching calendar booking, or <code>null</code> if a matching calendar booking could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public CalendarBooking fetchCalendarBookingByUuidAndGroupId(String uuid,
+		long groupId) throws SystemException {
+		return calendarBookingPersistence.fetchByUUID_G(uuid, groupId);
+	}
+
+	/**
 	 * Returns the calendar booking with the primary key.
 	 *
 	 * @param calendarBookingId the primary key of the calendar booking
@@ -250,6 +281,22 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException, SystemException {
 		return calendarBookingPersistence.findByPrimaryKey(primaryKeyObj);
+	}
+
+	/**
+	 * Returns the calendar booking with the matching UUID and company.
+	 *
+	 * @param uuid the calendar booking's UUID
+	 * @param  companyId the primary key of the company
+	 * @return the matching calendar booking
+	 * @throws PortalException if a matching calendar booking could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public CalendarBooking getCalendarBookingByUuidAndCompanyId(String uuid,
+		long companyId) throws PortalException, SystemException {
+		return calendarBookingPersistence.findByUuid_C_First(uuid, companyId,
+			null);
 	}
 
 	/**
@@ -990,6 +1037,101 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 		this.socialActivityPersistence = socialActivityPersistence;
 	}
 
+	/**
+	 * Returns the social activity counter local service.
+	 *
+	 * @return the social activity counter local service
+	 */
+	public com.liferay.portlet.social.service.SocialActivityCounterLocalService getSocialActivityCounterLocalService() {
+		return socialActivityCounterLocalService;
+	}
+
+	/**
+	 * Sets the social activity counter local service.
+	 *
+	 * @param socialActivityCounterLocalService the social activity counter local service
+	 */
+	public void setSocialActivityCounterLocalService(
+		com.liferay.portlet.social.service.SocialActivityCounterLocalService socialActivityCounterLocalService) {
+		this.socialActivityCounterLocalService = socialActivityCounterLocalService;
+	}
+
+	/**
+	 * Returns the social activity counter persistence.
+	 *
+	 * @return the social activity counter persistence
+	 */
+	public SocialActivityCounterPersistence getSocialActivityCounterPersistence() {
+		return socialActivityCounterPersistence;
+	}
+
+	/**
+	 * Sets the social activity counter persistence.
+	 *
+	 * @param socialActivityCounterPersistence the social activity counter persistence
+	 */
+	public void setSocialActivityCounterPersistence(
+		SocialActivityCounterPersistence socialActivityCounterPersistence) {
+		this.socialActivityCounterPersistence = socialActivityCounterPersistence;
+	}
+
+	/**
+	 * Returns the trash entry local service.
+	 *
+	 * @return the trash entry local service
+	 */
+	public com.liferay.portlet.trash.service.TrashEntryLocalService getTrashEntryLocalService() {
+		return trashEntryLocalService;
+	}
+
+	/**
+	 * Sets the trash entry local service.
+	 *
+	 * @param trashEntryLocalService the trash entry local service
+	 */
+	public void setTrashEntryLocalService(
+		com.liferay.portlet.trash.service.TrashEntryLocalService trashEntryLocalService) {
+		this.trashEntryLocalService = trashEntryLocalService;
+	}
+
+	/**
+	 * Returns the trash entry remote service.
+	 *
+	 * @return the trash entry remote service
+	 */
+	public com.liferay.portlet.trash.service.TrashEntryService getTrashEntryService() {
+		return trashEntryService;
+	}
+
+	/**
+	 * Sets the trash entry remote service.
+	 *
+	 * @param trashEntryService the trash entry remote service
+	 */
+	public void setTrashEntryService(
+		com.liferay.portlet.trash.service.TrashEntryService trashEntryService) {
+		this.trashEntryService = trashEntryService;
+	}
+
+	/**
+	 * Returns the trash entry persistence.
+	 *
+	 * @return the trash entry persistence
+	 */
+	public TrashEntryPersistence getTrashEntryPersistence() {
+		return trashEntryPersistence;
+	}
+
+	/**
+	 * Sets the trash entry persistence.
+	 *
+	 * @param trashEntryPersistence the trash entry persistence
+	 */
+	public void setTrashEntryPersistence(
+		TrashEntryPersistence trashEntryPersistence) {
+		this.trashEntryPersistence = trashEntryPersistence;
+	}
+
 	public void afterPropertiesSet() {
 		Class<?> clazz = getClass();
 
@@ -1144,6 +1286,16 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 	protected com.liferay.portlet.social.service.SocialActivityLocalService socialActivityLocalService;
 	@BeanReference(type = SocialActivityPersistence.class)
 	protected SocialActivityPersistence socialActivityPersistence;
+	@BeanReference(type = com.liferay.portlet.social.service.SocialActivityCounterLocalService.class)
+	protected com.liferay.portlet.social.service.SocialActivityCounterLocalService socialActivityCounterLocalService;
+	@BeanReference(type = SocialActivityCounterPersistence.class)
+	protected SocialActivityCounterPersistence socialActivityCounterPersistence;
+	@BeanReference(type = com.liferay.portlet.trash.service.TrashEntryLocalService.class)
+	protected com.liferay.portlet.trash.service.TrashEntryLocalService trashEntryLocalService;
+	@BeanReference(type = com.liferay.portlet.trash.service.TrashEntryService.class)
+	protected com.liferay.portlet.trash.service.TrashEntryService trashEntryService;
+	@BeanReference(type = TrashEntryPersistence.class)
+	protected TrashEntryPersistence trashEntryPersistence;
 	private String _beanIdentifier;
 	private ClassLoader _classLoader;
 	private CalendarBookingLocalServiceClpInvoker _clpInvoker = new CalendarBookingLocalServiceClpInvoker();

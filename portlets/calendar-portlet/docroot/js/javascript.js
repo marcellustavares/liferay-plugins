@@ -216,7 +216,7 @@ AUI.add(
 
 				instance.invokeService(
 					{
-						'/calendar-portlet/calendarbooking/delete-calendar-booking': {
+						'/calendar-portlet/calendarbooking/move-calendar-booking-to-trash': {
 							calendarBookingId: schedulerEvent.get('calendarBookingId')
 						}
 					},
@@ -800,7 +800,7 @@ AUI.add(
 		Liferay.CalendarUtil = CalendarUtil;
 
 		var CalendarWorkflow = {
-			STATUS_MAYBE: 8
+			STATUS_MAYBE: 9
 		};
 
 		A.mix(CalendarWorkflow, Workflow);
