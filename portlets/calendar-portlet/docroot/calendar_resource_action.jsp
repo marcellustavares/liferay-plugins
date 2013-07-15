@@ -62,16 +62,4 @@ CalendarResource calendarResource = (CalendarResource)row.getObject();
 			url="<%= deleteURL %>"
 		/>
 	</c:if>
-
-	<portlet:renderURL var="calendarsURL">
-		<portlet:param name="mvcPath" value="/view_calendars.jsp" />
-		<portlet:param name="redirect" value="<%= currentURL %>" />
-		<portlet:param name="calendarResourceId" value="<%= String.valueOf(calendarResource.getCalendarResourceId()) %>" />
-	</portlet:renderURL>
-
-	<liferay-ui:icon
-		image="calendar"
-		message="view-calendars"
-		url="<%= calendarsURL %>"
-	/>
 </liferay-ui:icon-menu>
