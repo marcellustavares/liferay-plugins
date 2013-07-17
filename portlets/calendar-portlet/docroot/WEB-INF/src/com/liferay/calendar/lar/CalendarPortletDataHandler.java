@@ -24,12 +24,14 @@ import com.liferay.calendar.service.persistence.CalendarExportActionableDynamicQ
 import com.liferay.calendar.service.persistence.CalendarNotificationTemplateExportActionableDynamicQuery;
 import com.liferay.calendar.service.persistence.CalendarResourceExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.lar.BasePortletDataHandler;
 import com.liferay.portal.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.lar.PortletDataHandlerBoolean;
 import com.liferay.portal.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.portal.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.util.PortalUtil;
 
 import java.util.List;
 
@@ -54,6 +56,9 @@ public class CalendarPortletDataHandler extends BasePortletDataHandler {
 			new PortletDataHandlerBoolean(
 				NAMESPACE, "calendars", true, false, null,
 				Calendar.class.getName()),
+			new PortletDataHandlerBoolean(
+				NAMESPACE, "calendar-resources", true, false, null,
+				CalendarResource.class.getName()),
 			new PortletDataHandlerBoolean(
 				NAMESPACE, "bookings", true, false, null,
 				CalendarBooking.class.getName()),
@@ -98,8 +103,7 @@ public class CalendarPortletDataHandler extends BasePortletDataHandler {
 
 		if (portletDataContext.getBooleanParameter(NAMESPACE, "calendars")) {
 			ActionableDynamicQuery resourceActionableDynamicQuery =
-				new CalendarResourceExportActionableDynamicQuery(
-					portletDataContext);
+				getCalendarResourceActionableDynamicQuery(portletDataContext);
 
 			resourceActionableDynamicQuery.performActions();
 
@@ -208,6 +212,11 @@ public class CalendarPortletDataHandler extends BasePortletDataHandler {
 
 		calendarActionableDynamicQuery.performCount();
 
+		ActionableDynamicQuery calendarResourceActionableDynamicQuery =
+			getCalendarResourceActionableDynamicQuery(portletDataContext);
+
+		calendarResourceActionableDynamicQuery.performCount();
+
 		ActionableDynamicQuery bookingActionableDynamicQuery =
 			new CalendarBookingExportActionableDynamicQuery(portletDataContext);
 
@@ -218,6 +227,23 @@ public class CalendarPortletDataHandler extends BasePortletDataHandler {
 				portletDataContext);
 
 		notificationTemplateActionableDynamicQuery.performCount();
+	}
+
+	protected ActionableDynamicQuery getCalendarResourceActionableDynamicQuery(
+			final PortletDataContext portletDataContext)
+		throws SystemException {
+
+		return new CalendarResourceExportActionableDynamicQuery(
+			portletDataContext) {
+
+			@Override
+			protected StagedModelType getStagedModelType() {
+				return new StagedModelType(
+					PortalUtil.getClassNameId(CalendarResource.class),
+					StagedModelType.REFERRER_CLASS_NAME_ID_ALL);
+			}
+
+		};
 	}
 
 
