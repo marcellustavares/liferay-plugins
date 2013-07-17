@@ -14,14 +14,17 @@
 
 package com.liferay.calendar.lar;
 
+import com.liferay.calendar.model.Calendar;
 import com.liferay.calendar.model.CalendarResource;
 import com.liferay.calendar.service.CalendarResourceLocalServiceUtil;
 import com.liferay.portal.kernel.lar.BaseStagedModelDataHandler;
 import com.liferay.portal.kernel.lar.ExportImportPathUtil;
 import com.liferay.portal.kernel.lar.PortletDataContext;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.model.Group;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.util.PortalUtil;
 
 /**
  * @author Andrea Di Giorgi
@@ -51,6 +54,15 @@ public class CalendarResourceStagedModelDataHandler
 		Element calendarResourceElement =
 			portletDataContext.getExportDataElement(calendarResource);
 
+		for (Calendar calendar : calendarResource.getCalendars()) {
+			StagedModelDataHandlerUtil.exportStagedModel(
+				portletDataContext, calendar);
+
+			portletDataContext.addReferenceElement(
+				calendarResource, calendarResourceElement, calendar,
+				PortletDataContext.REFERENCE_TYPE_STRONG, false);
+		}
+
 		portletDataContext.addClassedModel(
 			calendarResourceElement,
 			ExportImportPathUtil.getModelPath(calendarResource),
@@ -66,12 +78,25 @@ public class CalendarResourceStagedModelDataHandler
 		long userId = portletDataContext.getUserId(
 			calendarResource.getUserUuid());
 
-		String className = null;
-		long classPK = 0;
-		String classUuid = PortalUUIDUtil.generate();
+		List<Element> calendarElements =
+			portletDataContext.getReferenceDataElements(
+				calendarResource, Calendar.class);
+
+		for (Element calendarElement : calendarElements) {
+			StagedModelDataHandlerUtil.importStagedModel(
+				portletDataContext, calendarElement);
+		}
 
 		ServiceContext serviceContext = portletDataContext.createServiceContext(
 			calendarResource, CalendarPortletDataHandler.NAMESPACE);
+
+		long classPK = 0;
+
+		if (calendarResource.getClassNameId() ==
+				PortalUtil.getClassNameId(Group.class)) {
+
+			classPK = portletDataContext.getScopeGroupId();
+		}
 
 		CalendarResource importedCalendarResource = null;
 
@@ -87,8 +112,10 @@ public class CalendarResourceStagedModelDataHandler
 
 				importedCalendarResource =
 					CalendarResourceLocalServiceUtil.addCalendarResource(
-						userId, portletDataContext.getScopeGroupId(), className,
-						classPK, classUuid, calendarResource.getCode(),
+						userId, portletDataContext.getScopeGroupId(),
+						calendarResource.getClassNameId(), classPK,
+						calendarResource.getClassUuid(),
+						calendarResource.getCode(),
 						calendarResource.getNameMap(),
 						calendarResource.getDescriptionMap(),
 						calendarResource.isActive(), serviceContext);
@@ -105,8 +132,9 @@ public class CalendarResourceStagedModelDataHandler
 		else {
 			importedCalendarResource =
 				CalendarResourceLocalServiceUtil.addCalendarResource(
-					userId, portletDataContext.getScopeGroupId(), className,
-					classPK, classUuid, calendarResource.getCode(),
+					userId, portletDataContext.getScopeGroupId(),
+					calendarResource.getClassNameId(), classPK,
+					calendarResource.getClassUuid(), calendarResource.getCode(),
 					calendarResource.getNameMap(),
 					calendarResource.getDescriptionMap(),
 					calendarResource.isActive(), serviceContext);
