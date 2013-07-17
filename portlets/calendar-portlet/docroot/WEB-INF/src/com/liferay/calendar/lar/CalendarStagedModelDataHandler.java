@@ -50,10 +50,8 @@ public class CalendarStagedModelDataHandler
 			PortletDataContext portletDataContext, Calendar calendar)
 		throws Exception {
 
-		CalendarResource calendarResource = calendar.getCalendarResource();
-
 		StagedModelDataHandlerUtil.exportStagedModel(
-			portletDataContext, calendarResource);
+			portletDataContext, calendar.getCalendarResource());
 
 		Element calendarElement = portletDataContext.getExportDataElement(
 			calendar);
@@ -71,7 +69,7 @@ public class CalendarStagedModelDataHandler
 		long userId = portletDataContext.getUserId(calendar.getUserUuid());
 
 		String calendarResourcePath = ExportImportPathUtil.getModelPath(
-			calendar.getGroupId(), CalendarResource.class.getName(),
+			portletDataContext, CalendarResource.class.getName(),
 			calendar.getCalendarResourceId());
 
 		CalendarResource calendarResource =
