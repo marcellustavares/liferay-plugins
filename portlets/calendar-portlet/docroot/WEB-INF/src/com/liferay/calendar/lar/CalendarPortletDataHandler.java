@@ -54,11 +54,11 @@ public class CalendarPortletDataHandler extends BasePortletDataHandler {
 		setDataLocalized(true);
 		setExportControls(
 			new PortletDataHandlerBoolean(
-				NAMESPACE, "calendars", true, false, null,
-				Calendar.class.getName()),
-			new PortletDataHandlerBoolean(
 				NAMESPACE, "calendar-resources", true, false, null,
 				CalendarResource.class.getName()),
+			new PortletDataHandlerBoolean(
+				NAMESPACE, "calendars", true, false, null,
+				Calendar.class.getName()),
 			new PortletDataHandlerBoolean(
 				NAMESPACE, "bookings", true, false, null,
 				CalendarBooking.class.getName()),
@@ -246,7 +246,7 @@ public class CalendarPortletDataHandler extends BasePortletDataHandler {
 		};
 	}
 
-
 	protected static final String RESOURCE_NAME =
 		"com.liferay.portlet.calendar";
+
 }
