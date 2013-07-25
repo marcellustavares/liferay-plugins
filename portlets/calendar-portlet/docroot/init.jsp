@@ -111,6 +111,8 @@ page import="java.util.TimeZone" %>
 <%@ page import="javax.portlet.PortletPreferences" %><%@
 page import="javax.portlet.PortletURL" %>
 
+<%@ page import="org.apache.commons.lang.time.DateUtils" %>
+
 <portlet:defineObjects />
 
 <liferay-theme:defineObjects />
