@@ -88,6 +88,10 @@ else if (calendar != null) {
 	}
 }
 
+if (DateUtils.isSameDay(startTimeJCalendar, endTimeJCalendar)) {
+	activeView = "day";
+}
+
 List<Calendar> manageableCalendars = CalendarServiceUtil.search(themeDisplay.getCompanyId(), null, null, null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new CalendarNameComparator(true), ActionKeys.MANAGE_BOOKINGS);
 %>
 
