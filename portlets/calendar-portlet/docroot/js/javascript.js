@@ -1669,9 +1669,12 @@ AUI.add(
 								calendarIds: AObject.keys(availableCalendars),
 								editing: editing,
 								endTime: templateData.endDate,
+								acceptActive: instance._canChangeToStatus(schedulerEvent, CalendarWorkflow.STATUS_APPROVED),
+								declineActive: instance._canChangeToStatus(schedulerEvent, CalendarWorkflow.STATUS_DENIED),
+								maybeActive: instance._canChangeToStatus(schedulerEvent, CalendarWorkflow.STATUS_MAYBE),
 								permissions: permissions,
 								startTime: templateData.startDate,
-								status: CalendarUtil.getStatusLabel(schedulerEvent.get('status'))
+								status: schedulerEvent.get('status')
 							}
 						);
 					},
@@ -1697,6 +1700,8 @@ AUI.add(
 
 						var templateData = instance.getTemplateData();
 
+						var schedulerEvent = instance.get('event');
+
 						if (A.instanceOf(bodyTemplate, A.Template) && A.instanceOf(headerTemplate, A.Template)) {
 							instance.popover.setStdModContent('body', bodyTemplate.parse(templateData));
 							instance.popover.setStdModContent('header', headerTemplate.parse(templateData));
@@ -1720,35 +1725,25 @@ AUI.add(
 							],
 							'header'
 						);
+
+						var popoverBB = instance.popover.get('boundingBox');
+
+						popoverBB.delegate('click', instance._handleEventAnswer, '#calendarEventAnswerAccept', instance, CalendarWorkflow.STATUS_APPROVED);
+						popoverBB.delegate('click', instance._handleEventAnswer, '#calendarEventAnswerDecline', instance, CalendarWorkflow.STATUS_DENIED);
+						popoverBB.delegate('click', instance._handleEventAnswer, '#calendarEventAnswerMaybe', instance, CalendarWorkflow.STATUS_MAYBE);
 					},
 
-					_handleEventAcceptResponse: function(event) {
+					_handleEventAnswer: function(event, newStatus) {
 						var instance = this;
 
-						var schedulerEvent = instance.get('event');
+						var schedulerEvent = instance.get('event')
 
-						if (schedulerEvent) {
-							CalendarUtil.invokeTransition(schedulerEvent, CalendarWorkflow.STATUS_APPROVED);
-						}
-					},
+						if (instance._canChangeToStatus(schedulerEvent, newStatus)) {
+							var schedulerEvent = instance.get('event');
 
-					_handleEventDeclineResponse: function(event) {
-						var instance = this;
-
-						var schedulerEvent = instance.get('event');
-
-						if (schedulerEvent) {
-							CalendarUtil.invokeTransition(schedulerEvent, CalendarWorkflow.STATUS_DENIED);
-						}
-					},
-
-					_handleEventMaybeResponse: function(event) {
-						var instance = this;
-
-						var schedulerEvent = instance.get('event');
-
-						if (schedulerEvent) {
-							CalendarUtil.invokeTransition(schedulerEvent, CalendarWorkflow.STATUS_MAYBE);
+							if (schedulerEvent) {
+								CalendarUtil.invokeTransition(schedulerEvent, newStatus);
+							}
 						}
 					},
 
@@ -1834,12 +1829,20 @@ AUI.add(
 						event.domEvent.preventDefault();
 					},
 
-					_hasAcceptButton: function(permissions, calendar, status) {
-						return permissions.MANAGE_BOOKINGS && (status !== CalendarWorkflow.STATUS_APPROVED) && (status !== CalendarWorkflow.STATUS_DRAFT);
-					},
+					_canChangeToStatus: function(schedulerEvent, newStatus) {
+						if (schedulerEvent) {
+							var calendarId = schedulerEvent.get('calendarId');
 
-					_hasDeclineButton: function(permissions, calendar, status) {
-						return permissions.MANAGE_BOOKINGS && (status !== CalendarWorkflow.STATUS_DRAFT);
+							var calendar = CalendarUtil.availableCalendars[calendarId];
+
+							var permissions = calendar.get('permissions');
+
+							var status = schedulerEvent.get('status');
+
+							return permissions.MANAGE_BOOKINGS && (status !== newStatus) && (status !== CalendarWorkflow.STATUS_DRAFT);
+						}
+
+						return false;
 					},
 
 					_hasDeleteButton: function(permissions, calendar, status) {
@@ -1848,10 +1851,6 @@ AUI.add(
 
 					_hasEditButton: function(permissions, calendar, status) {
 						return permissions.MANAGE_BOOKINGS;
-					},
-
-					_hasMaybeButton: function(permissions, calendar, status) {
-						return permissions.MANAGE_BOOKINGS && (status !== CalendarWorkflow.STATUS_DRAFT) && (status !== CalendarWorkflow.STATUS_MAYBE);
 					},
 
 					_hasSaveButton: function(permissions, calendar, status) {
@@ -2063,45 +2062,6 @@ AUI.add(
 										icon: 'icon-trash',
 										id: 'deleteBtn',
 										label: Liferay.Language.get('delete')
-									}
-								);
-							}
-
-							if (instance._hasAcceptButton(permissions, calendar, status)) {
-								respondGroup.push(
-									{
-										on: {
-											click: A.bind(instance._handleEventAcceptResponse, instance)
-										},
-										icon: 'icon-ok-sign',
-										id: 'acceptBtn',
-										label: Liferay.Language.get('accept')
-									}
-								);
-							}
-
-							if (instance._hasMaybeButton(permissions, calendar, status)) {
-								respondGroup.push(
-									{
-										on: {
-											click: A.bind(instance._handleEventMaybeResponse, instance)
-										},
-										icon: 'icon-question-sign',
-										id: 'maybeBtn',
-										label: Liferay.Language.get('maybe')
-									}
-								);
-							}
-
-							if (instance._hasDeclineButton(permissions, calendar, status)) {
-								respondGroup.push(
-									{
-										on: {
-											click: A.bind(instance._handleEventDeclineResponse, instance)
-										},
-										icon: ' icon-remove-sign',
-										id: 'declineBtn',
-										label: Liferay.Language.get('decline')
 									}
 								);
 							}
