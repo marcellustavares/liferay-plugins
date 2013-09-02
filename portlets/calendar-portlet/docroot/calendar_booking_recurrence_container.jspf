@@ -224,7 +224,7 @@ if (recurrence != null) {
 							{
 								on: {
 									click: function() {
-										this.hide();
+										window.<portlet:namespace />recurrenceDialog.hide();
 									}
 								},
 								label: '<liferay-ui:message key="done" />'
@@ -305,12 +305,18 @@ if (recurrence != null) {
 
 		var endValue = endsRadioNodes.filter(':checked').val()[0];
 
+		var untilDate = null;
+
+		if (untilDateDatePicker.calendar) {
+			untilDate = untilDateDatePicker.calendar.get('selectedDates.0');
+		}
+
 		var recurrence = {
 			count: countNode.val(),
 			endValue: endValue,
 			frequency: frequencyNode.val(),
 			interval: intervalNode.val(),
-			untilDate: untilDateDatePicker.calendar.get('selectedDates.0'),
+			untilDate: untilDate,
 			weekdays: selectedWeekdays
 		}
 
