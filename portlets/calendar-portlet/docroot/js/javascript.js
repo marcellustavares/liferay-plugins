@@ -1628,8 +1628,11 @@ AUI.add(
 					getUpdatedSchedulerEvent: function(optAttrMap) {
 						var instance = this;
 
+						var formValues = instance.serializeForm();
+
 						var	attrMap = {
-							color: instance.get('color')
+							color: instance.get('color'),
+							content: Liferay.Util.escapeHTML(formValues.content)
 						};
 
 						return SchedulerEventRecorder.superclass.getUpdatedSchedulerEvent.call(instance, A.merge(attrMap, optAttrMap));
