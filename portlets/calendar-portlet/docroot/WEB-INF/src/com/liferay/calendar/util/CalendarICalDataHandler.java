@@ -40,7 +40,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
 import java.net.URI;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -605,7 +604,10 @@ public class CalendarICalDataHandler implements CalendarDataHandler {
 
 		// Dates
 
-		if (calendarBooking.isAllDay()) {
+		int hoursBetween = (int) ((calendarBooking.getEndTime() -
+				calendarBooking.getStartTime()) / (1000 * 60 * 60));
+
+		if (calendarBooking.isAllDay() && (hoursBetween <= 24)) {
 			DtStart dtStart = new DtStart(
 				new Date(calendarBooking.getStartTime()));
 
