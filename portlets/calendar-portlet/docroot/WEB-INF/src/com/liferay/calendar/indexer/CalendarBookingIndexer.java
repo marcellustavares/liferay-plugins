@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 package com.liferay.calendar.indexer;
 
 import com.liferay.calendar.model.CalendarBooking;
@@ -19,26 +33,25 @@ import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portlet.trash.util.TrashUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
 import javax.portlet.PortletURL;
 
 /**
  * @author Adam Victor Brandizzi
+ * @author Eduardo Lundgren
  */
 public class CalendarBookingIndexer extends BaseIndexer {
 
-	public static final String[] CLASS_NAMES =
-		{CalendarBooking.class.getName()};
+	public static final String[] CLASS_NAMES = {
+		CalendarBooking.class.getName()
+	};
 
 	public static final String PORTLET_ID = PortletKeys.CALENDAR;
 
@@ -62,8 +75,8 @@ public class CalendarBookingIndexer extends BaseIndexer {
 		CalendarBooking calendarBooking = (CalendarBooking)obj;
 
 		deleteDocument(
-				calendarBooking.getCompanyId(),
-				calendarBooking.getCalendarBookingId());
+			calendarBooking.getCompanyId(),
+			calendarBooking.getCalendarBookingId());
 	}
 
 	@Override
@@ -71,29 +84,67 @@ public class CalendarBookingIndexer extends BaseIndexer {
 		CalendarBooking calendarBooking = (CalendarBooking)obj;
 
 		Document document = getBaseModelDocument(PORTLET_ID, calendarBooking);
+
+		document.addUID(PORTLET_ID, calendarBooking.getUuid());
+
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
-		addLocalizedFieldText(
-			document, Field.DESCRIPTION, calendarBooking.getDescriptionMap(),
-			defaultLocale);
-		addLocalizedFieldText(
-			document, Field.TITLE, calendarBooking.getTitleMap(),
-			defaultLocale);
-		document.addText("location", calendarBooking.getLocation());
+		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
+		String descriptionDefaultLanguageId =
+			LocalizationUtil.getDefaultLanguageId(
+				calendarBooking.getDescription());
+
+		String[] descriptionLanguageIds = getLanguageIds(
+			defaultLanguageId, calendarBooking.getDescription());
+
+		for (String descriptionLanguageId : descriptionLanguageIds) {
+			String description = calendarBooking.getDescription(
+				descriptionLanguageId);
+
+			if (descriptionLanguageId.equals(descriptionDefaultLanguageId)) {
+				document.addText(Field.DESCRIPTION, description);
+			}
+
+			document.addText(
+				Field.DESCRIPTION.concat(StringPool.UNDERLINE).concat(
+					descriptionLanguageId), description);
+		}
+
+		String titleDefaultLanguageId = LocalizationUtil.getDefaultLanguageId(
+			calendarBooking.getTitle());
+
+		String[] titleLanguageIds = getLanguageIds(
+			defaultLanguageId, calendarBooking.getTitle());
+
+		for (String titleLanguageId : titleLanguageIds) {
+			String title = calendarBooking.getTitle(titleLanguageId);
+
+			if (titleLanguageId.equals(titleDefaultLanguageId)) {
+				document.addText(Field.TITLE, title);
+			}
+
+			document.addText(
+				Field.TITLE.concat(StringPool.UNDERLINE).concat(
+					titleLanguageId), title);
+		}
+
+		String calendarBookingId = String.valueOf(
+			calendarBooking.getCalendarBookingId());
+
+		if (calendarBooking.isInTrash()) {
+			calendarBookingId = TrashUtil.getOriginalTitle(calendarBookingId);
+		}
+
+		document.addKeyword("calendarBookingId", calendarBookingId);
+		document.addKeyword(Field.STATUS, calendarBooking.getStatus());
 		document.addDate(Field.CREATE_DATE, calendarBooking.getCreateDate());
 		document.addDate(
 			Field.MODIFIED_DATE, calendarBooking.getModifiedDate());
-		document.addDate("startDate", new Date(calendarBooking.getStartTime()));
-		document.addDate("endDate", new Date(calendarBooking.getEndTime()));
-
-		document.addKeyword(Field.STATUS, calendarBooking.getStatus());
-		document.addKeyword(
-			"calendarBookingId", calendarBooking.getCalendarBookingId());
-
-		addLocalizedFieldText(
-			document, "calendarName",
-			calendarBooking.getCalendar().getNameMap(), defaultLocale);
+		document.addNumber("endTime", calendarBooking.getEndTime());
+		document.addNumber("startTime", calendarBooking.getStartTime());
+		document.addText("defaultLanguageId", defaultLanguageId);
+		document.addText("location", calendarBooking.getLocation());
 
 		return document;
 	}
@@ -103,40 +154,36 @@ public class CalendarBookingIndexer extends BaseIndexer {
 		Document document, Locale locale, String snippet,
 		PortletURL portletURL) {
 
-		String title = getLocalizedFieldText(document, Field.TITLE, locale);
-		String description = getLocalizedFieldText(
-			document, Field.DESCRIPTION, locale);
-
-		if (description.length() > 200) {
-			description = StringUtil.shorten(description, 200);
-		}
-
-		String calendarBookingId = document.get("calendarBookingId");
+		String calendarBookingId = document.get(Field.ENTRY_CLASS_PK);
 
 		portletURL.setParameter("mvcPath", "/view_calendar_booking.jsp");
 		portletURL.setParameter("calendarBookingId", calendarBookingId);
 
-		return new Summary(locale, title, description, portletURL);
+		Summary summary = createSummary(
+			document, Field.TITLE, Field.DESCRIPTION);
+
+		summary.setMaxContentLength(200);
+		summary.setPortletURL(portletURL);
+
+		return summary;
 	}
 
 	@Override
 	protected void doReindex(Object obj) throws Exception {
 		CalendarBooking calendarBooking = (CalendarBooking)obj;
 
+		if (!calendarBooking.isApproved() && !calendarBooking.isInTrash()) {
+			return;
+		}
+
 		Document document = getDocument(calendarBooking);
 
-		SearchEngineUtil.deleteDocument(
-			getSearchEngineId(), calendarBooking.getCompanyId(),
-			document.get(Field.UID));
-
 		SearchEngineUtil.updateDocument(
-				getSearchEngineId(), calendarBooking.getCompanyId(), document);
+			getSearchEngineId(), calendarBooking.getCompanyId(), document);
 	}
 
 	@Override
-	protected void doReindex(String className, long classPK)
-	throws Exception {
-
+	protected void doReindex(String className, long classPK) throws Exception {
 		CalendarBooking calendarBooking =
 			CalendarBookingLocalServiceUtil.getCalendarBooking(classPK);
 
@@ -148,6 +195,19 @@ public class CalendarBookingIndexer extends BaseIndexer {
 		long companyId = GetterUtil.getLong(ids[0]);
 
 		reindexCalendarBookings(companyId);
+	}
+
+	protected String[] getLanguageIds(
+		String defaultLanguageId, String content) {
+
+		String[] languageIds = LocalizationUtil.getAvailableLanguageIds(
+			content);
+
+		if (languageIds.length == 0) {
+			languageIds = new String[] {defaultLanguageId};
+		}
+
+		return languageIds;
 	}
 
 	protected String getLocalizedFieldText(
@@ -165,7 +225,7 @@ public class CalendarBookingIndexer extends BaseIndexer {
 	}
 
 	protected void reindexCalendarBookings(long companyId)
-	throws PortalException, SystemException {
+		throws PortalException, SystemException {
 
 		final Collection<Document> documents = new ArrayList<Document>();
 
@@ -186,9 +246,7 @@ public class CalendarBookingIndexer extends BaseIndexer {
 			}
 
 			@Override
-			protected void performAction(Object object)
-			throws PortalException {
-
+			protected void performAction(Object object) throws PortalException {
 				CalendarBooking calendarBooking = (CalendarBooking)object;
 
 				Document document = getDocument(calendarBooking);
@@ -204,28 +262,6 @@ public class CalendarBookingIndexer extends BaseIndexer {
 
 		SearchEngineUtil.updateDocuments(
 			getSearchEngineId(), companyId, documents);
-	}
-
-	private void addLocalizedFieldText(
-			Document document, String fieldName, Map<Locale, String> fieldMap,
-			Locale defaultLocale) {
-
-		Set<Locale> locales = new HashSet<Locale>(fieldMap.keySet());
-
-		locales.add(defaultLocale);
-
-		for (Locale locale : locales) {
-			String languageId = locale.toString();
-			String localizedFieldName = fieldName.concat(
-				StringPool.UNDERLINE).concat(languageId);
-			String fieldValue = fieldMap.get(locale);
-
-			document.addText(localizedFieldName, fieldValue);
-
-			if (locale.equals(defaultLocale)) {
-				document.addText(fieldName, fieldValue);
-			}
-		}
 	}
 
 }
