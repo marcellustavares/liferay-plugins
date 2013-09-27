@@ -55,11 +55,6 @@ public class CalendarBookingIndexer extends BaseIndexer {
 	public static final String PORTLET_ID = PortletKeys.CALENDAR;
 
 	@Override
-	public void addRelatedEntryFields(Document document, Object obj) {
-		document.addKeyword(Field.RELATED_ENTRY, true);
-	}
-
-	@Override
 	public String[] getClassNames() {
 		return CLASS_NAMES;
 	}
@@ -236,9 +231,10 @@ public class CalendarBookingIndexer extends BaseIndexer {
 				Property statusProperty = PropertyFactoryUtil.forName("status");
 
 				Integer[] statuses = {
+					CalendarBookingWorkflowConstants.STATUS_PENDING,
 					CalendarBookingWorkflowConstants.STATUS_APPROVED,
 					CalendarBookingWorkflowConstants.STATUS_MAYBE,
-					CalendarBookingWorkflowConstants.STATUS_IN_TRASH,
+					CalendarBookingWorkflowConstants.STATUS_IN_TRASH
 				};
 
 				dynamicQuery.add(statusProperty.in(statuses));
