@@ -131,10 +131,6 @@ public class CalendarBookingIndexer extends BaseIndexer {
 		}
 
 		document.addKeyword("calendarBookingId", calendarBookingId);
-		document.addKeyword(Field.STATUS, calendarBooking.getStatus());
-		document.addDate(Field.CREATE_DATE, calendarBooking.getCreateDate());
-		document.addDate(
-			Field.MODIFIED_DATE, calendarBooking.getModifiedDate());
 		document.addNumber("endTime", calendarBooking.getEndTime());
 		document.addNumber("startTime", calendarBooking.getStartTime());
 		document.addText("defaultLanguageId", defaultLanguageId);
@@ -204,15 +200,6 @@ public class CalendarBookingIndexer extends BaseIndexer {
 		return languageIds;
 	}
 
-	protected String getLocalizedFieldText(
-			Document document, String fieldName, Locale defaultLocale) {
-
-		String languageId = defaultLocale.toString();
-
-		return document.get(
-				fieldName+StringPool.UNDERLINE+languageId, fieldName);
-	}
-
 	@Override
 	protected String getPortletId(SearchContext searchContext) {
 		return PORTLET_ID;
@@ -230,7 +217,7 @@ public class CalendarBookingIndexer extends BaseIndexer {
 			protected void addCriteria(DynamicQuery dynamicQuery) {
 				Property statusProperty = PropertyFactoryUtil.forName("status");
 
-				Integer[] statuses = {
+				int[] statuses = {
 					CalendarBookingWorkflowConstants.STATUS_PENDING,
 					CalendarBookingWorkflowConstants.STATUS_APPROVED,
 					CalendarBookingWorkflowConstants.STATUS_MAYBE,
