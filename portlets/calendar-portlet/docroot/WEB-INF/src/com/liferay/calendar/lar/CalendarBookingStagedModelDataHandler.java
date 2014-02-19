@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.lar.BaseStagedModelDataHandler;
 import com.liferay.portal.kernel.lar.ExportImportPathUtil;
 import com.liferay.portal.kernel.lar.PortletDataContext;
+import com.liferay.portal.kernel.lar.PortletDataException;
 import com.liferay.portal.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -223,5 +224,16 @@ public class CalendarBookingStagedModelDataHandler
 				userId, existingBooking.getCalendarBookingId());
 		}
 	}
+
+	@Override
+	protected void validateExport(
+			PortletDataContext portletDataContext, CalendarBooking stagedModel)
+		throws PortletDataException {
+
+		if (!stagedModel.isMasterBooking()) {
+			validateExport(portletDataContext, stagedModel);
+		}
+	}
+
 
 }
