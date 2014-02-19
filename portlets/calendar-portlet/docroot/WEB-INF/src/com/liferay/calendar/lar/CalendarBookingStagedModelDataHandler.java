@@ -18,6 +18,7 @@ import com.liferay.calendar.model.Calendar;
 import com.liferay.calendar.model.CalendarBooking;
 import com.liferay.calendar.model.CalendarBookingConstants;
 import com.liferay.calendar.service.CalendarBookingLocalServiceUtil;
+import com.liferay.calendar.workflow.CalendarBookingWorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.lar.BaseStagedModelDataHandler;
@@ -27,6 +28,7 @@ import com.liferay.portal.kernel.lar.PortletDataException;
 import com.liferay.portal.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.service.ServiceContext;
 
@@ -65,6 +67,16 @@ public class CalendarBookingStagedModelDataHandler
 	@Override
 	public String getDisplayName(CalendarBooking calendarBooking) {
 		return calendarBooking.getTitleCurrentValue();
+	}
+
+	@Override
+	public int[] getExportableStatuses() {
+		return new int[] {
+			CalendarBookingWorkflowConstants.STATUS_APPROVED,
+			CalendarBookingWorkflowConstants.STATUS_DENIED,
+			CalendarBookingWorkflowConstants.STATUS_MAYBE,
+			CalendarBookingWorkflowConstants.STATUS_PENDING
+		};
 	}
 
 	@Override
@@ -234,6 +246,5 @@ public class CalendarBookingStagedModelDataHandler
 			validateExport(portletDataContext, stagedModel);
 		}
 	}
-
 
 }
