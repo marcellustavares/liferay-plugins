@@ -110,6 +110,10 @@ public class CalendarResourceStagedModelDataHandler
 			User user = UserLocalServiceUtil.getUser(
 				calendarResource.getClassPK());
 
+			if (user.isDefaultUser()) {
+				return;
+			}
+
 			portletDataContext.addReferenceElement(
 				calendarResource, calendarResourceElement, user, User.class,
 				PortletDataContext.REFERENCE_TYPE_DEPENDENCY_DISPOSABLE, true);
