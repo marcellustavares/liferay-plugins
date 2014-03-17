@@ -34,7 +34,6 @@ import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.SystemEventConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -194,8 +193,7 @@ public class CalendarLocalServiceImpl extends CalendarLocalServiceBaseImpl {
 		if (calendarResource.getClassNameId() ==
 				classNameLocalService.getClassNameId(User.class)) {
 
-			User user = UserLocalServiceUtil.getUser(
-				calendarResource.getClassPK());
+			User user = userLocalService.getUser(calendarResource.getClassPK());
 
 			return user.getTimeZone();
 		}

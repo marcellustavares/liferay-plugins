@@ -153,7 +153,7 @@ public class RecurrenceUtil {
 			(CalendarBooking)calendarBooking.clone();
 
 		Calendar jCalendar = _getStartTimeJCalendar(
-				calendarBooking, startDateValue);
+			calendarBooking, startDateValue);
 
 		newCalendarBooking.setEndTime(
 			jCalendar.getTimeInMillis() + calendarBooking.getDuration());
@@ -165,18 +165,6 @@ public class RecurrenceUtil {
 	private static Calendar _getStartTimeJCalendar(
 		CalendarBooking calendarBooking, DateValue startDateValue) {
 
-		TimeZone timeZone = TimeZoneUtil.getDefault();
-
-		try {
-			timeZone = CalendarBookingLocalServiceUtil.getTimeZone(
-				calendarBooking);
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e);
-			}
-		}
-
 		Calendar jCalendar = JCalendarUtil.getJCalendar(
 			calendarBooking.getStartTime());
 		Calendar startTimeJCalendar = JCalendarUtil.getJCalendar(
@@ -186,12 +174,27 @@ public class RecurrenceUtil {
 			jCalendar.get(Calendar.MILLISECOND),
 			TimeZone.getTimeZone(StringPool.UTC));
 
-		int shift = JCalendarUtil.getDstShift(
+		TimeZone timeZone = _getTimeZone(calendarBooking);
+
+		int shift = JCalendarUtil.getDSTShift(
 			jCalendar, startTimeJCalendar, timeZone);
 
 		startTimeJCalendar.add(Calendar.MILLISECOND, shift);
 
 		return startTimeJCalendar;
+	}
+
+	private static TimeZone _getTimeZone(CalendarBooking calendarBooking) {
+		try {
+			return CalendarBookingLocalServiceUtil.getTimeZone(calendarBooking);
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(e);
+			}
+		}
+
+		return TimeZoneUtil.getDefault();
 	}
 
 	private static DateValue _toDateValue(long time) {
