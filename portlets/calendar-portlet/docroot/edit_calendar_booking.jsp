@@ -287,7 +287,7 @@ List<Calendar> manageableCalendars = CalendarServiceUtil.search(themeDisplay.get
 	</aui:button-row>
 </aui:form>
 
-<aui:script>
+<aui:script use="node">
 	function <portlet:namespace />filterCalendarBookings(calendarBooking) {
 		return <%= calendarBookingId %> !== calendarBooking.calendarBookingId;
 	}
@@ -376,8 +376,13 @@ List<Calendar> manageableCalendars = CalendarServiceUtil.search(themeDisplay.get
 	%>
 
 	<c:if test="<%= Validator.isNotNull(titleCurrentValue) %>">
-		document.<portlet:namespace />fm.<portlet:namespace />title.value = '<%= HtmlUtil.escapeJS(titleCurrentValue) %>';
-		document.<portlet:namespace />fm.<portlet:namespace />title_<%= themeDisplay.getLanguageId() %>.value = '<%= HtmlUtil.escapeJS(titleCurrentValue) %>';
+		var boundingBox = A.one('#<portlet:namespace />titleBoundingBox');
+
+		boundingBox.all('.field').each(
+			function(item, index, collection) {
+				item.set('value', '<%= HtmlUtil.escapeJS(titleCurrentValue) %>');
+			}
+		);
 	</c:if>
 </aui:script>
 
