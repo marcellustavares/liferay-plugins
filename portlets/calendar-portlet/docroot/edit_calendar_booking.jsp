@@ -300,8 +300,6 @@ List<Calendar> manageableCalendars = CalendarServiceUtil.search(themeDisplay.get
 		window,
 		'<portlet:namespace />updateCalendarBooking',
 		function() {
-			var A = AUI();
-
 			<c:if test="<%= invitable %>">
 				var calendarId = A.one('#<portlet:namespace />calendarId').val();
 				var childCalendarIds = A.Object.keys(Liferay.CalendarUtil.availableCalendars);
