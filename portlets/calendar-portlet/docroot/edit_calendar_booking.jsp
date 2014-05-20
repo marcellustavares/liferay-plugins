@@ -37,17 +37,45 @@ long calendarBookingId = BeanPropertiesUtil.getLong(calendarBooking, "calendarBo
 
 long calendarId = BeanParamUtil.getLong(calendarBooking, request, "calendarId", userDefaultCalendar.getCalendarId());
 
-long startTime = BeanParamUtil.getLong(calendarBooking, request, "startTime", nowJCalendar.getTimeInMillis());
+long startTime = BeanPropertiesUtil.getLong(calendarBooking, "startTime", nowJCalendar.getTimeInMillis());
 
-java.util.Calendar startTimeJCalendar = JCalendarUtil.getJCalendar(startTime, calendarBookingTimeZone);
+java.util.Calendar startTimeJCalendar = null;
+
+if (requestParameterMap.containsKey("startTimeYear") && requestParameterMap.containsKey("startTimeMonth") && requestParameterMap.containsKey("startTimeDay") && requestParameterMap.containsKey("startTimeHour") && requestParameterMap.containsKey("startTimeMinute")) {
+	int startTimeYear = ParamUtil.getInteger(request, "startTimeYear");
+	int startTimeMonth = ParamUtil.getInteger(request, "startTimeMonth");
+	int startTimeDay = ParamUtil.getInteger(request, "startTimeDay");
+	int startTimeHour = ParamUtil.getInteger(request, "startTimeHour");
+	int startTimeMinute = ParamUtil.getInteger(request, "startTimeMinute");
+
+	startTimeJCalendar = CalendarFactoryUtil.getCalendar(startTimeYear, startTimeMonth, startTimeDay, startTimeHour, startTimeMinute, 0, 0, calendarBookingTimeZone);
+	startTime = startTimeJCalendar.getTimeInMillis();
+}
+else {
+	startTimeJCalendar = JCalendarUtil.getJCalendar(startTime, calendarBookingTimeZone);
+}
 
 java.util.Calendar defaultEndTimeJCalendar = (java.util.Calendar)nowJCalendar.clone();
 
 defaultEndTimeJCalendar.add(java.util.Calendar.HOUR, 1);
 
-long endTime = BeanParamUtil.getLong(calendarBooking, request, "endTime", defaultEndTimeJCalendar.getTimeInMillis());
+long endTime = BeanPropertiesUtil.getLong(calendarBooking, "endTime", defaultEndTimeJCalendar.getTimeInMillis());
 
-java.util.Calendar endTimeJCalendar = JCalendarUtil.getJCalendar(endTime, calendarBookingTimeZone);
+java.util.Calendar endTimeJCalendar = null;
+
+if (requestParameterMap.containsKey("endTimeYear") && requestParameterMap.containsKey("endTimeMonth") && requestParameterMap.containsKey("endTimeDay") && requestParameterMap.containsKey("endTimeHour") && requestParameterMap.containsKey("endTimeMinute")) {
+	int endTimeYear = ParamUtil.getInteger(request, "endTimeYear");
+	int endTimeMonth = ParamUtil.getInteger(request, "endTimeMonth");
+	int endTimeDay = ParamUtil.getInteger(request, "endTimeDay");
+	int endTimeHour = ParamUtil.getInteger(request, "endTimeHour");
+	int endTimeMinute = ParamUtil.getInteger(request, "endTimeMinute");
+
+	endTimeJCalendar = CalendarFactoryUtil.getCalendar(endTimeYear, endTimeMonth, endTimeDay, endTimeHour, endTimeMinute, 0, 0, calendarBookingTimeZone);
+	endTime = endTimeJCalendar.getTimeInMillis();
+}
+else {
+	endTimeJCalendar = JCalendarUtil.getJCalendar(endTime, calendarBookingTimeZone);
+}
 
 long firstReminder = BeanParamUtil.getLong(calendarBooking, request, "firstReminder");
 String firstReminderType = BeanParamUtil.getString(calendarBooking, request, "firstReminderType", PortletPropsValues.CALENDAR_NOTIFICATION_DEFAULT_TYPE);

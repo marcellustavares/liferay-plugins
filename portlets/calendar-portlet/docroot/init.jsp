@@ -108,6 +108,7 @@ page import="java.util.Collections" %><%@
 page import="java.util.Date" %><%@
 page import="java.util.Iterator" %><%@
 page import="java.util.List" %><%@
+page import="java.util.Map"%><%@
 page import="java.util.TimeZone" %>
 
 <%@ page import="javax.portlet.PortletURL" %>
@@ -117,6 +118,8 @@ page import="java.util.TimeZone" %>
 <liferay-theme:defineObjects />
 
 <%
+Map<String, String[]> requestParameterMap = request.getParameterMap();
+
 String currentURL = PortalUtil.getCurrentURL(request);
 
 CalendarResource groupCalendarResource = CalendarResourceUtil.getGroupCalendarResource(liferayPortletRequest, scopeGroupId);
