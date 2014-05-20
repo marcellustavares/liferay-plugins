@@ -25,7 +25,6 @@ import com.liferay.calendar.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ResourceConstants;
@@ -343,13 +342,13 @@ public class CalendarLocalServiceImpl extends CalendarLocalServiceBaseImpl {
 	protected void validate(Map<Locale, String> nameMap)
 		throws PortalException {
 
-		Locale locale = LocaleUtil.getDefault();
-
-		String name = nameMap.get(locale);
-
-		if (Validator.isNull(name)) {
-			throw new CalendarNameException();
+		for (String name : nameMap.values()) {
+			if (Validator.isNotNull(name)) {
+				return;
+			}
 		}
+
+		throw new CalendarNameException();
 	}
 
 }
