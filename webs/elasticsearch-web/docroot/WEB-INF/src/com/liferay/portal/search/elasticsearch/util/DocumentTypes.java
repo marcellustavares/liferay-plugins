@@ -19,6 +19,8 @@ package com.liferay.portal.search.elasticsearch.util;
  */
 public class DocumentTypes {
 
+	public static final String FORM_CONTENT = "FormContentDocumentType";
+
 	public static final String KEYWORD_QUERY = "KeywordQueryDocumentType";
 
 	public static final String LIFERAY = "LiferayDocumentType";
