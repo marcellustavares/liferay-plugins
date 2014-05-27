@@ -74,11 +74,11 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		portletPreferences.setValue(
 			"weekStartsOn", String.valueOf(weekStartsOn));
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
-			actionRequest);
+		HttpServletRequest httpServletRequest =
+			PortalUtil.getHttpServletRequest(actionRequest);
 
 		SessionClicks.put(
-			request, "calendar-portlet-default-view", defaultView);
+			httpServletRequest, "calendar-portlet-default-view", defaultView);
 
 		portletPreferences.store();
 	}
