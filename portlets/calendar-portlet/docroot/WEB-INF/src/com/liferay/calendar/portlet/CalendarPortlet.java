@@ -967,7 +967,7 @@ public class CalendarPortlet extends MVCPortlet {
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String keywords = ParamUtil.getString(resourceRequest, "keywords");
+		String name = ParamUtil.getString(resourceRequest, "name");
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
