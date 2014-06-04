@@ -2,24 +2,32 @@
 
 <classpath>
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="docroot/WEB-INF/src" />
-	<classpathentry kind="src" path="/portal-master" />
+	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="docroot/WEB-INF/test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" />
 	<classpathentry kind="lib" path="/portal-master/lib/development/activation.jar" />
 	<classpathentry kind="lib" path="/portal-master/lib/development/annotations.jar" />
 	<classpathentry kind="lib" path="/portal-master/lib/development/jsp-api.jar" />
+	<classpathentry kind="lib" path="/portal-master/lib/development/junit.jar"/>
 	<classpathentry kind="lib" path="/portal-master/lib/development/mail.jar" />
+	<classpathentry kind="lib" path="/portal-master/lib/development/mockito.jar"/>
 	<classpathentry kind="lib" path="/portal-master/lib/development/servlet-api.jar" />
 	<classpathentry kind="lib" path="/portal-master/lib/global/portlet.jar" />
+	<classpathentry kind="lib" path="/portal-master/lib/portal/commons-io.jar"/>
 	<classpathentry kind="lib" path="/portal-master/lib/portal/commons-lang.jar" />
 	<classpathentry kind="lib" path="/portal-master/lib/portal/commons-logging.jar" />
+	<classpathentry kind="lib" path="/portal-master/lib/portal/javassist.jar"/>
 	<classpathentry kind="lib" path="/portal-master/lib/portal/log4j.jar" />
 	<classpathentry kind="lib" path="/portal-master/portal-service/portal-service.jar" />
+	<classpathentry kind="lib" path="/portal-master/tools/sdk/lib/powermock-api-mockito.jar"/>
+	<classpathentry kind="lib" path="/portal-master/tools/sdk/lib/powermock-api-support.jar"/>
+	<classpathentry kind="lib" path="/portal-master/tools/sdk/lib/powermock-core.jar"/>
+	<classpathentry kind="lib" path="/portal-master/tools/sdk/lib/powermock-module-junit4-common.jar"/>
+	<classpathentry kind="lib" path="/portal-master/tools/sdk/lib/powermock-module-junit4.jar"/>
+	<classpathentry kind="lib" path="/portal-master/tools/sdk/lib/powermock-reflect.jar"/>
 	<classpathentry kind="lib" path="/portal-master/util-bridges/util-bridges.jar" />
 	<classpathentry kind="lib" path="/portal-master/util-java/util-java.jar" />
 	<classpathentry kind="lib" path="/portal-master/util-slf4j/util-slf4j.jar" />
 	<classpathentry kind="lib" path="/portal-master/util-taglib/util-taglib.jar" />
-	<classpathentry kind="lib" path="docroot/WEB-INF/lib/elasticsearch-analysis-icu.jar" />
-	<classpathentry kind="lib" path="docroot/WEB-INF/lib/elasticsearch-analysis-kuromoji.jar" />
 	<classpathentry kind="lib" path="docroot/WEB-INF/lib/elasticsearch-analysis-smartcn.jar" />
 	<classpathentry kind="lib" path="docroot/WEB-INF/lib/elasticsearch.jar" />
 	<classpathentry kind="lib" path="docroot/WEB-INF/lib/icu4j.jar" />
