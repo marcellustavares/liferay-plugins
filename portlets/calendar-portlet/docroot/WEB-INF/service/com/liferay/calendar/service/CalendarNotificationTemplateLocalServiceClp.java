@@ -174,8 +174,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 	@Override
 	public com.liferay.calendar.model.CalendarNotificationTemplate addCalendarNotificationTemplate(
-		com.liferay.calendar.model.CalendarNotificationTemplate calendarNotificationTemplate)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.calendar.model.CalendarNotificationTemplate calendarNotificationTemplate) {
 		Object returnObj = null;
 
 		try {
@@ -188,10 +187,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -233,8 +228,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 	@Override
 	public com.liferay.calendar.model.CalendarNotificationTemplate deleteCalendarNotificationTemplate(
 		long calendarNotificationTemplateId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -247,10 +241,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -324,8 +314,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 	@Override
 	@SuppressWarnings("rawtypes")
 	public java.util.List dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
 		Object returnObj = null;
 
 		try {
@@ -335,10 +324,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -356,7 +341,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 	@SuppressWarnings("rawtypes")
 	public java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) throws com.liferay.portal.kernel.exception.SystemException {
+		int end) {
 		Object returnObj = null;
 
 		try {
@@ -372,10 +357,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -394,8 +375,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 	public java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
 		Object returnObj = null;
 
 		try {
@@ -414,10 +394,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -432,8 +408,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 	@Override
 	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
 		Object returnObj = null;
 
 		try {
@@ -443,10 +418,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -463,8 +434,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 	@Override
 	public long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		Object returnObj = null;
 
 		try {
@@ -478,10 +448,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -497,8 +463,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 	@Override
 	public com.liferay.calendar.model.CalendarNotificationTemplate fetchCalendarNotificationTemplate(
-		long calendarNotificationTemplateId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long calendarNotificationTemplateId) {
 		Object returnObj = null;
 
 		try {
@@ -508,10 +473,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -527,8 +488,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 	@Override
 	public com.liferay.calendar.model.CalendarNotificationTemplate fetchCalendarNotificationTemplateByUuidAndCompanyId(
-		java.lang.String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String uuid, long companyId) {
 		Object returnObj = null;
 
 		try {
@@ -538,10 +498,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -557,8 +513,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 	@Override
 	public com.liferay.calendar.model.CalendarNotificationTemplate fetchCalendarNotificationTemplateByUuidAndGroupId(
-		java.lang.String uuid, long groupId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String uuid, long groupId) {
 		Object returnObj = null;
 
 		try {
@@ -568,10 +523,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -588,8 +539,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 	@Override
 	public com.liferay.calendar.model.CalendarNotificationTemplate getCalendarNotificationTemplate(
 		long calendarNotificationTemplateId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -602,10 +552,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -621,8 +567,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		Object returnObj = null;
 
 		try {
@@ -631,10 +576,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -650,8 +591,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.portal.kernel.lar.PortletDataContext portletDataContext)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.lar.PortletDataContext portletDataContext) {
 		Object returnObj = null;
 
 		try {
@@ -663,10 +603,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -683,8 +619,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 	@Override
 	public com.liferay.portal.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -697,10 +632,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -718,8 +649,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 	@Override
 	public com.liferay.calendar.model.CalendarNotificationTemplate getCalendarNotificationTemplateByUuidAndCompanyId(
 		java.lang.String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -732,10 +662,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -753,8 +679,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 	@Override
 	public com.liferay.calendar.model.CalendarNotificationTemplate getCalendarNotificationTemplateByUuidAndGroupId(
 		java.lang.String uuid, long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -767,10 +692,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -787,8 +708,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.calendar.model.CalendarNotificationTemplate> getCalendarNotificationTemplates(
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -797,10 +717,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -815,8 +731,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 	}
 
 	@Override
-	public int getCalendarNotificationTemplatesCount()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getCalendarNotificationTemplatesCount() {
 		Object returnObj = null;
 
 		try {
@@ -825,10 +740,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -844,8 +755,7 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 	@Override
 	public com.liferay.calendar.model.CalendarNotificationTemplate updateCalendarNotificationTemplate(
-		com.liferay.calendar.model.CalendarNotificationTemplate calendarNotificationTemplate)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.calendar.model.CalendarNotificationTemplate calendarNotificationTemplate) {
 		Object returnObj = null;
 
 		try {
@@ -858,10 +768,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
