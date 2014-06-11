@@ -26,9 +26,7 @@ import com.liferay.portal.kernel.search.SearchContext;
  */
 public class CalendarSearcher extends BaseSearcher {
 
-	public static final String[] CLASS_NAMES = {
-		Calendar.class.getName()
-	};
+	public static final String[] CLASS_NAMES = {Calendar.class.getName()};
 
 	public static Indexer getInstance() {
 		return new CalendarSearcher();

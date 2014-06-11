@@ -29,8 +29,6 @@ import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Locale;
 
 import javax.portlet.PortletRequest;
@@ -42,9 +40,7 @@ import javax.portlet.PortletURL;
  */
 public class CalendarIndexer extends BaseIndexer {
 
-	public static final String[] CLASS_NAMES = {
-		Calendar.class.getName()
-	};
+	public static final String[] CLASS_NAMES = {Calendar.class.getName()};
 
 	public static final String PORTLET_ID = PortletKeys.CALENDAR;
 
@@ -115,18 +111,19 @@ public class CalendarIndexer extends BaseIndexer {
 			document, Field.NAME, Field.DESCRIPTION);
 
 		summary.setMaxContentLength(200);
+		summary.setPortletURL(portletURL);
 
 		return summary;
 	}
 
 	@Override
-	protected void doReindex(Object obj) throws Exception {
-		Calendar calendar = (Calendar)obj;
+	protected void doReindex(Object object) throws Exception {
+		Calendar calendar = (Calendar)object;
 
 		Document document = getDocument(calendar);
 
-			SearchEngineUtil.updateDocument(
-				getSearchEngineId(), calendar.getCompanyId(), document);
+		SearchEngineUtil.updateDocument(
+			getSearchEngineId(), calendar.getCompanyId(), document);
 	}
 
 	@Override
@@ -151,17 +148,26 @@ public class CalendarIndexer extends BaseIndexer {
 	protected void reindexCalendars(long companyId)
 		throws PortalException, SystemException {
 
-		final Collection<Document> documents = new ArrayList<Document>();
-
-		ActionableDynamicQuery actionableDynamicQuery =
+		final ActionableDynamicQuery actionableDynamicQuery =
 			CalendarLocalServiceUtil.getActionableDynamicQuery();
 
 		actionableDynamicQuery.setCompanyId(companyId);
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod() {
+
+			@Override
+			public void performAction(Object object) throws PortalException {
+				Calendar calendar = (Calendar)object;
+
+				Document document = getDocument(calendar);
+
+				actionableDynamicQuery.addDocument(document);
+			}
+
+		});
+		actionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		actionableDynamicQuery.performActions();
-
-		SearchEngineUtil.updateDocuments(
-			getSearchEngineId(), companyId, documents);
 	}
 
 }
