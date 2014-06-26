@@ -21,6 +21,7 @@ import com.liferay.knowledgebase.KBCommentContentException;
 import com.liferay.knowledgebase.NoSuchArticleException;
 import com.liferay.knowledgebase.NoSuchCommentException;
 import com.liferay.knowledgebase.model.KBArticle;
+import com.liferay.knowledgebase.model.KBArticleConstants;
 import com.liferay.knowledgebase.model.KBComment;
 import com.liferay.knowledgebase.service.KBArticleLocalServiceUtil;
 import com.liferay.knowledgebase.service.KBArticleServiceUtil;
@@ -46,6 +47,7 @@ import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.security.auth.PrincipalException;
@@ -196,15 +198,21 @@ public class DisplayPortlet extends MVCPortlet {
 
 			long resourcePrimKey = getResourcePrimKey(renderRequest);
 
+			long parentResourcePrimKey = ParamUtil.getLong(
+				renderRequest, "parentResourcePrimKey",
+				KBArticleConstants.DEFAULT_PARENT_RESOURCE_PRIM_KEY);
+
 			if (resourcePrimKey > 0) {
 				kbArticle = KBArticleServiceUtil.getLatestKBArticle(
 					resourcePrimKey, status);
 			}
-			else {
+			else if (parentResourcePrimKey ==
+						KBArticleConstants.DEFAULT_PARENT_RESOURCE_PRIM_KEY) {
+
 				List<KBArticle> kbArticles =
 					KBArticleLocalServiceUtil.getGroupKBArticles(
 						themeDisplay.getScopeGroupId(), status, 0, 1,
-						new KBArticlePriorityComparator());
+						new KBArticlePriorityComparator(true));
 
 				if (!kbArticles.isEmpty()) {
 					kbArticle = kbArticles.get(0);
@@ -513,6 +521,16 @@ public class DisplayPortlet extends MVCPortlet {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
+
+		String urlTitle = ParamUtil.getString(renderRequest, "urlTitle");
+
+		if (Validator.isNotNull(urlTitle)) {
+			KBArticle kbArticle =
+				KBArticleLocalServiceUtil.getKBArticleByUrlTitle(
+					themeDisplay.getScopeGroupId(), urlTitle);
+
+			return kbArticle.getResourcePrimKey();
+		}
 
 		PortletPreferences preferences = renderRequest.getPreferences();
 
