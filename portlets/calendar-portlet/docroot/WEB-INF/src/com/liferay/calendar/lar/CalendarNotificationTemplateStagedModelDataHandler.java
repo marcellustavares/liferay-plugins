@@ -20,7 +20,6 @@ import com.liferay.calendar.notification.NotificationTemplateType;
 import com.liferay.calendar.notification.NotificationType;
 import com.liferay.calendar.service.CalendarLocalServiceUtil;
 import com.liferay.calendar.service.CalendarNotificationTemplateLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.lar.BaseStagedModelDataHandler;
 import com.liferay.portal.kernel.lar.ExportImportHelperUtil;
 import com.liferay.portal.kernel.lar.ExportImportPathUtil;
@@ -44,8 +43,7 @@ public class CalendarNotificationTemplateStagedModelDataHandler
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
-		throws SystemException {
+		String uuid, long groupId, String className, String extraData) {
 
 		CalendarNotificationTemplate calendarNotificationTemplate =
 			CalendarNotificationTemplateLocalServiceUtil.
@@ -77,18 +75,17 @@ public class CalendarNotificationTemplateStagedModelDataHandler
 			portletDataContext, calendarNotificationTemplate, calendar,
 			PortletDataContext.REFERENCE_TYPE_STRONG);
 
-		Element calendarNotificationTemplateElement =
-			portletDataContext.getExportDataElement(
-				calendarNotificationTemplate);
-
 		String body = ExportImportHelperUtil.replaceExportContentReferences(
 			portletDataContext, calendarNotificationTemplate,
-			calendarNotificationTemplateElement,
 			calendarNotificationTemplate.getBody(),
 			portletDataContext.getBooleanParameter(
 				CalendarPortletDataHandler.NAMESPACE, "referenced-content"));
 
 		calendarNotificationTemplate.setBody(body);
+
+		Element calendarNotificationTemplateElement =
+			portletDataContext.getExportDataElement(
+				calendarNotificationTemplate);
 
 		portletDataContext.addClassedModel(
 			calendarNotificationTemplateElement,
@@ -128,6 +125,10 @@ public class CalendarNotificationTemplateStagedModelDataHandler
 		CalendarNotificationTemplate importedCalendarNotificationTemplate =
 			null;
 
+		String body = ExportImportHelperUtil.replaceImportContentReferences(
+			portletDataContext, calendarNotificationTemplate,
+			calendarNotificationTemplate.getBody());
+
 		if (portletDataContext.isDataStrategyMirror()) {
 			CalendarNotificationTemplate existingCalendarNotificationTemplate =
 				CalendarNotificationTemplateLocalServiceUtil.
@@ -145,8 +146,7 @@ public class CalendarNotificationTemplateStagedModelDataHandler
 							calendarNotificationTemplate.
 								getNotificationTypeSettings(),
 							notificationTemplateType,
-							calendarNotificationTemplate.getSubject(),
-							calendarNotificationTemplate.getBody(),
+							calendarNotificationTemplate.getSubject(), body,
 							serviceContext);
 			}
 			else {
@@ -157,8 +157,7 @@ public class CalendarNotificationTemplateStagedModelDataHandler
 								getCalendarNotificationTemplateId(),
 							calendarNotificationTemplate.
 								getNotificationTypeSettings(),
-							calendarNotificationTemplate.getSubject(),
-							calendarNotificationTemplate.getBody(),
+							calendarNotificationTemplate.getSubject(), body,
 							serviceContext);
 			}
 		}
@@ -170,8 +169,8 @@ public class CalendarNotificationTemplateStagedModelDataHandler
 						calendarNotificationTemplate.
 							getNotificationTypeSettings(),
 						notificationTemplateType,
-						calendarNotificationTemplate.getSubject(),
-						calendarNotificationTemplate.getBody(), serviceContext);
+						calendarNotificationTemplate.getSubject(), body,
+						serviceContext);
 		}
 
 		portletDataContext.importClassedModel(

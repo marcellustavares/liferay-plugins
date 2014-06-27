@@ -17,7 +17,6 @@ package com.liferay.mentions.portlet;
 import com.liferay.mentions.util.MentionsUserFinderUtil;
 import com.liferay.mentions.util.MentionsUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -28,6 +27,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
+import com.liferay.portal.theme.PortletDisplay;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.social.util.SocialInteractionsConfiguration;
@@ -87,18 +87,21 @@ public class MentionsPortlet extends MVCPortlet {
 	}
 
 	protected JSONArray getJSONArray(HttpServletRequest request)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String query = ParamUtil.getString(request, "query");
+		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		SocialInteractionsConfiguration socialInteractionsConfiguration =
 			SocialInteractionsConfigurationUtil.
-				getSocialInteractionsConfiguration(themeDisplay.getCompanyId());
+				getSocialInteractionsConfiguration(
+					themeDisplay.getCompanyId(), portletDisplay.getId());
+
+		String query = ParamUtil.getString(request, "query");
 
 		List<User> users = MentionsUserFinderUtil.getUsers(
 			themeDisplay.getCompanyId(), themeDisplay.getUserId(), query,
