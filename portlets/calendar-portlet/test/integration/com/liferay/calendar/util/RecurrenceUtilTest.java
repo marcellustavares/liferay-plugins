@@ -170,6 +170,33 @@ public class RecurrenceUtilTest {
 		Assert.assertEquals(expectedStartTime, instance.getStartTime());
 	}
 
+	@Test
+	public void testGetCalendarBookingInstance() {
+		CalendarBooking calendarBooking = new CalendarBookingImpl();
+
+		int instanceCount = 5;
+		int instanceIndex = 3;
+
+		long startTime = getTime(_YEAR, _MONTH, _DAY, _HOUR);
+		long endTime = getTime(_YEAR, _MONTH, _DAY, _HOUR+2);
+		long intervalStartTime = startTime;
+		long intervalEndTime = getTime(_YEAR, _MONTH, _DAY + instanceCount, 23);
+
+		calendarBooking.setStartTime(startTime);
+		calendarBooking.setEndTime(endTime);
+		calendarBooking.setRecurrence(
+			"RRULE:FREQ=DAILY;COUNT=" + instanceCount + ";INTERVAL=1");
+
+		CalendarBooking instance = RecurrenceUtil.getCalendarBookingInstance(
+			calendarBooking, instanceIndex);
+
+		long expectedStartTime = getTime(
+			_YEAR, _MONTH, _DAY + instanceIndex, _HOUR);
+
+		Assert.assertEquals(instanceIndex, instance.getInstanceIndex());
+		Assert.assertEquals(expectedStartTime, instance.getStartTime());
+	}
+
 	private static long getTime(int year, int month, int day, int hour) {
 		Calendar calendar = CalendarFactoryUtil.getCalendar(
 			year, month, day, hour, 0);
