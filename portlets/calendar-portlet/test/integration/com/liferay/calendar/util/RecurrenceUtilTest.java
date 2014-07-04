@@ -48,7 +48,7 @@ public class RecurrenceUtilTest {
 		int instanceCount = 3;
 
 		long startTime = getTime(_YEAR, _MONTH, _DAY, _HOUR);
-		long endTime = getTime(_YEAR, _MONTH, _DAY, _HOUR+2);
+		long endTime = getTime(_YEAR, _MONTH, _DAY, _HOUR + 2);
 		long intervalStartTime = startTime;
 		long intervalEndTime = getTime(_YEAR, _MONTH, _DAY + instanceCount, 23);
 
@@ -82,7 +82,7 @@ public class RecurrenceUtilTest {
 		int instanceCount = 5;
 
 		long startTime = getTime(_YEAR, _MONTH, _DAY, _HOUR);
-		long endTime = getTime(_YEAR, _MONTH, _DAY, _HOUR+2);
+		long endTime = getTime(_YEAR, _MONTH, _DAY, _HOUR + 2);
 		long intervalStartTime = startTime;
 		long intervalEndTime = getTime(_YEAR, _MONTH, _DAY + instanceCount, 23);
 
@@ -153,7 +153,7 @@ public class RecurrenceUtilTest {
 		int dummyCount = 5;
 
 		long startTime = getTime(_YEAR, _MONTH, _DAY, _HOUR);
-		long endTime = getTime(_YEAR, _MONTH, _DAY, _HOUR+2);
+		long endTime = getTime(_YEAR, _MONTH, _DAY, _HOUR + 2);
 		long intervalStartTime = startTime;
 		long intervalEndTime = getTime(_YEAR, _MONTH, _DAY + dummyCount, 23);
 
@@ -178,9 +178,7 @@ public class RecurrenceUtilTest {
 		int instanceIndex = 3;
 
 		long startTime = getTime(_YEAR, _MONTH, _DAY, _HOUR);
-		long endTime = getTime(_YEAR, _MONTH, _DAY, _HOUR+2);
-		long intervalStartTime = startTime;
-		long intervalEndTime = getTime(_YEAR, _MONTH, _DAY + instanceCount, 23);
+		long endTime = getTime(_YEAR, _MONTH, _DAY, _HOUR + 2);
 
 		calendarBooking.setStartTime(startTime);
 		calendarBooking.setEndTime(endTime);
