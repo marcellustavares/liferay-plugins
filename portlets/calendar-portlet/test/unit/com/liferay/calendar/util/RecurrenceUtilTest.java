@@ -14,31 +14,43 @@
 
 package com.liferay.calendar.util;
 
-import com.liferay.ant.arquilian.WebArchiveBuilder;
 import com.liferay.calendar.model.CalendarBooking;
 import com.liferay.calendar.model.impl.CalendarBookingImpl;
+import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.util.CalendarFactoryImpl;
+import com.liferay.util.service.ServiceProps;
 
 import java.util.Calendar;
 import java.util.List;
 
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * @author Adam Brandizzi
  */
-@RunWith(Arquillian.class)
+@PrepareOnlyThisForTest( {
+	ConfigurationFactoryUtil.class, PortletClassLoaderUtil.class,
+	ServiceProps.class
+})
+@RunWith(PowerMockRunner.class)
 public class RecurrenceUtilTest {
 
-	@Deployment
-	public static WebArchive createDeployment() {
-		return WebArchiveBuilder.build();
+	@Before
+	public void setUp() {
+		PowerMockito.mockStatic(
+			ConfigurationFactoryUtil.class, PortletClassLoaderUtil.class,
+			ServiceProps.class);
+
+		new CalendarFactoryUtil().setCalendarFactory(new CalendarFactoryImpl());
 	}
 
 	@Test
