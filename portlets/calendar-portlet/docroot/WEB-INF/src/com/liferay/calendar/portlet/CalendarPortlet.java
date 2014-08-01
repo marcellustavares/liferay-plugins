@@ -973,6 +973,7 @@ public class CalendarPortlet extends MVCPortlet {
 
 		HttpServletRequest httpServletRequest =
 			PortalUtil.getHttpServletRequest(resourceRequest);
+
 		SearchContext searchContext = SearchContextFactory.getInstance(
 			httpServletRequest);
 
@@ -983,22 +984,13 @@ public class CalendarPortlet extends MVCPortlet {
 
 		Indexer indexer = CalendarSearcher.getInstance();
 
-		Hits hits = indexer.search(searchContext, Field.NAME, "resourceName");
-
-		PermissionChecker permissionChecker =
-			themeDisplay.getPermissionChecker();
+		Hits hits = indexer.search(searchContext);
 
 		for (Document document : hits.getDocs()) {
-			Field calendarIdField = document.getField(Field.ENTRY_CLASS_PK);
-			long calendarId = Long.valueOf(calendarIdField.getValue());
+			long calendarId = GetterUtil.getLong(
+				document.get(Field.ENTRY_CLASS_PK));
 
 			Calendar calendar = CalendarServiceUtil.getCalendar(calendarId);
-
-			if (!CalendarPermission.contains(
-					permissionChecker, calendar, ActionKeys.VIEW)) {
-
-				continue;
-			}
 
 			JSONObject jsonObject = CalendarUtil.toCalendarJSONObject(
 				themeDisplay, calendar);

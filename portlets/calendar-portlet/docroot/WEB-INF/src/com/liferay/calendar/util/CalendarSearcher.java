@@ -16,19 +16,15 @@ package com.liferay.calendar.util;
 
 import com.liferay.calendar.model.Calendar;
 import com.liferay.portal.kernel.search.BaseSearcher;
-import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.SearchContext;
 
 /**
  * @author Adam Brandizzi
  */
 public class CalendarSearcher extends BaseSearcher {
 
-	public static final String[] CLASS_NAMES = {
-		Calendar.class.getName()
-	};
+	public static final String[] CLASS_NAMES = {Calendar.class.getName()};
 
 	public static Indexer getInstance() {
 		return new CalendarSearcher();
@@ -36,7 +32,8 @@ public class CalendarSearcher extends BaseSearcher {
 
 	public CalendarSearcher() {
 		setDefaultSelectedFieldNames(
-			Field.ENTRY_CLASS_NAME, Field.ENTRY_CLASS_PK);
+			Field.COMPANY_ID, Field.ENTRY_CLASS_NAME, Field.ENTRY_CLASS_PK,
+			Field.UID);
 		setDefaultSelectedLocalizedFieldNames(
 			Field.DESCRIPTION, Field.NAME, "resourceName");
 		setFilterSearch(true);
@@ -47,18 +44,6 @@ public class CalendarSearcher extends BaseSearcher {
 	@Override
 	public String[] getClassNames() {
 		return CLASS_NAMES;
-	}
-
-	@Override
-	public void postProcessSearchQuery(
-			BooleanQuery searchQuery, SearchContext searchContext)
-		throws Exception {
-
-		addSearchLocalizedTerm(
-			searchQuery, searchContext, Field.DESCRIPTION, true);
-		addSearchLocalizedTerm(searchQuery, searchContext, Field.NAME, true);
-		addSearchLocalizedTerm(
-			searchQuery, searchContext, "resourceName", true);
 	}
 
 }

@@ -17,10 +17,11 @@ package com.liferay.calendar.util;
 import com.liferay.calendar.model.Calendar;
 import com.liferay.calendar.model.CalendarResource;
 import com.liferay.calendar.service.CalendarLocalServiceUtil;
+import com.liferay.calendar.service.permission.CalendarPermission;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.BaseIndexer;
+import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.SearchContext;
@@ -28,9 +29,9 @@ import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.security.permission.ActionKeys;
+import com.liferay.portal.security.permission.PermissionChecker;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Locale;
 
 import javax.portlet.PortletRequest;
@@ -42,9 +43,7 @@ import javax.portlet.PortletURL;
  */
 public class CalendarIndexer extends BaseIndexer {
 
-	public static final String[] CLASS_NAMES = {
-		Calendar.class.getName()
-	};
+	public static final String[] CLASS_NAMES = {Calendar.class.getName()};
 
 	public static final String PORTLET_ID = PortletKeys.CALENDAR;
 
@@ -54,6 +53,9 @@ public class CalendarIndexer extends BaseIndexer {
 			Field.UID);
 		setDefaultSelectedLocalizedFieldNames(
 			Field.DESCRIPTION, Field.NAME, "resourceName");
+		setFilterSearch(true);
+		setPermissionAware(true);
+		setSelectAllLocales(true);
 	}
 
 	@Override
@@ -67,15 +69,37 @@ public class CalendarIndexer extends BaseIndexer {
 	}
 
 	@Override
-	protected void doDelete(Object obj) throws Exception {
-		Calendar calendar = (Calendar)obj;
+	public boolean hasPermission(
+			PermissionChecker permissionChecker, String entryClassName,
+			long entryClassPK, String actionId)
+		throws Exception {
+
+		return CalendarPermission.contains(
+			permissionChecker, entryClassPK, ActionKeys.VIEW);
+	}
+
+	@Override
+	public void postProcessSearchQuery(
+			BooleanQuery searchQuery, SearchContext searchContext)
+		throws Exception {
+
+		addSearchLocalizedTerm(
+			searchQuery, searchContext, Field.DESCRIPTION, true);
+		addSearchLocalizedTerm(searchQuery, searchContext, Field.NAME, true);
+		addSearchLocalizedTerm(
+			searchQuery, searchContext, "resourceName", true);
+	}
+
+	@Override
+	protected void doDelete(Object object) throws Exception {
+		Calendar calendar = (Calendar)object;
 
 		deleteDocument(calendar.getCompanyId(), calendar.getCalendarId());
 	}
 
 	@Override
-	protected Document doGetDocument(Object obj) throws Exception {
-		Calendar calendar = (Calendar)obj;
+	protected Document doGetDocument(Object object) throws Exception {
+		Calendar calendar = (Calendar)object;
 
 		Document document = getBaseModelDocument(PORTLET_ID, calendar);
 
@@ -115,6 +139,7 @@ public class CalendarIndexer extends BaseIndexer {
 			document, Field.NAME, Field.DESCRIPTION);
 
 		summary.setMaxContentLength(200);
+		summary.setPortletURL(portletURL);
 
 		return summary;
 	}
@@ -125,8 +150,8 @@ public class CalendarIndexer extends BaseIndexer {
 
 		Document document = getDocument(calendar);
 
-			SearchEngineUtil.updateDocument(
-				getSearchEngineId(), calendar.getCompanyId(), document);
+		SearchEngineUtil.updateDocument(
+			getSearchEngineId(), calendar.getCompanyId(), document);
 	}
 
 	@Override
@@ -148,20 +173,27 @@ public class CalendarIndexer extends BaseIndexer {
 		return PORTLET_ID;
 	}
 
-	protected void reindexCalendars(long companyId)
-		throws PortalException, SystemException {
-
-		final Collection<Document> documents = new ArrayList<Document>();
-
-		ActionableDynamicQuery actionableDynamicQuery =
+	protected void reindexCalendars(long companyId) throws PortalException {
+		final ActionableDynamicQuery actionableDynamicQuery =
 			CalendarLocalServiceUtil.getActionableDynamicQuery();
 
 		actionableDynamicQuery.setCompanyId(companyId);
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod() {
+
+			@Override
+			public void performAction(Object object) throws PortalException {
+				Calendar calendar = (Calendar)object;
+
+				Document document = getDocument(calendar);
+
+				actionableDynamicQuery.addDocument(document);
+			}
+
+		});
+		actionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		actionableDynamicQuery.performActions();
-
-		SearchEngineUtil.updateDocuments(
-			getSearchEngineId(), companyId, documents);
 	}
 
 }
