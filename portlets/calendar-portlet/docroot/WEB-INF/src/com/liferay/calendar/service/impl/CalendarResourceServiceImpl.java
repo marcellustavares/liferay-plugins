@@ -31,6 +31,7 @@ import java.util.Map;
  * @author Eduardo Lundgren
  * @author Fabio Pezzutto
  * @author Andrea Di Giorgi
+ * @author Adam Brandizzi
  */
 public class CalendarResourceServiceImpl
 	extends CalendarResourceServiceBaseImpl {
@@ -49,6 +50,22 @@ public class CalendarResourceServiceImpl
 		return calendarResourceLocalService.addCalendarResource(
 			getUserId(), groupId, classNameId, classPK, classUuid, code,
 			nameMap, descriptionMap, active, serviceContext);
+	}
+
+	@Override
+	public CalendarResource addCalendarResource(
+			long groupId, long classNameId, long classPK, String classUuid,
+			String code, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, String timeZoneId,
+			boolean active, ServiceContext serviceContext)
+		throws PortalException {
+
+		CalendarPortletPermission.check(
+			getPermissionChecker(), groupId, ActionKeys.ADD_RESOURCE);
+
+		return calendarResourceLocalService.addCalendarResource(
+			getUserId(), groupId, classNameId, classPK, classUuid, code,
+			nameMap, descriptionMap, timeZoneId, active, serviceContext);
 	}
 
 	@Override
@@ -144,6 +161,21 @@ public class CalendarResourceServiceImpl
 
 		return calendarResourceLocalService.updateCalendarResource(
 			calendarResourceId, nameMap, descriptionMap, active,
+			serviceContext);
+	}
+
+	@Override
+	public CalendarResource updateCalendarResource(
+			long calendarResourceId, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, String timeZoneId,
+			boolean active, ServiceContext serviceContext)
+		throws PortalException {
+
+		CalendarResourcePermission.check(
+			getPermissionChecker(), calendarResourceId, ActionKeys.UPDATE);
+
+		return calendarResourceLocalService.updateCalendarResource(
+			calendarResourceId, nameMap, descriptionMap, timeZoneId, active,
 			serviceContext);
 	}
 

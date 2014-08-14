@@ -231,6 +231,7 @@
 		<column name="code" type="String" />
 		<column name="name" type="String" localized="true" />
 		<column name="description" type="String" localized="true" />
+		<column name="timeZoneId" type="String" />
 		<column name="active" type="boolean" />
 
 		<!-- Order -->

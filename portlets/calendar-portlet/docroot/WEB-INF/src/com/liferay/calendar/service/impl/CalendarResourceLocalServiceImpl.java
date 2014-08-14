@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TimeZoneUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.SystemEventConstants;
@@ -40,6 +41,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * @author Eduardo Lundgren
@@ -47,6 +49,7 @@ import java.util.Map;
  * @author Bruno Basto
  * @author Marcellus Tavares
  * @author Andrea Di Giorgi
+ * @author Adam Brandizzi
  */
 public class CalendarResourceLocalServiceImpl
 	extends CalendarResourceLocalServiceBaseImpl {
@@ -57,6 +60,27 @@ public class CalendarResourceLocalServiceImpl
 			String classUuid, String code, Map<Locale, String> nameMap,
 			Map<Locale, String> descriptionMap, boolean active,
 			ServiceContext serviceContext)
+		throws PortalException {
+
+		TimeZone timeZone = TimeZoneUtil.getDefault();
+
+		if (classNameId == classNameLocalService.getClassNameId(User.class)) {
+			User user = userLocalService.getUser(classPK);
+
+			timeZone = user.getTimeZone();
+		}
+
+		return addCalendarResource(
+			userId, groupId, classNameId, classPK, classUuid, code, nameMap,
+			descriptionMap, timeZone.getID(), active, serviceContext);
+	}
+
+	@Override
+	public CalendarResource addCalendarResource(
+			long userId, long groupId, long classNameId, long classPK,
+			String classUuid, String code, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, String timeZoneId,
+			boolean active, ServiceContext serviceContext)
 		throws PortalException {
 
 		// Calendar resource
@@ -101,6 +125,7 @@ public class CalendarResourceLocalServiceImpl
 		calendarResource.setCode(code);
 		calendarResource.setNameMap(nameMap);
 		calendarResource.setDescriptionMap(descriptionMap);
+		calendarResource.setTimeZoneId(timeZoneId);
 		calendarResource.setActive(active);
 
 		calendarResourcePersistence.update(calendarResource);
@@ -287,6 +312,21 @@ public class CalendarResourceLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
+		CalendarResource calendarResource =
+			calendarResourcePersistence.findByPrimaryKey(calendarResourceId);
+
+		return updateCalendarResource(
+			calendarResourceId, nameMap, descriptionMap,
+			calendarResource.getTimeZoneId(), active, serviceContext);
+	}
+
+	@Override
+	public CalendarResource updateCalendarResource(
+			long calendarResourceId, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, String timeZoneId,
+			boolean active, ServiceContext serviceContext)
+		throws PortalException {
+
 		// Calendar resource
 
 		validate(nameMap);
@@ -297,6 +337,7 @@ public class CalendarResourceLocalServiceImpl
 		calendarResource.setModifiedDate(serviceContext.getModifiedDate(null));
 		calendarResource.setNameMap(nameMap);
 		calendarResource.setDescriptionMap(descriptionMap);
+		calendarResource.setTimeZoneId(timeZoneId);
 		calendarResource.setActive(active);
 
 		calendarResourcePersistence.update(calendarResource);
