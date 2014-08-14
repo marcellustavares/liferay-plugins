@@ -103,6 +103,7 @@ public class CalendarResourceClp extends BaseModelImpl<CalendarResource>
 		attributes.put("code", getCode());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
+		attributes.put("timeZoneId", getTimeZoneId());
 		attributes.put("active", getActive());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -201,6 +202,12 @@ public class CalendarResourceClp extends BaseModelImpl<CalendarResource>
 
 		if (description != null) {
 			setDescription(description);
+		}
+
+		String timeZoneId = (String)attributes.get("timeZoneId");
+
+		if (timeZoneId != null) {
+			setTimeZoneId(timeZoneId);
 		}
 
 		Boolean active = (Boolean)attributes.get("active");
@@ -798,6 +805,29 @@ public class CalendarResourceClp extends BaseModelImpl<CalendarResource>
 	}
 
 	@Override
+	public String getTimeZoneId() {
+		return _timeZoneId;
+	}
+
+	@Override
+	public void setTimeZoneId(String timeZoneId) {
+		_timeZoneId = timeZoneId;
+
+		if (_calendarResourceRemoteModel != null) {
+			try {
+				Class<?> clazz = _calendarResourceRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setTimeZoneId", String.class);
+
+				method.invoke(_calendarResourceRemoteModel, timeZoneId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public boolean getActive() {
 		return _active;
 	}
@@ -1087,6 +1117,7 @@ public class CalendarResourceClp extends BaseModelImpl<CalendarResource>
 		clone.setCode(getCode());
 		clone.setName(getName());
 		clone.setDescription(getDescription());
+		clone.setTimeZoneId(getTimeZoneId());
 		clone.setActive(getActive());
 
 		return clone;
@@ -1148,7 +1179,7 @@ public class CalendarResourceClp extends BaseModelImpl<CalendarResource>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -1180,6 +1211,8 @@ public class CalendarResourceClp extends BaseModelImpl<CalendarResource>
 		sb.append(getName());
 		sb.append(", description=");
 		sb.append(getDescription());
+		sb.append(", timeZoneId=");
+		sb.append(getTimeZoneId());
 		sb.append(", active=");
 		sb.append(getActive());
 		sb.append("}");
@@ -1189,7 +1222,7 @@ public class CalendarResourceClp extends BaseModelImpl<CalendarResource>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(52);
+		StringBundler sb = new StringBundler(55);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.calendar.model.CalendarResource");
@@ -1256,6 +1289,10 @@ public class CalendarResourceClp extends BaseModelImpl<CalendarResource>
 		sb.append(getDescription());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>timeZoneId</column-name><column-value><![CDATA[");
+		sb.append(getTimeZoneId());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>active</column-name><column-value><![CDATA[");
 		sb.append(getActive());
 		sb.append("]]></column-value></column>");
@@ -1282,6 +1319,7 @@ public class CalendarResourceClp extends BaseModelImpl<CalendarResource>
 	private String _nameCurrentLanguageId;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _timeZoneId;
 	private boolean _active;
 	private BaseModel<?> _calendarResourceRemoteModel;
 	private Class<?> _clpSerializerClass = com.liferay.calendar.service.ClpSerializer.class;

@@ -44,6 +44,20 @@ public class CalendarResourceServiceWrapper implements CalendarResourceService,
 	}
 
 	@Override
+	public com.liferay.calendar.model.CalendarResource addCalendarResource(
+		long groupId, long classNameId, long classPK,
+		java.lang.String classUuid, java.lang.String code,
+		java.util.Map<java.util.Locale, java.lang.String> nameMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		java.lang.String timeZoneId, boolean active,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _calendarResourceService.addCalendarResource(groupId,
+			classNameId, classPK, classUuid, code, nameMap, descriptionMap,
+			timeZoneId, active, serviceContext);
+	}
+
+	@Override
 	public com.liferay.calendar.model.CalendarResource deleteCalendarResource(
 		long calendarResourceId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -140,6 +154,18 @@ public class CalendarResourceServiceWrapper implements CalendarResourceService,
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _calendarResourceService.updateCalendarResource(calendarResourceId,
 			nameMap, descriptionMap, active, serviceContext);
+	}
+
+	@Override
+	public com.liferay.calendar.model.CalendarResource updateCalendarResource(
+		long calendarResourceId,
+		java.util.Map<java.util.Locale, java.lang.String> nameMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		java.lang.String timeZoneId, boolean active,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _calendarResourceService.updateCalendarResource(calendarResourceId,
+			nameMap, descriptionMap, timeZoneId, active, serviceContext);
 	}
 
 	/**

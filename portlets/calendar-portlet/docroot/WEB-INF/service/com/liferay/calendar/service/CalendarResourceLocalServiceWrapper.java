@@ -56,6 +56,20 @@ public class CalendarResourceLocalServiceWrapper
 			descriptionMap, active, serviceContext);
 	}
 
+	@Override
+	public com.liferay.calendar.model.CalendarResource addCalendarResource(
+		long userId, long groupId, long classNameId, long classPK,
+		java.lang.String classUuid, java.lang.String code,
+		java.util.Map<java.util.Locale, java.lang.String> nameMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		java.lang.String timeZoneId, boolean active,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _calendarResourceLocalService.addCalendarResource(userId,
+			groupId, classNameId, classPK, classUuid, code, nameMap,
+			descriptionMap, timeZoneId, active, serviceContext);
+	}
+
 	/**
 	* Creates a new calendar resource with the primary key. Does not add the calendar resource to the database.
 	*
@@ -417,6 +431,18 @@ public class CalendarResourceLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _calendarResourceLocalService.updateCalendarResource(calendarResourceId,
 			nameMap, descriptionMap, active, serviceContext);
+	}
+
+	@Override
+	public com.liferay.calendar.model.CalendarResource updateCalendarResource(
+		long calendarResourceId,
+		java.util.Map<java.util.Locale, java.lang.String> nameMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		java.lang.String timeZoneId, boolean active,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _calendarResourceLocalService.updateCalendarResource(calendarResourceId,
+			nameMap, descriptionMap, timeZoneId, active, serviceContext);
 	}
 
 	/**

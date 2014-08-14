@@ -38,7 +38,7 @@ public class CalendarResourceCacheModel implements CacheModel<CalendarResource>,
 	Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -70,6 +70,8 @@ public class CalendarResourceCacheModel implements CacheModel<CalendarResource>,
 		sb.append(name);
 		sb.append(", description=");
 		sb.append(description);
+		sb.append(", timeZoneId=");
+		sb.append(timeZoneId);
 		sb.append(", active=");
 		sb.append(active);
 		sb.append("}");
@@ -146,6 +148,13 @@ public class CalendarResourceCacheModel implements CacheModel<CalendarResource>,
 			calendarResourceImpl.setDescription(description);
 		}
 
+		if (timeZoneId == null) {
+			calendarResourceImpl.setTimeZoneId(StringPool.BLANK);
+		}
+		else {
+			calendarResourceImpl.setTimeZoneId(timeZoneId);
+		}
+
 		calendarResourceImpl.setActive(active);
 
 		calendarResourceImpl.resetOriginalValues();
@@ -170,6 +179,7 @@ public class CalendarResourceCacheModel implements CacheModel<CalendarResource>,
 		code = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
+		timeZoneId = objectInput.readUTF();
 		active = objectInput.readBoolean();
 	}
 
@@ -229,6 +239,13 @@ public class CalendarResourceCacheModel implements CacheModel<CalendarResource>,
 			objectOutput.writeUTF(description);
 		}
 
+		if (timeZoneId == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(timeZoneId);
+		}
+
 		objectOutput.writeBoolean(active);
 	}
 
@@ -247,5 +264,6 @@ public class CalendarResourceCacheModel implements CacheModel<CalendarResource>,
 	public String code;
 	public String name;
 	public String description;
+	public String timeZoneId;
 	public boolean active;
 }

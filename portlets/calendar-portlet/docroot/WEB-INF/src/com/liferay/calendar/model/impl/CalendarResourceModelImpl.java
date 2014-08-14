@@ -91,9 +91,10 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 			{ "code_", Types.VARCHAR },
 			{ "name", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
+			{ "timeZoneId", Types.VARCHAR },
 			{ "active_", Types.BOOLEAN }
 		};
-	public static final String TABLE_SQL_CREATE = "create table CalendarResource (uuid_ VARCHAR(75) null,calendarResourceId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,resourceBlockId LONG,classNameId LONG,classPK LONG,classUuid VARCHAR(75) null,code_ VARCHAR(75) null,name STRING null,description STRING null,active_ BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table CalendarResource (uuid_ VARCHAR(75) null,calendarResourceId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,resourceBlockId LONG,classNameId LONG,classPK LONG,classUuid VARCHAR(75) null,code_ VARCHAR(75) null,name STRING null,description STRING null,timeZoneId VARCHAR(75) null,active_ BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table CalendarResource";
 	public static final String ORDER_BY_JPQL = " ORDER BY calendarResource.code ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY CalendarResource.code_ ASC";
@@ -146,6 +147,7 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		model.setCode(soapModel.getCode());
 		model.setName(soapModel.getName());
 		model.setDescription(soapModel.getDescription());
+		model.setTimeZoneId(soapModel.getTimeZoneId());
 		model.setActive(soapModel.getActive());
 
 		return model;
@@ -227,6 +229,7 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		attributes.put("code", getCode());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
+		attributes.put("timeZoneId", getTimeZoneId());
 		attributes.put("active", getActive());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -325,6 +328,12 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 
 		if (description != null) {
 			setDescription(description);
+		}
+
+		String timeZoneId = (String)attributes.get("timeZoneId");
+
+		if (timeZoneId != null) {
+			setTimeZoneId(timeZoneId);
 		}
 
 		Boolean active = (Boolean)attributes.get("active");
@@ -815,6 +824,22 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 
 	@JSON
 	@Override
+	public String getTimeZoneId() {
+		if (_timeZoneId == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _timeZoneId;
+		}
+	}
+
+	@Override
+	public void setTimeZoneId(String timeZoneId) {
+		_timeZoneId = timeZoneId;
+	}
+
+	@JSON
+	@Override
 	public boolean getActive() {
 		return _active;
 	}
@@ -975,6 +1000,7 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		calendarResourceImpl.setCode(getCode());
 		calendarResourceImpl.setName(getName());
 		calendarResourceImpl.setDescription(getDescription());
+		calendarResourceImpl.setTimeZoneId(getTimeZoneId());
 		calendarResourceImpl.setActive(getActive());
 
 		calendarResourceImpl.resetOriginalValues();
@@ -1151,6 +1177,14 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 			calendarResourceCacheModel.description = null;
 		}
 
+		calendarResourceCacheModel.timeZoneId = getTimeZoneId();
+
+		String timeZoneId = calendarResourceCacheModel.timeZoneId;
+
+		if ((timeZoneId != null) && (timeZoneId.length() == 0)) {
+			calendarResourceCacheModel.timeZoneId = null;
+		}
+
 		calendarResourceCacheModel.active = getActive();
 
 		return calendarResourceCacheModel;
@@ -1158,7 +1192,7 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -1190,6 +1224,8 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		sb.append(getName());
 		sb.append(", description=");
 		sb.append(getDescription());
+		sb.append(", timeZoneId=");
+		sb.append(getTimeZoneId());
 		sb.append(", active=");
 		sb.append(getActive());
 		sb.append("}");
@@ -1199,7 +1235,7 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(52);
+		StringBundler sb = new StringBundler(55);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.calendar.model.CalendarResource");
@@ -1266,6 +1302,10 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		sb.append(getDescription());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>timeZoneId</column-name><column-value><![CDATA[");
+		sb.append(getTimeZoneId());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>active</column-name><column-value><![CDATA[");
 		sb.append(getActive());
 		sb.append("]]></column-value></column>");
@@ -1308,6 +1348,7 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 	private String _nameCurrentLanguageId;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _timeZoneId;
 	private boolean _active;
 	private boolean _originalActive;
 	private boolean _setOriginalActive;

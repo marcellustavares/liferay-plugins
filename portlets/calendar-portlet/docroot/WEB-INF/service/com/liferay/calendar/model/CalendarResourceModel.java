@@ -497,6 +497,21 @@ public interface CalendarResourceModel extends AttachedModel,
 		Locale defaultLocale);
 
 	/**
+	 * Returns the time zone ID of this calendar resource.
+	 *
+	 * @return the time zone ID of this calendar resource
+	 */
+	@AutoEscape
+	public String getTimeZoneId();
+
+	/**
+	 * Sets the time zone ID of this calendar resource.
+	 *
+	 * @param timeZoneId the time zone ID of this calendar resource
+	 */
+	public void setTimeZoneId(String timeZoneId);
+
+	/**
 	 * Returns the active of this calendar resource.
 	 *
 	 * @return the active of this calendar resource

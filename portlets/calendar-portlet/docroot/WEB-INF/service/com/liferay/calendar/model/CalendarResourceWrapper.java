@@ -66,6 +66,7 @@ public class CalendarResourceWrapper implements CalendarResource,
 		attributes.put("code", getCode());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
+		attributes.put("timeZoneId", getTimeZoneId());
 		attributes.put("active", getActive());
 
 		return attributes;
@@ -161,6 +162,12 @@ public class CalendarResourceWrapper implements CalendarResource,
 
 		if (description != null) {
 			setDescription(description);
+		}
+
+		String timeZoneId = (String)attributes.get("timeZoneId");
+
+		if (timeZoneId != null) {
+			setTimeZoneId(timeZoneId);
 		}
 
 		Boolean active = (Boolean)attributes.get("active");
@@ -499,6 +506,16 @@ public class CalendarResourceWrapper implements CalendarResource,
 	@Override
 	public long getResourceBlockId() {
 		return _calendarResource.getResourceBlockId();
+	}
+
+	/**
+	* Returns the time zone ID of this calendar resource.
+	*
+	* @return the time zone ID of this calendar resource
+	*/
+	@Override
+	public java.lang.String getTimeZoneId() {
+		return _calendarResource.getTimeZoneId();
 	}
 
 	/**
@@ -882,6 +899,16 @@ public class CalendarResourceWrapper implements CalendarResource,
 	@Override
 	public void setResourceBlockId(long resourceBlockId) {
 		_calendarResource.setResourceBlockId(resourceBlockId);
+	}
+
+	/**
+	* Sets the time zone ID of this calendar resource.
+	*
+	* @param timeZoneId the time zone ID of this calendar resource
+	*/
+	@Override
+	public void setTimeZoneId(java.lang.String timeZoneId) {
+		_calendarResource.setTimeZoneId(timeZoneId);
 	}
 
 	/**

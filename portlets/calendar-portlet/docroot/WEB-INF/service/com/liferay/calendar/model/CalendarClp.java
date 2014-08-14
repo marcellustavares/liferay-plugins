@@ -99,6 +99,7 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 		attributes.put("calendarResourceId", getCalendarResourceId());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
+		attributes.put("timeZoneId", getTimeZoneId());
 		attributes.put("color", getColor());
 		attributes.put("defaultCalendar", getDefaultCalendar());
 		attributes.put("enableComments", getEnableComments());
@@ -182,6 +183,12 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 
 		if (description != null) {
 			setDescription(description);
+		}
+
+		String timeZoneId = (String)attributes.get("timeZoneId");
+
+		if (timeZoneId != null) {
+			setTimeZoneId(timeZoneId);
 		}
 
 		Integer color = (Integer)attributes.get("color");
@@ -708,6 +715,29 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 	}
 
 	@Override
+	public String getTimeZoneId() {
+		return _timeZoneId;
+	}
+
+	@Override
+	public void setTimeZoneId(String timeZoneId) {
+		_timeZoneId = timeZoneId;
+
+		if (_calendarRemoteModel != null) {
+			try {
+				Class<?> clazz = _calendarRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setTimeZoneId", String.class);
+
+				method.invoke(_calendarRemoteModel, timeZoneId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public int getColor() {
 		return _color;
 	}
@@ -1017,6 +1047,7 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 		clone.setCalendarResourceId(getCalendarResourceId());
 		clone.setName(getName());
 		clone.setDescription(getDescription());
+		clone.setTimeZoneId(getTimeZoneId());
 		clone.setColor(getColor());
 		clone.setDefaultCalendar(getDefaultCalendar());
 		clone.setEnableComments(getEnableComments());
@@ -1081,7 +1112,7 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -1107,6 +1138,8 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 		sb.append(getName());
 		sb.append(", description=");
 		sb.append(getDescription());
+		sb.append(", timeZoneId=");
+		sb.append(getTimeZoneId());
 		sb.append(", color=");
 		sb.append(getColor());
 		sb.append(", defaultCalendar=");
@@ -1122,7 +1155,7 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(52);
+		StringBundler sb = new StringBundler(55);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.calendar.model.Calendar");
@@ -1177,6 +1210,10 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 		sb.append(getDescription());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>timeZoneId</column-name><column-value><![CDATA[");
+		sb.append(getTimeZoneId());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>color</column-name><column-value><![CDATA[");
 		sb.append(getColor());
 		sb.append("]]></column-value></column>");
@@ -1212,6 +1249,7 @@ public class CalendarClp extends BaseModelImpl<Calendar> implements Calendar {
 	private String _nameCurrentLanguageId;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _timeZoneId;
 	private int _color;
 	private boolean _defaultCalendar;
 	private boolean _enableComments;
