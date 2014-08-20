@@ -17,6 +17,7 @@ package com.liferay.calendar.service.impl;
 import com.liferay.calendar.CalendarNameException;
 import com.liferay.calendar.RequiredCalendarException;
 import com.liferay.calendar.model.Calendar;
+import com.liferay.calendar.model.CalendarResource;
 import com.liferay.calendar.service.base.CalendarLocalServiceBaseImpl;
 import com.liferay.calendar.util.CalendarDataFormat;
 import com.liferay.calendar.util.CalendarDataHandler;
@@ -52,6 +53,24 @@ public class CalendarLocalServiceImpl extends CalendarLocalServiceBaseImpl {
 			boolean enableRatings, ServiceContext serviceContext)
 		throws PortalException {
 
+		CalendarResource calendarResource =
+			calendarResourcePersistence.findByPrimaryKey(calendarResourceId);
+
+		return addCalendar(
+			userId, groupId, calendarResourceId, nameMap, descriptionMap,
+			calendarResource.getTimeZoneId(), color, defaultCalendar,
+			enableComments, enableRatings, serviceContext);
+	}
+
+	@Override
+	public Calendar addCalendar(
+			long userId, long groupId, long calendarResourceId,
+			Map<Locale, String> nameMap, Map<Locale, String> descriptionMap,
+			String timeZoneId, int color, boolean defaultCalendar,
+			boolean enableComments, boolean enableRatings,
+			ServiceContext serviceContext)
+		throws PortalException {
+
 		// Calendar
 
 		User user = userPersistence.findByPrimaryKey(userId);
@@ -79,6 +98,7 @@ public class CalendarLocalServiceImpl extends CalendarLocalServiceBaseImpl {
 		calendar.setNameMap(nameMap);
 		calendar.setDescriptionMap(descriptionMap);
 		calendar.setColor(color);
+		calendar.setTimeZoneId(timeZoneId);
 		calendar.setDefaultCalendar(defaultCalendar);
 		calendar.setEnableComments(enableComments);
 		calendar.setEnableRatings(enableRatings);
@@ -247,31 +267,12 @@ public class CalendarLocalServiceImpl extends CalendarLocalServiceBaseImpl {
 			boolean enableRatings, ServiceContext serviceContext)
 		throws PortalException {
 
-		// Calendar
+		Calendar calendar = calendarPersistence.fetchByPrimaryKey(calendarId);
 
-		if (color <= 0) {
-			color = PortletPropsValues.CALENDAR_COLOR_DEFAULT;
-		}
-
-		Calendar calendar = calendarPersistence.findByPrimaryKey(calendarId);
-
-		validate(nameMap);
-
-		calendar.setModifiedDate(serviceContext.getModifiedDate(null));
-		calendar.setNameMap(nameMap);
-		calendar.setDescriptionMap(descriptionMap);
-		calendar.setColor(color);
-		calendar.setDefaultCalendar(defaultCalendar);
-		calendar.setEnableComments(enableComments);
-		calendar.setEnableRatings(enableRatings);
-
-		calendarPersistence.update(calendar);
-
-		// Calendar
-
-		updateDefaultCalendar(calendar);
-
-		return calendar;
+		return updateCalendar(
+			calendarId, nameMap, descriptionMap, calendar.getTimeZoneId(),
+			color, defaultCalendar, enableComments, enableRatings,
+			serviceContext);
 	}
 
 	@Override
@@ -287,6 +288,42 @@ public class CalendarLocalServiceImpl extends CalendarLocalServiceBaseImpl {
 			calendarId, nameMap, descriptionMap, color,
 			calendar.isDefaultCalendar(), calendar.isEnableComments(),
 			calendar.isEnableRatings(), serviceContext);
+	}
+
+	@Override
+	public Calendar updateCalendar(
+			long calendarId, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, String timeZoneId, int color,
+			boolean defaultCalendar, boolean enableComments,
+			boolean enableRatings, ServiceContext serviceContext)
+		throws PortalException {
+
+		// Calendar
+
+		if (color <= 0) {
+			color = PortletPropsValues.CALENDAR_COLOR_DEFAULT;
+		}
+
+		Calendar calendar = calendarPersistence.findByPrimaryKey(calendarId);
+
+		validate(nameMap);
+
+		calendar.setModifiedDate(serviceContext.getModifiedDate(null));
+		calendar.setNameMap(nameMap);
+		calendar.setDescriptionMap(descriptionMap);
+		calendar.setColor(color);
+		calendar.setTimeZoneId(timeZoneId);
+		calendar.setDefaultCalendar(defaultCalendar);
+		calendar.setEnableComments(enableComments);
+		calendar.setEnableRatings(enableRatings);
+
+		calendarPersistence.update(calendar);
+
+		// Calendar
+
+		updateDefaultCalendar(calendar);
+
+		return calendar;
 	}
 
 	@Override

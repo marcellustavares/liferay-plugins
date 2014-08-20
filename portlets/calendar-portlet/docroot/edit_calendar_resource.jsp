@@ -90,6 +90,8 @@ String code = BeanParamUtil.getString(calendarResource, request, "code");
 					</aui:select>
 				</c:if>
 
+				<aui:input label="time-zone" name="timeZoneId" type="timeZone" />
+
 				<aui:input inlineLabel="left" name="active" type="checkbox" value="<%= (calendarResource == null) ? true : calendarResource.isActive() %>" />
 			</liferay-ui:panel>
 			<liferay-ui:panel defaultState="closed" extended="<%= false %>" id="calendarResourceCategorizationPanel" persistState="<%= true %>" title="categorization">

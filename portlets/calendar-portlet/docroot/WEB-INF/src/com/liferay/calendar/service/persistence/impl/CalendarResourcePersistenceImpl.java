@@ -6774,6 +6774,7 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 		calendarResourceImpl.setCode(calendarResource.getCode());
 		calendarResourceImpl.setName(calendarResource.getName());
 		calendarResourceImpl.setDescription(calendarResource.getDescription());
+		calendarResourceImpl.setTimeZoneId(calendarResource.getTimeZoneId());
 		calendarResourceImpl.setActive(calendarResource.isActive());
 
 		return calendarResourceImpl;

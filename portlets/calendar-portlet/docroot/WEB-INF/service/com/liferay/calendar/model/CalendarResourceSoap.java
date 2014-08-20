@@ -46,6 +46,7 @@ public class CalendarResourceSoap implements Serializable {
 		soapModel.setCode(model.getCode());
 		soapModel.setName(model.getName());
 		soapModel.setDescription(model.getDescription());
+		soapModel.setTimeZoneId(model.getTimeZoneId());
 		soapModel.setActive(model.getActive());
 
 		return soapModel;
@@ -221,6 +222,14 @@ public class CalendarResourceSoap implements Serializable {
 		_description = description;
 	}
 
+	public String getTimeZoneId() {
+		return _timeZoneId;
+	}
+
+	public void setTimeZoneId(String timeZoneId) {
+		_timeZoneId = timeZoneId;
+	}
+
 	public boolean getActive() {
 		return _active;
 	}
@@ -248,5 +257,6 @@ public class CalendarResourceSoap implements Serializable {
 	private String _code;
 	private String _name;
 	private String _description;
+	private String _timeZoneId;
 	private boolean _active;
 }

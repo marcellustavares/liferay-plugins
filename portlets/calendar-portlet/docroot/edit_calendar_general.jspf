@@ -40,6 +40,8 @@
 
 		<aui:input name="color" type="hidden" />
 
+		<aui:input label="time-zone" name="timeZoneId" type="timeZone" value="<%= (calendar != null) ? calendar.getTimeZoneId() : calendarResource.getTimeZoneId() %>" />
+
 		<aui:field-wrapper inlineLabel="left" label="color">
 			<div class="calendar-portlet-colors" id="<portlet:namespace />colorPicker"></div>
 		</aui:field-wrapper>

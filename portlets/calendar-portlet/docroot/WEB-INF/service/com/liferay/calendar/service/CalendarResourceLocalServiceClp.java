@@ -40,178 +40,194 @@ public class CalendarResourceLocalServiceClp
 				"com.liferay.portal.service.ServiceContext"
 			};
 
-		_methodName2 = "createCalendarResource";
+		_methodName2 = "addCalendarResource";
 
-		_methodParameterTypes2 = new String[] { "long" };
-
-		_methodName3 = "deleteCalendarResource";
-
-		_methodParameterTypes3 = new String[] {
-				"com.liferay.calendar.model.CalendarResource"
+		_methodParameterTypes2 = new String[] {
+				"long", "long", "long", "long", "java.lang.String",
+				"java.lang.String", "java.util.Map", "java.util.Map",
+				"java.lang.String", "boolean",
+				"com.liferay.portal.service.ServiceContext"
 			};
+
+		_methodName3 = "createCalendarResource";
+
+		_methodParameterTypes3 = new String[] { "long" };
 
 		_methodName4 = "deleteCalendarResource";
 
-		_methodParameterTypes4 = new String[] { "long" };
+		_methodParameterTypes4 = new String[] {
+				"com.liferay.calendar.model.CalendarResource"
+			};
 
-		_methodName5 = "deleteCalendarResources";
+		_methodName5 = "deleteCalendarResource";
 
 		_methodParameterTypes5 = new String[] { "long" };
 
-		_methodName6 = "deletePersistedModel";
+		_methodName6 = "deleteCalendarResources";
 
-		_methodParameterTypes6 = new String[] {
+		_methodParameterTypes6 = new String[] { "long" };
+
+		_methodName7 = "deletePersistedModel";
+
+		_methodParameterTypes7 = new String[] {
 				"com.liferay.portal.model.PersistedModel"
 			};
 
-		_methodName7 = "dynamicQuery";
-
-		_methodParameterTypes7 = new String[] {  };
-
 		_methodName8 = "dynamicQuery";
 
-		_methodParameterTypes8 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
-			};
+		_methodParameterTypes8 = new String[] {  };
 
 		_methodName9 = "dynamicQuery";
 
 		_methodParameterTypes9 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
 		_methodName10 = "dynamicQuery";
 
 		_methodParameterTypes10 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
-				"com.liferay.portal.kernel.util.OrderByComparator"
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
 			};
 
-		_methodName11 = "dynamicQueryCount";
+		_methodName11 = "dynamicQuery";
 
 		_methodParameterTypes11 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
 		_methodName12 = "dynamicQueryCount";
 
 		_methodParameterTypes12 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName13 = "dynamicQueryCount";
+
+		_methodParameterTypes13 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName13 = "fetchCalendarResource";
-
-		_methodParameterTypes13 = new String[] { "long" };
-
 		_methodName14 = "fetchCalendarResource";
 
-		_methodParameterTypes14 = new String[] { "long", "long" };
+		_methodParameterTypes14 = new String[] { "long" };
 
-		_methodName15 = "fetchCalendarResourceByUuidAndGroupId";
+		_methodName15 = "fetchCalendarResource";
 
-		_methodParameterTypes15 = new String[] { "java.lang.String", "long" };
+		_methodParameterTypes15 = new String[] { "long", "long" };
 
-		_methodName16 = "getActionableDynamicQuery";
+		_methodName16 = "fetchCalendarResourceByUuidAndGroupId";
 
-		_methodParameterTypes16 = new String[] {  };
+		_methodParameterTypes16 = new String[] { "java.lang.String", "long" };
 
-		_methodName17 = "getBeanIdentifier";
+		_methodName17 = "getActionableDynamicQuery";
 
 		_methodParameterTypes17 = new String[] {  };
 
-		_methodName18 = "getCalendarResource";
+		_methodName18 = "getBeanIdentifier";
 
-		_methodParameterTypes18 = new String[] { "long" };
+		_methodParameterTypes18 = new String[] {  };
 
-		_methodName19 = "getCalendarResourceByUuidAndGroupId";
+		_methodName19 = "getCalendarResource";
 
-		_methodParameterTypes19 = new String[] { "java.lang.String", "long" };
+		_methodParameterTypes19 = new String[] { "long" };
 
-		_methodName20 = "getCalendarResources";
+		_methodName20 = "getCalendarResourceByUuidAndGroupId";
 
-		_methodParameterTypes20 = new String[] { "long" };
+		_methodParameterTypes20 = new String[] { "java.lang.String", "long" };
 
 		_methodName21 = "getCalendarResources";
 
-		_methodParameterTypes21 = new String[] { "int", "int" };
+		_methodParameterTypes21 = new String[] { "long" };
 
-		_methodName22 = "getCalendarResourcesByUuidAndCompanyId";
+		_methodName22 = "getCalendarResources";
 
-		_methodParameterTypes22 = new String[] { "java.lang.String", "long" };
+		_methodParameterTypes22 = new String[] { "int", "int" };
 
 		_methodName23 = "getCalendarResourcesByUuidAndCompanyId";
 
-		_methodParameterTypes23 = new String[] {
+		_methodParameterTypes23 = new String[] { "java.lang.String", "long" };
+
+		_methodName24 = "getCalendarResourcesByUuidAndCompanyId";
+
+		_methodParameterTypes24 = new String[] {
 				"java.lang.String", "long", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName24 = "getCalendarResourcesCount";
+		_methodName25 = "getCalendarResourcesCount";
 
-		_methodParameterTypes24 = new String[] {  };
+		_methodParameterTypes25 = new String[] {  };
 
-		_methodName25 = "getExportActionableDynamicQuery";
+		_methodName26 = "getExportActionableDynamicQuery";
 
-		_methodParameterTypes25 = new String[] {
+		_methodParameterTypes26 = new String[] {
 				"com.liferay.portal.kernel.lar.PortletDataContext"
 			};
 
-		_methodName26 = "getPersistedModel";
+		_methodName27 = "getPersistedModel";
 
-		_methodParameterTypes26 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes27 = new String[] { "java.io.Serializable" };
 
-		_methodName28 = "search";
+		_methodName29 = "search";
 
-		_methodParameterTypes28 = new String[] {
+		_methodParameterTypes29 = new String[] {
 				"long", "long[][]", "long[][]", "java.lang.String",
 				"java.lang.String", "java.lang.String", "boolean", "boolean",
 				"int", "int", "com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName29 = "searchByKeywords";
+		_methodName30 = "searchByKeywords";
 
-		_methodParameterTypes29 = new String[] {
+		_methodParameterTypes30 = new String[] {
 				"long", "long[][]", "long[][]", "java.lang.String", "boolean",
 				"boolean", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName30 = "searchCount";
+		_methodName31 = "searchCount";
 
-		_methodParameterTypes30 = new String[] {
+		_methodParameterTypes31 = new String[] {
 				"long", "long[][]", "long[][]", "java.lang.String",
 				"java.lang.String", "java.lang.String", "boolean", "boolean"
 			};
 
-		_methodName31 = "searchCount";
+		_methodName32 = "searchCount";
 
-		_methodParameterTypes31 = new String[] {
+		_methodParameterTypes32 = new String[] {
 				"long", "long[][]", "long[][]", "java.lang.String", "boolean"
 			};
 
-		_methodName32 = "setBeanIdentifier";
+		_methodName33 = "setBeanIdentifier";
 
-		_methodParameterTypes32 = new String[] { "java.lang.String" };
+		_methodParameterTypes33 = new String[] { "java.lang.String" };
 
-		_methodName33 = "updateAsset";
-
-		_methodParameterTypes33 = new String[] {
-				"long", "com.liferay.calendar.model.CalendarResource",
-				"long[][]", "java.lang.String[][]"
-			};
-
-		_methodName34 = "updateCalendarResource";
+		_methodName34 = "updateAsset";
 
 		_methodParameterTypes34 = new String[] {
-				"com.liferay.calendar.model.CalendarResource"
+				"long", "com.liferay.calendar.model.CalendarResource",
+				"long[][]", "java.lang.String[][]"
 			};
 
 		_methodName35 = "updateCalendarResource";
 
 		_methodParameterTypes35 = new String[] {
+				"com.liferay.calendar.model.CalendarResource"
+			};
+
+		_methodName36 = "updateCalendarResource";
+
+		_methodParameterTypes36 = new String[] {
 				"long", "java.util.Map", "java.util.Map", "boolean",
 				"com.liferay.portal.service.ServiceContext"
+			};
+
+		_methodName37 = "updateCalendarResource";
+
+		_methodParameterTypes37 = new String[] {
+				"long", "java.util.Map", "java.util.Map", "java.lang.String",
+				"boolean", "com.liferay.portal.service.ServiceContext"
 			};
 	}
 
@@ -296,13 +312,70 @@ public class CalendarResourceLocalServiceClp
 	}
 
 	@Override
+	public com.liferay.calendar.model.CalendarResource addCalendarResource(
+		long userId, long groupId, long classNameId, long classPK,
+		java.lang.String classUuid, java.lang.String code,
+		java.util.Map<java.util.Locale, java.lang.String> nameMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		java.lang.String timeZoneId, boolean active,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName2,
+					_methodParameterTypes2,
+					new Object[] {
+						userId,
+						
+					groupId,
+						
+					classNameId,
+						
+					classPK,
+						
+					ClpSerializer.translateInput(classUuid),
+						
+					ClpSerializer.translateInput(code),
+						
+					ClpSerializer.translateInput(nameMap),
+						
+					ClpSerializer.translateInput(descriptionMap),
+						
+					ClpSerializer.translateInput(timeZoneId),
+						
+					active,
+						
+					ClpSerializer.translateInput(serviceContext)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.calendar.model.CalendarResource)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.calendar.model.CalendarResource createCalendarResource(
 		long calendarResourceId) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName2,
-					_methodParameterTypes2, new Object[] { calendarResourceId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName3,
+					_methodParameterTypes3, new Object[] { calendarResourceId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -326,8 +399,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName3,
-					_methodParameterTypes3,
+			returnObj = _invokableLocalService.invokeMethod(_methodName4,
+					_methodParameterTypes4,
 					new Object[] { ClpSerializer.translateInput(
 							calendarResource) });
 		}
@@ -357,8 +430,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName4,
-					_methodParameterTypes4, new Object[] { calendarResourceId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName5,
+					_methodParameterTypes5, new Object[] { calendarResourceId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -383,8 +456,8 @@ public class CalendarResourceLocalServiceClp
 	public void deleteCalendarResources(long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName5,
-				_methodParameterTypes5, new Object[] { groupId });
+			_invokableLocalService.invokeMethod(_methodName6,
+				_methodParameterTypes6, new Object[] { groupId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -410,8 +483,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6,
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -438,8 +511,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -462,8 +535,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8,
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -488,8 +561,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9,
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -521,8 +594,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -554,8 +627,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11,
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -580,8 +653,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12,
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -609,8 +682,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName13,
-					_methodParameterTypes13, new Object[] { calendarResourceId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14, new Object[] { calendarResourceId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -633,8 +706,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14,
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15,
 					new Object[] { classNameId, classPK });
 		}
 		catch (Throwable t) {
@@ -658,8 +731,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16,
 					new Object[] { ClpSerializer.translateInput(uuid), groupId });
 		}
 		catch (Throwable t) {
@@ -682,8 +755,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -705,8 +778,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -730,8 +803,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18, new Object[] { calendarResourceId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19, new Object[] { calendarResourceId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -759,8 +832,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19,
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20,
 					new Object[] { ClpSerializer.translateInput(uuid), groupId });
 		}
 		catch (Throwable t) {
@@ -788,8 +861,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20, new Object[] { groupId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21, new Object[] { groupId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -812,8 +885,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -836,8 +909,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName22,
-					_methodParameterTypes22,
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23,
 					new Object[] { ClpSerializer.translateInput(uuid), companyId });
 		}
 		catch (Throwable t) {
@@ -862,8 +935,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23,
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
 					new Object[] {
 						ClpSerializer.translateInput(uuid),
 						
@@ -896,8 +969,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -920,8 +993,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
 					new Object[] {
 						ClpSerializer.translateInput(portletDataContext)
 					});
@@ -948,8 +1021,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26,
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -988,8 +1061,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName28,
-					_methodParameterTypes28,
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29,
 					new Object[] {
 						companyId,
 						
@@ -1038,8 +1111,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName29,
-					_methodParameterTypes29,
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30,
 					new Object[] {
 						companyId,
 						
@@ -1082,8 +1155,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName30,
-					_methodParameterTypes30,
+			returnObj = _invokableLocalService.invokeMethod(_methodName31,
+					_methodParameterTypes31,
 					new Object[] {
 						companyId,
 						
@@ -1123,8 +1196,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName31,
-					_methodParameterTypes31,
+			returnObj = _invokableLocalService.invokeMethod(_methodName32,
+					_methodParameterTypes32,
 					new Object[] {
 						companyId,
 						
@@ -1155,8 +1228,8 @@ public class CalendarResourceLocalServiceClp
 	@Override
 	public void setBeanIdentifier(java.lang.String beanIdentifier) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName32,
-				_methodParameterTypes32,
+			_invokableLocalService.invokeMethod(_methodName33,
+				_methodParameterTypes33,
 				new Object[] { ClpSerializer.translateInput(beanIdentifier) });
 		}
 		catch (Throwable t) {
@@ -1178,8 +1251,8 @@ public class CalendarResourceLocalServiceClp
 		long[] assetCategoryIds, java.lang.String[] assetTagNames)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName33,
-				_methodParameterTypes33,
+			_invokableLocalService.invokeMethod(_methodName34,
+				_methodParameterTypes34,
 				new Object[] {
 					userId,
 					
@@ -1213,8 +1286,8 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName34,
-					_methodParameterTypes34,
+			returnObj = _invokableLocalService.invokeMethod(_methodName35,
+					_methodParameterTypes35,
 					new Object[] { ClpSerializer.translateInput(
 							calendarResource) });
 		}
@@ -1243,14 +1316,60 @@ public class CalendarResourceLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName35,
-					_methodParameterTypes35,
+			returnObj = _invokableLocalService.invokeMethod(_methodName36,
+					_methodParameterTypes36,
 					new Object[] {
 						calendarResourceId,
 						
 					ClpSerializer.translateInput(nameMap),
 						
 					ClpSerializer.translateInput(descriptionMap),
+						
+					active,
+						
+					ClpSerializer.translateInput(serviceContext)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.calendar.model.CalendarResource)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.calendar.model.CalendarResource updateCalendarResource(
+		long calendarResourceId,
+		java.util.Map<java.util.Locale, java.lang.String> nameMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		java.lang.String timeZoneId, boolean active,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName37,
+					_methodParameterTypes37,
+					new Object[] {
+						calendarResourceId,
+						
+					ClpSerializer.translateInput(nameMap),
+						
+					ClpSerializer.translateInput(descriptionMap),
+						
+					ClpSerializer.translateInput(timeZoneId),
 						
 					active,
 						
@@ -1331,8 +1450,8 @@ public class CalendarResourceLocalServiceClp
 	private String[] _methodParameterTypes25;
 	private String _methodName26;
 	private String[] _methodParameterTypes26;
-	private String _methodName28;
-	private String[] _methodParameterTypes28;
+	private String _methodName27;
+	private String[] _methodParameterTypes27;
 	private String _methodName29;
 	private String[] _methodParameterTypes29;
 	private String _methodName30;
@@ -1347,4 +1466,8 @@ public class CalendarResourceLocalServiceClp
 	private String[] _methodParameterTypes34;
 	private String _methodName35;
 	private String[] _methodParameterTypes35;
+	private String _methodName36;
+	private String[] _methodParameterTypes36;
+	private String _methodName37;
+	private String[] _methodParameterTypes37;
 }

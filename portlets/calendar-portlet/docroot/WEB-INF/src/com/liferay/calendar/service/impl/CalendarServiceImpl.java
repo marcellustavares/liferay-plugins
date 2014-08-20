@@ -47,12 +47,30 @@ public class CalendarServiceImpl extends CalendarServiceBaseImpl {
 		throws PortalException {
 
 		CalendarResourcePermission.check(
+				getPermissionChecker(), calendarResourceId,
+				ActionKeys.ADD_CALENDAR);
+
+		return calendarLocalService.addCalendar(
+			getUserId(), groupId, calendarResourceId, nameMap, descriptionMap,
+			color, defaultCalendar, enableComments, enableRatings,
+			serviceContext);
+	}
+
+	@Override
+	public Calendar addCalendar(
+			long groupId, long calendarResourceId, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, String timeZoneId, int color,
+			boolean defaultCalendar, boolean enableComments,
+			boolean enableRatings, ServiceContext serviceContext)
+		throws PortalException {
+
+		CalendarResourcePermission.check(
 			getPermissionChecker(), calendarResourceId,
 			ActionKeys.ADD_CALENDAR);
 
 		return calendarLocalService.addCalendar(
 			getUserId(), groupId, calendarResourceId, nameMap, descriptionMap,
-			color, defaultCalendar, enableComments, enableRatings,
+			timeZoneId, color, defaultCalendar, enableComments, enableRatings,
 			serviceContext);
 	}
 
@@ -263,6 +281,22 @@ public class CalendarServiceImpl extends CalendarServiceBaseImpl {
 
 		return calendarLocalService.updateCalendar(
 			calendarId, nameMap, descriptionMap, color, serviceContext);
+	}
+
+	@Override
+	public Calendar updateCalendar(
+			long calendarId, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, String timeZoneId, int color,
+			boolean defaultCalendar, boolean enableComments,
+			boolean enableRatings, ServiceContext serviceContext)
+		throws PortalException {
+
+		CalendarPermission.check(
+			getPermissionChecker(), calendarId, ActionKeys.UPDATE);
+
+		return calendarLocalService.updateCalendar(
+			calendarId, nameMap, descriptionMap, timeZoneId, color,
+			defaultCalendar, enableComments, enableRatings, serviceContext);
 	}
 
 	@Override
