@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.cal.DayAndPosition;
 import com.liferay.portal.kernel.cal.TZSRecurrence;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -565,11 +564,6 @@ public class CalendarImporterLocalServiceImpl
 					weekdays.add(positionalWeekday);
 				}
 			}
-		}
-		else if (frequency == Frequency.YEARLY) {
-			List<Integer> months = ListUtil.toList(tzsRecurrence.getByMonth());
-
-			recurrence.setMonths(months);
 		}
 
 		recurrence.setInterval(interval);
