@@ -23,7 +23,9 @@ import com.google.ical.values.WeekdayNum;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.text.ParseException;
@@ -77,17 +79,21 @@ public class RecurrenceSerializer {
 				recurrence.setUntilJCalendar(jCalendar);
 			}
 
-			List<Weekday> weekdays = new ArrayList<Weekday>();
+			List<PositionalWeekday> weekdays =
+				new ArrayList<PositionalWeekday>();
 
 			for (WeekdayNum weekdayNum : rRule.getByDay()) {
 				Weekday weekday = Weekday.parse(weekdayNum.wday.toString());
 
-				weekday.setPosition(weekdayNum.num);
+				PositionalWeekday positionalWeekday = new PositionalWeekday(
+					weekday, weekdayNum.num);
 
-				weekdays.add(weekday);
+				weekdays.add(positionalWeekday);
 			}
 
 			recurrence.setWeekdays(weekdays);
+
+			recurrence.setMonths(ListUtil.toList(rRule.getByMonth()));
 
 			return recurrence;
 		}
@@ -103,8 +109,9 @@ public class RecurrenceSerializer {
 
 		List<WeekdayNum> weekdayNums = new ArrayList<WeekdayNum>();
 
-		for (Weekday weekday : recurrence.getWeekdays()) {
-			com.google.ical.values.Weekday wday = _weekdaysMap.get(weekday);
+		for (PositionalWeekday weekday : recurrence.getWeekdays()) {
+			com.google.ical.values.Weekday wday = _weekdaysMap.get(
+				weekday.getWeekday());
 
 			WeekdayNum weekdayNum = new WeekdayNum(weekday.getPosition(), wday);
 
@@ -112,6 +119,12 @@ public class RecurrenceSerializer {
 		}
 
 		rRule.setByDay(weekdayNums);
+
+		List<Integer> months = recurrence.getMonths();
+
+		if (months != null) {
+			rRule.setByMonth(ArrayUtil.toIntArray(months));
+		}
 
 		rRule.setCount(recurrence.getCount());
 
