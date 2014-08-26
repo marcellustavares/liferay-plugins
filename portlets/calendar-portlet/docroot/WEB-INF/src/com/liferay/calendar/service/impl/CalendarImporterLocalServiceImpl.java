@@ -47,7 +47,7 @@ import com.liferay.portlet.asset.model.AssetLink;
 import com.liferay.portlet.asset.model.AssetTag;
 import com.liferay.portlet.asset.model.AssetVocabulary;
 import com.liferay.portlet.calendar.model.CalEvent;
-import com.liferay.portlet.calendar.service.persistence.CalEventActionableDynamicQuery;
+import com.liferay.portlet.calendar.service.CalEventLocalServiceUtil;
 import com.liferay.portlet.messageboards.model.MBDiscussion;
 import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.portlet.messageboards.model.MBMessageConstants;
@@ -74,7 +74,11 @@ public class CalendarImporterLocalServiceImpl
 
 		// Calendar event
 
-		if (isImported(calEvent)) {
+		CalendarBooking calendarBooking = fetchCalendarBooking(calEvent);
+
+		if (calendarBooking != null) {
+			verifyCalendarBooking(calendarBooking, calEvent);
+
 			return;
 		}
 
@@ -141,16 +145,21 @@ public class CalendarImporterLocalServiceImpl
 	@Override
 	public void importCalEvents() throws PortalException {
 		ActionableDynamicQuery actionableDynamicQuery =
-			new CalEventActionableDynamicQuery() {
+			CalEventLocalServiceUtil.getActionableDynamicQuery();
 
-			@Override
-			protected void performAction(Object object) throws PortalException {
-				CalEvent calEvent = (CalEvent)object;
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod() {
 
-				importCalEvent(calEvent);
-			}
+				@Override
+				public void performAction(Object object)
+					throws PortalException {
 
-		};
+					CalEvent calEvent = (CalEvent)object;
+
+					importCalEvent(calEvent);
+				}
+
+			});
 
 		actionableDynamicQuery.performActions();
 	}
@@ -435,6 +444,16 @@ public class CalendarImporterLocalServiceImpl
 		subscription.setFrequency(frequency);
 
 		subscriptionPersistence.update(subscription);
+	}
+
+	protected CalendarBooking fetchCalendarBooking(CalEvent calEvent)
+		throws PortalException {
+
+		CalendarResource calendarResource = getCalendarResource(
+			calEvent.getCompanyId(), calEvent.getGroupId());
+
+		return calendarBookingPersistence.fetchByUUID_G(
+			calEvent.getUuid(), calendarResource.getGroupId());
 	}
 
 	protected long getActionId(
@@ -947,21 +966,6 @@ public class CalendarImporterLocalServiceImpl
 		}
 	}
 
-	protected boolean isImported(CalEvent calEvent) throws PortalException {
-		CalendarResource calendarResource = getCalendarResource(
-			calEvent.getCompanyId(), calEvent.getGroupId());
-
-		CalendarBooking calendarBooking =
-			calendarBookingPersistence.fetchByUUID_G(
-				calEvent.getUuid(), calendarResource.getGroupId());
-
-		if (calendarBooking != null) {
-			return true;
-		}
-
-		return false;
-	}
-
 	protected void updateMBThreadRootMessageId(
 			long threadId, long rootMessageId)
 		throws PortalException {
@@ -971,6 +975,31 @@ public class CalendarImporterLocalServiceImpl
 		mbThread.setRootMessageId(rootMessageId);
 
 		mbThreadPersistence.update(mbThread);
+	}
+
+	protected void verifyCalendarBooking(
+			CalendarBooking calendarBooking, CalEvent calEvent)
+		throws PortalException {
+
+		if (!calendarBooking.isRecurring()) {
+			return;
+		}
+
+		String calendarBookingRecurrence = calendarBooking.getRecurrence();
+		String calEventRecurrence = getRecurrence(calEvent.getRecurrenceObj());
+
+		String monthlyRRule = "RRULE:FREQ=MONTHLY;INTERVAL=1";
+		String yearlyRRule = "RRULE:FREQ=YEARLY;INTERVAL=1";
+
+		if ((calendarBookingRecurrence.equals(monthlyRRule) &&
+			 !calEventRecurrence.equals(monthlyRRule)) ||
+			(calendarBookingRecurrence.equals(yearlyRRule) &&
+			 !calEventRecurrence.equals(yearlyRRule))) {
+
+			calendarBooking.setRecurrence(calEventRecurrence);
+		}
+
+		calendarBookingPersistence.update(calendarBooking);
 	}
 
 	private static final String _ASSET_VOCABULARY_NAME = "Calendar Event Types";
