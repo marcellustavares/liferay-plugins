@@ -388,7 +388,6 @@ public class CalendarPortlet extends MVCPortlet {
 			redirect, actionResponse.getNamespace() + "calendarBookingId",
 			calendarBooking.getCalendarBookingId());
 
-		actionRequest.setAttribute(WebKeys.CALENDAR_BOOKING, calendarBooking);
 		actionRequest.setAttribute(WebKeys.REDIRECT, redirect);
 	}
 
