@@ -333,10 +333,6 @@ public class CalendarPortlet extends MVCPortlet {
 				endTimeJCalendar.getTimeInMillis(), allDay, recurrence,
 				reminders[0], remindersType[0], reminders[1], remindersType[1],
 				serviceContext);
-
-			redirect = HttpUtil.setParameter(
-				redirect, actionResponse.getNamespace() + "calendarBookingId",
-				calendarBooking.getCalendarBookingId());
 		}
 		else {
 			boolean updateCalendarBookingInstance = ParamUtil.getBoolean(
@@ -388,7 +384,10 @@ public class CalendarPortlet extends MVCPortlet {
 			}
 		}
 
-		actionRequest.setAttribute(WebKeys.CALENDAR_BOOKING, calendarBooking);
+		redirect = HttpUtil.setParameter(
+			redirect, actionResponse.getNamespace() + "calendarBookingId",
+			calendarBooking.getCalendarBookingId());
+
 		actionRequest.setAttribute(WebKeys.REDIRECT, redirect);
 	}
 
