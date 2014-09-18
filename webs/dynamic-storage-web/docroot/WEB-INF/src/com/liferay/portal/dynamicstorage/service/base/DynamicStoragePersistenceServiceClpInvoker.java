@@ -1,0 +1,90 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.portal.dynamicstorage.service.base;
+
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.portal.dynamicstorage.service.DynamicStoragePersistenceServiceUtil;
+
+import java.util.Arrays;
+
+/**
+ * @author Marcellus Tavares
+ * @generated
+ */
+@ProviderType
+public class DynamicStoragePersistenceServiceClpInvoker {
+	public DynamicStoragePersistenceServiceClpInvoker() {
+		_methodName36 = "getBeanIdentifier";
+
+		_methodParameterTypes36 = new String[] {  };
+
+		_methodName37 = "setBeanIdentifier";
+
+		_methodParameterTypes37 = new String[] { "java.lang.String" };
+
+		_methodName40 = "create";
+
+		_methodParameterTypes40 = new String[] {
+				"long", "java.lang.String", "java.lang.String"
+			};
+
+		_methodName41 = "delete";
+
+		_methodParameterTypes41 = new String[] {
+				"long", "java.lang.String", "long"
+			};
+	}
+
+	public Object invokeMethod(String name, String[] parameterTypes,
+		Object[] arguments) throws Throwable {
+		if (_methodName36.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes36, parameterTypes)) {
+			return DynamicStoragePersistenceServiceUtil.getBeanIdentifier();
+		}
+
+		if (_methodName37.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes37, parameterTypes)) {
+			DynamicStoragePersistenceServiceUtil.setBeanIdentifier((java.lang.String)arguments[0]);
+
+			return null;
+		}
+
+		if (_methodName40.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes40, parameterTypes)) {
+			return DynamicStoragePersistenceServiceUtil.create(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], (java.lang.String)arguments[2]);
+		}
+
+		if (_methodName41.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes41, parameterTypes)) {
+			DynamicStoragePersistenceServiceUtil.delete(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], ((Long)arguments[2]).longValue());
+
+			return null;
+		}
+
+		throw new UnsupportedOperationException();
+	}
+
+	private String _methodName36;
+	private String[] _methodParameterTypes36;
+	private String _methodName37;
+	private String[] _methodParameterTypes37;
+	private String _methodName40;
+	private String[] _methodParameterTypes40;
+	private String _methodName41;
+	private String[] _methodParameterTypes41;
+}

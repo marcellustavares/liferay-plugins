@@ -1,0 +1,1 @@
+create unique index IX_D6F654E0 on DynamicStorageAppEntity (appId, entityName);

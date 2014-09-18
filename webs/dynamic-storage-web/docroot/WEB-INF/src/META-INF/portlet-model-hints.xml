@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.portal.dynamicstorage.model.DynamicStorageAppEntity">
+		<field name="appEntityId" type="long" />
+		<field name="appId" type="long" />
+		<field name="entityName" type="String" />
+		<field name="DDMStructureId" type="long" />
+	</model>
+</model-hints>

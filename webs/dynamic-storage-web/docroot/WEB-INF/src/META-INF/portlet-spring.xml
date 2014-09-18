@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="com.liferay.portal.dynamicstorage.service.DynamicStorageAppEntityLocalService" class="com.liferay.portal.dynamicstorage.service.impl.DynamicStorageAppEntityLocalServiceImpl" />
+	<bean id="com.liferay.portal.dynamicstorage.service.persistence.DynamicStorageAppEntityPersistence" class="com.liferay.portal.dynamicstorage.service.persistence.impl.DynamicStorageAppEntityPersistenceImpl" parent="basePersistence" />
+	<bean id="com.liferay.portal.dynamicstorage.service.DynamicStoragePersistenceLocalService" class="com.liferay.portal.dynamicstorage.service.impl.DynamicStoragePersistenceLocalServiceImpl" />
+	<bean id="com.liferay.portal.dynamicstorage.service.DynamicStoragePersistenceService" class="com.liferay.portal.dynamicstorage.service.impl.DynamicStoragePersistenceServiceImpl" />
+	<bean id="com.liferay.portal.dynamicstorage.service.DynamicStorageRegistryLocalService" class="com.liferay.portal.dynamicstorage.service.impl.DynamicStorageRegistryLocalServiceImpl" />
+	<bean id="com.liferay.portal.dynamicstorage.service.DynamicStorageRegistryService" class="com.liferay.portal.dynamicstorage.service.impl.DynamicStorageRegistryServiceImpl" />
+</beans>

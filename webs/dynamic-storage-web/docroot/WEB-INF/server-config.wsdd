@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+	<globalConfiguration>
+		<parameter name="adminPassword" value="admin" />
+		<parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl" />
+		<parameter name="sendXsiTypes" value="true" />
+		<parameter name="sendMultiRefs" value="true" />
+		<parameter name="sendXMLDeclaration" value="true" />
+		<parameter name="axis.sendMinimizedElements" value="true" />
+		<requestFlow>
+			<handler type="java:org.apache.axis.handlers.JWSHandler">
+				<parameter name="scope" value="session" />
+			</handler>
+			<handler type="java:org.apache.axis.handlers.JWSHandler">
+				<parameter name="scope" value="request" />
+				<parameter name="extension" value=".jwr" />
+			</handler>
+		</requestFlow>
+	</globalConfiguration>
+	<handler name="LocalResponder" type="java:org.apache.axis.transport.local.LocalResponder" />
+	<handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper" />
+	<handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler" />
+	<transport name="http">
+		<requestFlow>
+			<handler type="URLMapper" />
+			<handler type="java:org.apache.axis.handlers.http.HTTPAuthHandler" />
+		</requestFlow>
+	</transport>
+	<transport name="local">
+		<responseFlow>
+			<handler type="LocalResponder" />
+		</responseFlow>
+	</transport>
+	<service name="Plugin_DynamicStorage_DynamicStoragePersistenceService" provider="java:RPC" style="rpc" use="encoded">
+		<parameter name="allowedMethods" value="*" />
+		<parameter name="className" value="com.liferay.portal.dynamicstorage.service.http.DynamicStoragePersistenceServiceSoap" />
+		<parameter name="typeMappingVersion" value="1.2" />
+		<parameter name="wsdlPortType" value="DynamicStoragePersistenceServiceSoap" />
+		<parameter name="wsdlServiceElement" value="DynamicStoragePersistenceServiceSoapService" />
+		<parameter name="wsdlServicePort" value="Plugin_DynamicStorage_DynamicStoragePersistenceService" />
+		<parameter name="wsdlTargetNamespace" value="urn:http.service.dynamicstorage.portal.liferay.com" />
+	</service>
+	<service name="Plugin_DynamicStorage_DynamicStorageRegistryService" provider="java:RPC" style="rpc" use="encoded">
+		<operation xmlns:operNS="urn:http.service.dynamicstorage.portal.liferay.com" name="registerEntity" qname="operNS:registerEntity" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="appId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="entityName" type="tns:string"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="entityStructure" type="tns:string"></parameter>
+		</operation>
+		<parameter name="allowedMethods" value="registerEntity" />
+		<parameter name="className" value="com.liferay.portal.dynamicstorage.service.http.DynamicStorageRegistryServiceSoap" />
+		<parameter name="typeMappingVersion" value="1.2" />
+		<parameter name="wsdlPortType" value="DynamicStorageRegistryServiceSoap" />
+		<parameter name="wsdlServiceElement" value="DynamicStorageRegistryServiceSoapService" />
+		<parameter name="wsdlServicePort" value="Plugin_DynamicStorage_DynamicStorageRegistryService" />
+		<parameter name="wsdlTargetNamespace" value="urn:http.service.dynamicstorage.portal.liferay.com" />
+	</service>
+</deployment>

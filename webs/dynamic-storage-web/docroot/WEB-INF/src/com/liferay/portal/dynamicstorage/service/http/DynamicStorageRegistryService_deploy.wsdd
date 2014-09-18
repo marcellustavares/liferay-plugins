@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+	<service name="Plugin_DynamicStorage_DynamicStorageRegistryService" provider="java:RPC" style="rpc" use="encoded">
+		<operation xmlns:operNS="urn:http.service.dynamicstorage.portal.liferay.com" name="registerEntity" qname="operNS:registerEntity" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="appId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="entityName" type="tns:string"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="entityStructure" type="tns:string"></parameter>
+		</operation>
+		<parameter name="allowedMethods" value="registerEntity" />
+		<parameter name="className" value="com.liferay.portal.dynamicstorage.service.http.DynamicStorageRegistryServiceSoap" />
+		<parameter name="typeMappingVersion" value="1.2" />
+		<parameter name="wsdlPortType" value="DynamicStorageRegistryServiceSoap" />
+		<parameter name="wsdlServiceElement" value="DynamicStorageRegistryServiceSoapService" />
+		<parameter name="wsdlServicePort" value="Plugin_DynamicStorage_DynamicStorageRegistryService" />
+		<parameter name="wsdlTargetNamespace" value="urn:http.service.dynamicstorage.portal.liferay.com" />
+	</service>
+</deployment>
