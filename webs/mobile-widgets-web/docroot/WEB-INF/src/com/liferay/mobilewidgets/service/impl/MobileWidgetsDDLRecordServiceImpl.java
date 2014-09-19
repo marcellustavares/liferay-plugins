@@ -14,6 +14,13 @@
 
 package com.liferay.mobilewidgets.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
 import com.liferay.mobilewidgets.service.base.MobileWidgetsDDLRecordServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -22,16 +29,46 @@ import com.liferay.portlet.dynamicdatamapping.storage.Field;
 import com.liferay.portlet.dynamicdatamapping.storage.FieldConstants;
 import com.liferay.portlet.dynamicdatamapping.storage.Fields;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * @author José Manuel Navarro
  */
 public class MobileWidgetsDDLRecordServiceImpl
 	extends MobileWidgetsDDLRecordServiceBaseImpl {
+
+	public int getDDLRecordsCount(long recordSetId, long userId)
+			throws SystemException {
+
+		return ddlRecordPersistence.countByR_U(recordSetId, userId);
+	}
+
+	@SuppressWarnings({"rawtypes"}) 
+	public List<HashMap> getDDLRecords(
+				long recordSetId, long userId, int start, int end,
+				Locale locale)
+			throws PortalException, SystemException {
+
+		List<DDLRecord> records = ddlRecordPersistence.findByR_U(
+			recordSetId, userId, start, end);
+
+		List<HashMap> recordValuesMaps = 
+			new ArrayList<HashMap>(records.size());
+
+		for (DDLRecord record : records) {
+			Map<String, Object> recordAttributes = record.getModelAttributes();
+
+			Map<String, String> recordValues = getDDLRecordValues(
+				record.getRecordId(), locale);
+
+			Map<String, HashMap> recordMap = new HashMap<String, HashMap>();
+
+			recordMap.put("attributes", (HashMap) recordAttributes);
+			recordMap.put("values", (HashMap) recordValues);
+			
+			recordValuesMaps.add((HashMap) recordMap);
+		}
+
+		return recordValuesMaps;
+	}
 
 	public Map<String, String> getDDLRecordValues(
 			long ddlRecordId, Locale locale)
