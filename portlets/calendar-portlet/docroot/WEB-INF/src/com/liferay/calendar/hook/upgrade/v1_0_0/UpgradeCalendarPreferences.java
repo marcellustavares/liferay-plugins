@@ -28,7 +28,7 @@ import javax.portlet.PortletPreferences;
 /**
  * @author Bryan Engler
  */
-public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
+public class UpgradeCalendarPreferences extends BaseUpgradePortletPreferences {
 
 	@Override
 	protected String getUpdatePortletPreferencesWhereClause() {
