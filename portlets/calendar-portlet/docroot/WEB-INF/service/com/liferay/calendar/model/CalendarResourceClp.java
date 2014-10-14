@@ -829,34 +829,15 @@ public class CalendarResourceClp extends BaseModelImpl<CalendarResource>
 	}
 
 	@Override
-	public com.liferay.calendar.model.Calendar getDefaultCalendar() {
+	public java.util.List<com.liferay.calendar.model.Calendar> getCalendars() {
 		try {
-			String methodName = "getDefaultCalendar";
+			String methodName = "getCalendars";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
 			Object[] parameterValues = new Object[] {  };
 
-			com.liferay.calendar.model.Calendar returnObj = (com.liferay.calendar.model.Calendar)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public boolean isUser() {
-		try {
-			String methodName = "isUser";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
+			java.util.List<com.liferay.calendar.model.Calendar> returnObj = (java.util.List<com.liferay.calendar.model.Calendar>)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
@@ -905,15 +886,34 @@ public class CalendarResourceClp extends BaseModelImpl<CalendarResource>
 	}
 
 	@Override
-	public java.util.List<com.liferay.calendar.model.Calendar> getCalendars() {
+	public boolean isUser() {
 		try {
-			String methodName = "getCalendars";
+			String methodName = "isUser";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
 			Object[] parameterValues = new Object[] {  };
 
-			java.util.List<com.liferay.calendar.model.Calendar> returnObj = (java.util.List<com.liferay.calendar.model.Calendar>)invokeOnRemoteModel(methodName,
+			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public com.liferay.calendar.model.Calendar getDefaultCalendar() {
+		try {
+			String methodName = "getDefaultCalendar";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			com.liferay.calendar.model.Calendar returnObj = (com.liferay.calendar.model.Calendar)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
