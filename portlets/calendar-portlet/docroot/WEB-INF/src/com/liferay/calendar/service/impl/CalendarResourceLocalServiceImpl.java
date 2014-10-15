@@ -61,7 +61,17 @@ public class CalendarResourceLocalServiceImpl
 
 		// Calendar resource
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userPersistence.fetchByPrimaryKey(userId);
+
+		if (user == null) {
+			user = userPersistence.fetchByPrimaryKey(
+				serviceContext.getUserId());
+		}
+
+		if (user == null) {
+			user = userLocalService.getDefaultUser(
+				serviceContext.getCompanyId());
+		}
 
 		long calendarResourceId = counterLocalService.increment();
 
