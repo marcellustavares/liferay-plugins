@@ -68,11 +68,6 @@ public class CalendarResourceLocalServiceImpl
 				serviceContext.getUserId());
 		}
 
-		if (user == null) {
-			user = userLocalService.getDefaultUser(
-				serviceContext.getCompanyId());
-		}
-
 		long calendarResourceId = counterLocalService.increment();
 
 		if (classNameId ==
