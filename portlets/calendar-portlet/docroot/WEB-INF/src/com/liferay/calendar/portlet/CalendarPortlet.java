@@ -100,6 +100,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -768,6 +769,13 @@ public class CalendarPortlet extends MVCPortlet {
 
 				positionalWeekdays.add(
 					new PositionalWeekday(weekday, position));
+
+				if (frequency == Frequency.YEARLY) {
+					List<Integer> months = Arrays.asList(
+						ParamUtil.getInteger(actionRequest, "startTimeMonth"));
+
+					recurrence.setMonths(months);
+				}
 			}
 		}
 
