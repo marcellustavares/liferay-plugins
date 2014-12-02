@@ -49,12 +49,6 @@ public class MobileWidgetsDDLRecordServiceImpl
 
 		Fields fields = ddlRecord.getFields();
 
-		Set<Locale> availableLocales = fields.getAvailableLocales();
-
-		if ((locale == null) || !availableLocales.contains(locale)) {
-			locale = fields.getDefaultLocale();
-		}
-
 		for (Field field : fields) {
 			Object fieldValue = getFieldValue(field, locale);
 
