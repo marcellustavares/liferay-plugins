@@ -141,6 +141,9 @@ public class MobileWidgetsDDLRecordServiceImpl
 		else if (dataType.equals(FieldConstants.SHORT)) {
 			return Short.valueOf(fieldValueString);
 		}
+		else if (dataType.equals(FieldConstants.STRING)) {
+			return field.getRenderedValue(locale);
+		}
 
 		return fieldValueString;
 	}
