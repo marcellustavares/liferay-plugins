@@ -49,12 +49,6 @@ public class MobileWidgetsDDLRecordServiceImpl
 
 		Fields fields = ddlRecord.getFields();
 
-		Set<Locale> availableLocales = fields.getAvailableLocales();
-
-		if ((locale == null) || !availableLocales.contains(locale)) {
-			locale = fields.getDefaultLocale();
-		}
-
 		for (Field field : fields) {
 			Object fieldValue = getFieldValue(field, locale);
 
@@ -137,7 +131,7 @@ public class MobileWidgetsDDLRecordServiceImpl
 		String dataType = field.getDataType();
 
 		if (dataType.equals(FieldConstants.BOOLEAN)) {
-			return Boolean.valueOf(fieldValueString);
+			return Boolean.valueOf(field.getRenderedValue(locale));
 		}
 		else if (dataType.equals(FieldConstants.DATE)) {
 			return field.getRenderedValue(locale);
@@ -163,6 +157,9 @@ public class MobileWidgetsDDLRecordServiceImpl
 		}
 		else if (dataType.equals(FieldConstants.SHORT)) {
 			return Short.valueOf(fieldValueString);
+		}
+		else if (dataType.equals(FieldConstants.STRING)) {
+			return field.getRenderedValue(locale);
 		}
 
 		return fieldValueString;
