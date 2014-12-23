@@ -308,6 +308,13 @@ public class CalendarUtil {
 	public static JSONObject toCalendarJSONObject(
 		ThemeDisplay themeDisplay, Calendar calendar) {
 
+		return toCalendarJSONObject(themeDisplay, calendar, true);
+	}
+
+	public static JSONObject toCalendarJSONObject(
+		ThemeDisplay themeDisplay, Calendar calendar,
+		boolean includePermissions) {
+
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("calendarId", calendar.getCalendarId());
@@ -327,10 +334,14 @@ public class CalendarUtil {
 		jsonObject.put("classPK", calendarResource.getClassPK());
 		jsonObject.put("groupId", calendar.getGroupId());
 		jsonObject.put("name", calendar.getName(themeDisplay.getLocale()));
-		jsonObject.put(
-			"permissions",
-			_getPermissionsJSONObject(
-				themeDisplay.getPermissionChecker(), calendar));
+
+		if (includePermissions) {
+			jsonObject.put(
+				"permissions",
+				_getPermissionsJSONObject(
+					themeDisplay.getPermissionChecker(), calendar));
+		}
+
 		jsonObject.put("userId", calendar.getUserId());
 
 		return jsonObject;
@@ -358,6 +369,13 @@ public class CalendarUtil {
 	public static JSONArray toCalendarsJSONArray(
 		ThemeDisplay themeDisplay, List<Calendar> calendars) {
 
+		return toCalendarsJSONArray(themeDisplay, calendars, true);
+	}
+
+	public static JSONArray toCalendarsJSONArray(
+		ThemeDisplay themeDisplay, List<Calendar> calendars,
+		boolean includePermissions) {
+
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		if (calendars == null) {
@@ -366,7 +384,7 @@ public class CalendarUtil {
 
 		for (Calendar calendar : calendars) {
 			JSONObject jsonObject = toCalendarJSONObject(
-				themeDisplay, calendar);
+				themeDisplay, calendar, includePermissions);
 
 			jsonArray.put(jsonObject);
 		}
