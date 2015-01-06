@@ -118,16 +118,17 @@ public class CalendarBookingApprovalWorkflowImpl
 		CalendarResource calendarResource =
 			calendarBooking.getCalendarResource();
 
+		if (userId == calendarResource.getUserId()) {
+			return true;
+		}
+
 		User user = UserLocalServiceUtil.getUser(calendarResource.getUserId());
 
 		if (user.isDefaultUser() && PortalUtil.isOmniadmin(userId)) {
 			return true;
 		}
-		else if (userId != calendarResource.getUserId()) {
-			return false;
-		}
 
-		return true;
+		return false;
 	}
 
 }
