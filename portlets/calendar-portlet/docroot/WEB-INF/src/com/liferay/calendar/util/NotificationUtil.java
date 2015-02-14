@@ -214,13 +214,13 @@ public class NotificationUtil {
 		throws Exception {
 
 		List<NotificationRecipient> notificationRecipients = new ArrayList<>();
+		Set<User> users = new HashSet<>();
 
+		Calendar calendar = calendarBooking.getCalendar();
 		CalendarResource calendarResource =
 			calendarBooking.getCalendarResource();
 
-		Set<User> users = new HashSet<>();
-
-		users.add(UserLocalServiceUtil.getUser(calendarBooking.getUserId()));
+		users.add(UserLocalServiceUtil.getUser(calendar.getUserId()));
 		users.add(UserLocalServiceUtil.getUser(calendarResource.getUserId()));
 
 		for (User user : users) {
