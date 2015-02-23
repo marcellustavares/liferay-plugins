@@ -388,16 +388,16 @@ public class CalendarICalDataHandler implements CalendarDataHandler {
 
 		CalendarBooking calendarBooking = null;
 
-		String uuid = null;
+		String vEventUidValue = null;
 
 		Uid uid = vEvent.getUid();
 
 		if (uid != null) {
-			uuid = uid.getValue();
+			vEventUidValue = uid.getValue();
 
 			calendarBooking =
 				CalendarBookingLocalServiceUtil.fetchCalendarBooking(
-					uuid, calendar.getGroupId());
+					calendarId, vEventUidValue);
 		}
 
 		ServiceContext serviceContext = new ServiceContext();
@@ -408,15 +408,13 @@ public class CalendarICalDataHandler implements CalendarDataHandler {
 		serviceContext.setScopeGroupId(calendar.getGroupId());
 
 		if (calendarBooking == null) {
-			serviceContext.setUuid(uuid);
-
 			CalendarBookingServiceUtil.addCalendarBooking(
 				calendarId, childCalendarIdsArray,
 				CalendarBookingConstants.PARENT_CALENDAR_BOOKING_ID_DEFAULT,
 				titleMap, descriptionMap, locationString, startDate.getTime(),
 				endDate.getTime(), allDay, recurrence, firstReminder,
 				firstReminderType, secondReminder, secondReminderType,
-				serviceContext);
+				vEventUidValue, serviceContext);
 		}
 		else {
 			CalendarBookingServiceUtil.updateCalendarBooking(
@@ -592,7 +590,7 @@ public class CalendarICalDataHandler implements CalendarDataHandler {
 
 		// UID
 
-		Uid uid = new Uid(calendarBooking.getUuid());
+		Uid uid = new Uid(calendarBooking.getVEventUid());
 
 		propertyList.add(uid);
 

@@ -60,6 +60,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.ResourceConstants;
@@ -96,6 +97,24 @@ public class CalendarBookingLocalServiceImpl
 			long endTime, boolean allDay, String recurrence, long firstReminder,
 			String firstReminderType, long secondReminder,
 			String secondReminderType, ServiceContext serviceContext)
+		throws PortalException {
+
+		return addCalendarBooking(
+			userId, calendarId, childCalendarIds, parentCalendarBookingId,
+			titleMap, descriptionMap, location, startTime, endTime, allDay,
+			recurrence, firstReminder, firstReminderType, secondReminder,
+			secondReminderType, null, serviceContext);
+	}
+
+	@Override
+	public CalendarBooking addCalendarBooking(
+			long userId, long calendarId, long[] childCalendarIds,
+			long parentCalendarBookingId, Map<Locale, String> titleMap,
+			Map<Locale, String> descriptionMap, String location, long startTime,
+			long endTime, boolean allDay, String recurrence, long firstReminder,
+			String firstReminderType, long secondReminder,
+			String secondReminderType, String vEventUid,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		// Calendar booking
@@ -142,6 +161,14 @@ public class CalendarBookingLocalServiceImpl
 			calendarBookingId);
 
 		calendarBooking.setUuid(serviceContext.getUuid());
+
+		if (vEventUid != null) {
+			calendarBooking.setVEventUid(vEventUid);
+		}
+		else {
+			calendarBooking.setVEventUid(PortalUUIDUtil.generate());
+		}
+
 		calendarBooking.setGroupId(calendar.getGroupId());
 		calendarBooking.setCompanyId(user.getCompanyId());
 		calendarBooking.setUserId(user.getUserId());
@@ -404,6 +431,13 @@ public class CalendarBookingLocalServiceImpl
 				calendarDataFormat);
 
 		return calendarDataHandler.exportCalendarBooking(calendarBookingId);
+	}
+
+	@Override
+	public CalendarBooking fetchCalendarBooking(
+		long calendarId, String vEventUid) {
+
+		return calendarBookingPersistence.fetchByC_V(calendarId, vEventUid);
 	}
 
 	@Override
