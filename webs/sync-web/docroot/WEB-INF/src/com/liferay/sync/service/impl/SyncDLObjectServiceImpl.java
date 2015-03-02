@@ -101,7 +101,13 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 		throws PortalException {
 
 		try {
-			SyncUtil.checkSyncEnabled(repositoryId);
+			Group group = groupLocalService.getGroup(repositoryId);
+
+			SyncUtil.checkSyncEnabled(group.getGroupId());
+
+			if (serviceContext.getGroupPermissions() == null) {
+				SyncUtil.setFilePermissions(group, false, serviceContext);
+			}
 
 			FileEntry fileEntry = dlAppService.addFileEntry(
 				repositoryId, folderId, sourceFileName, mimeType, title,
@@ -138,7 +144,13 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 		throws PortalException {
 
 		try {
-			SyncUtil.checkSyncEnabled(repositoryId);
+			Group group = groupLocalService.getGroup(repositoryId);
+
+			SyncUtil.checkSyncEnabled(group.getGroupId());
+
+			if (serviceContext.getGroupPermissions() == null) {
+				SyncUtil.setFilePermissions(group, true, serviceContext);
+			}
 
 			Folder folder = dlAppService.addFolder(
 				repositoryId, parentFolderId, name, description,
@@ -759,7 +771,7 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 
 	@Override
 	public SyncDLObject patchFileEntry(
-			long fileEntryId, String sourceVersion, String sourceFileName,
+			long fileEntryId, long sourceVersionId, String sourceFileName,
 			String mimeType, String title, String description, String changeLog,
 			boolean majorVersion, File deltaFile, String checksum,
 			ServiceContext serviceContext)
@@ -772,8 +784,11 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 
 			SyncUtil.checkSyncEnabled(fileEntry.getGroupId());
 
+			DLFileVersion dlFileVersion =
+				dlFileVersionLocalService.getDLFileVersion(sourceVersionId);
+
 			File sourceFile = dlFileEntryLocalService.getFile(
-				getUserId(), fileEntryId, sourceVersion, false);
+				fileEntryId, dlFileVersion.getVersion(), false);
 
 			patchedFile = FileUtil.createTempFile();
 
@@ -784,17 +799,14 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 				changeLog, majorVersion, patchedFile, checksum, serviceContext);
 
 			if (PortletPropsValues.SYNC_FILE_DIFF_CACHE_ENABLED &&
-				!sourceVersion.equals(syncDLObject.getVersion())) {
+				(sourceVersionId != syncDLObject.getVersionId())) {
 
-				DLFileVersion sourceDLFileVersion =
-					dlFileVersionLocalService.getFileVersion(
-						fileEntryId, sourceVersion);
 				DLFileVersion targetDLFileVersion =
 					dlFileVersionLocalService.getFileVersion(
-						fileEntryId, syncDLObject.getVersion());
+						syncDLObject.getVersionId());
 
 				syncDLFileVersionDiffLocalService.addSyncDLFileVersionDiff(
-					fileEntryId, sourceDLFileVersion.getFileVersionId(),
+					fileEntryId, sourceVersionId,
 					targetDLFileVersion.getFileVersionId(), deltaFile);
 			}
 
@@ -1150,8 +1162,8 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 		else if (urlPath.endsWith("/patch-file-entry")) {
 			long fileEntryId = MapUtil.getLong(
 				jsonWebServiceActionParametersMap, "fileEntryId");
-			String sourceVersion = MapUtil.getString(
-				jsonWebServiceActionParametersMap, "sourceVersion");
+			long sourceVersionId = MapUtil.getLong(
+				jsonWebServiceActionParametersMap, "sourceVersionId");
 			String sourceFileName = MapUtil.getString(
 				jsonWebServiceActionParametersMap, "sourceFileName");
 			String mimeType = MapUtil.getString(
@@ -1177,9 +1189,9 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 					jsonWebServiceActionParametersMap, "checksum");
 
 				return patchFileEntry(
-					fileEntryId, sourceVersion, sourceFileName, mimeType, title,
-					description, changeLog, majorVersion, tempFile, checksum,
-					serviceContext);
+					fileEntryId, sourceVersionId, sourceFileName, mimeType,
+					title, description, changeLog, majorVersion, tempFile,
+					checksum, serviceContext);
 			}
 			finally {
 				FileUtil.delete(tempFile);

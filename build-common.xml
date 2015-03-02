@@ -156,30 +156,9 @@ Error-Prone was automatically installed. Please rerun your task.
 		</else>
 	</if>
 
-	<macrodef name="baseline-jar-macro">
-		<attribute name="module.dir" />
-
-		<sequential>
-			<manifest-helper />
-
-			<bndexpand propertyfile="@{bndRootFile}" />
-
-			<baseline-jar
-				bndRootFile="${sdk.dir}/common.bnd"
-				file="@{module.dir}/bnd.bnd"
-				outputPath="${plugin.file}"
-				sourcePath="@{module.dir}"
-			>
-				<classpath>
-					<pathelement location="${plugin.classes.dir}" />
-				</classpath>
-			</baseline-jar>
-		</sequential>
-	</macrodef>
-
 	<macrodef name="build-css">
 		<attribute name="module.dir" />
-		<attribute default="${module.dir.unix}/docroot" name="saas.docroot.dir" />
+		<attribute default="${module.dir.unix}/docroot" name="sass.docroot.dir" />
 
 		<sequential>
 			<java
@@ -191,7 +170,7 @@ Error-Prone was automatically installed. Please rerun your task.
 			>
 				<jvmarg value="-Dliferay.lib.portal.dir=${app.server.lib.portal.dir}" />
 				<arg value="sass.dir=/" />
-				<arg value="sass.docroot.dir=@{saas.docroot.dir}" />
+				<arg value="sass.docroot.dir=@{sass.docroot.dir}" />
 				<arg value="sass.portal.common.dir=${app.server.portal.dir}/html/css/common" />
 			</java>
 
@@ -320,6 +299,7 @@ Error-Prone was automatically installed. Please rerun your task.
 			</if>
 
 			<delete dir="@{module.dir}/javadoc" />
+			<delete dir="@{module.dir}/pmd-reports" />
 			<delete dir="@{module.dir}/test-classes" />
 			<delete dir="@{module.dir}/test-results" />
 			<delete dir="@{module.dir}/tmp" />
@@ -711,7 +691,7 @@ Error-Prone was automatically installed. Please rerun your task.
 
 		<sequential>
 			<copy todir="@{javac.destdir}">
-				<fileset dir="@{javac.srcdir}" excludes="**/*.java" />
+				<fileset dir="@{javac.srcdir}" excludes="**/*.java,**/.sass-cache/*" />
 			</copy>
 
 			<if>
@@ -1637,11 +1617,22 @@ Please find a solution that does not require portal-impl.jar.
 				module.dir="@{module.dir}"
 			/>
 
-			<javadoc
-				classpathref="plugin.classpath"
-				destdir="javadoc"
-				sourcepath="${plugin.source.dir}"
-			/>
+			<resourcecount property="module.java.count">
+				<fileset dir="${plugin.source.dir}" includes="**/*.java" />
+			</resourcecount>
+
+			<if>
+				<not>
+					<equals arg1="${module.java.count}" arg2="0" />
+				</not>
+				<then>
+					<javadoc
+						classpathref="plugin.classpath"
+						destdir="javadoc"
+						sourcepath="${plugin.source.dir}"
+					/>
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -1653,10 +1644,15 @@ Please find a solution that does not require portal-impl.jar.
 				module.dir="@{module.dir}"
 			/>
 
-			<jar
-				basedir="javadoc"
-				jarfile="${plugin.javadoc.file}"
-			/>
+			<if>
+				<available file="javadoc" />
+				<then>
+					<jar
+						basedir="javadoc"
+						jarfile="${plugin.javadoc.file}"
+					/>
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -1699,6 +1695,52 @@ Please find a solution that does not require portal-impl.jar.
 							</uptodate>
 						</not>
 						<then>
+							<if>
+								<and>
+									<available file="@{module.dir}/docroot" />
+								</and>
+								<then>
+									<resourcecount property="module.css.count">
+										<fileset dir="@{module.dir}/docroot" includes="**/*.css" />
+									</resourcecount>
+
+									<if>
+										<not>
+											<equals arg1="${module.css.count}" arg2="0" />
+										</not>
+										<then>
+											<build-css
+												module.dir="@{module.dir}"
+												sass.docroot.dir="docroot"
+											/>
+										</then>
+									</if>
+								</then>
+							</if>
+
+							<if>
+								<and>
+									<available file="@{module.dir}/src/META-INF/resources" />
+								</and>
+								<then>
+									<resourcecount property="module.css.count">
+										<fileset dir="@{module.dir}/src/META-INF/resources" includes="**/*.css" />
+									</resourcecount>
+
+									<if>
+										<not>
+											<equals arg1="${module.css.count}" arg2="0" />
+										</not>
+										<then>
+											<build-css
+												module.dir="@{module.dir}"
+												sass.docroot.dir="src/META-INF/resources"
+											/>
+										</then>
+									</if>
+								</then>
+							</if>
+
 							<set-build-xml-var
 								build.xml.var.name="original.lib.name"
 								module.dir="@{module.dir}"
@@ -1735,13 +1777,21 @@ Please find a solution that does not require portal-impl.jar.
 								</then>
 							</if>
 
-							<loadfile property="jar-macro.bnd.bnd.content" srcFile="@{module.dir}/bnd.bnd" />
+							<manifest-helper />
 
-							<var name="jar-macro.bnd.bnd.content" unset="true" />
+							<bndexpand propertyfile="${sdk.dir}/common.bnd" />
 
-							<baseline-jar-macro
-								module.dir="@{module.dir}"
-							/>
+							<bnd eclipse="false" exceptions="true" failok="false" inherit="true" output="${plugin.file}">
+								<property name="-sourcepath" value="@{module.dir}" />
+								<classpath>
+									<pathelement location="${plugin.classes.dir}" />
+								</classpath>
+								<bndfiles>
+									<fileset dir="@{module.dir}">
+										<include name="bnd.bnd"/>
+									</fileset>
+								</bndfiles>
+							</bnd>
 						</then>
 					</if>
 
@@ -1962,6 +2012,39 @@ Please find a solution that does not require portal-impl.jar.
 			<delete file="@{module.dir}/build.gradle" />
 
 			<touch file="@{module.dir}/build.gradle" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="run-pmd">
+		<attribute name="module.dir" />
+
+		<sequential>
+			<path id="classpath.net.sourceforge.pmd">
+				<fileset dir="${sdk.dir}/dependencies/net.sourceforge.pmd/lib" includes="*.jar" />
+			</path>
+
+			<taskdef classpathref="classpath.net.sourceforge.pmd" classname="net.sourceforge.pmd.ant.PMDTask" name="pmd" />
+
+			<if>
+				<isset property="pmd.basedir" />
+				<then>
+					<var name="module.pmd.basedir" value="${pmd.basedir}" />
+				</then>
+				<else>
+					<var name="module.pmd.basedir" value="@{module.dir}" />
+				</else>
+			</if>
+
+			<mkdir dir="${module.pmd.basedir}/pmd-reports" />
+
+			<pmd shortFilenames="true" threads="${pmd.threads}">
+				<fileset dir="${module.pmd.basedir}" excludes="${pmd.java.excludes}" includes="${pmd.java.includes}" />
+				<formatter toConsole="${pmd.output.console}" toFile="${module.pmd.basedir}/pmd-reports/pmd-report.${pmd.output.type}" type="${pmd.output.type}" />
+				<ruleset>${pmd.java.ruleset}</ruleset>
+				<sourceLanguage name="java" version="${ant.build.javac.source}" />
+			</pmd>
+
+			<var name="module.pmd.basedir" unset="true" />
 		</sequential>
 	</macrodef>
 
@@ -2596,6 +2679,13 @@ for (String path : paths) {
 		/>
 	</target>
 
+	<target name="compile-test">
+		<loop-macrodef-or-target
+			module.dirs="${plugins.includes.path}"
+			target.name="compile-test"
+		/>
+	</target>
+
 	<target name="create">
 		<if>
 			<or>
@@ -2718,27 +2808,19 @@ for (String path : paths) {
 	</target>
 
 	<target name="run-pmd">
-		<path id="classpath.net.sourceforge.pmd">
-			<fileset dir="${sdk.dir}/dependencies/net.sourceforge.pmd/lib" includes="*.jar" />
-		</path>
-
-		<taskdef classpathref="classpath.net.sourceforge.pmd" classname="net.sourceforge.pmd.ant.PMDTask" name="pmd" />
-
 		<if>
 			<not>
-				<isset property="pmd.basedir" />
+				<isset property="plugins.includes.path" />
 			</not>
 			<then>
-				<property name="pmd.basedir" value="${basedir}" />
+				<property name="plugins.includes.path" value="${basedir}" />
 			</then>
 		</if>
 
-		<pmd shortFilenames="true" threads="${pmd.threads}">
-			<fileset dir="${pmd.basedir}" excludes="${pmd.java.excludes}" includes="${pmd.java.includes}" />
-			<formatter toConsole="true" type="text" />
-			<ruleset>${pmd.java.ruleset}</ruleset>
-			<sourceLanguage name="java" version="${ant.build.javac.source}" />
-		</pmd>
+		<loop-macrodef-or-target
+			module.dirs="${plugins.includes.path}"
+			target.name="run-pmd"
+		/>
 	</target>
 
 	<target name="setup-arquillian">
