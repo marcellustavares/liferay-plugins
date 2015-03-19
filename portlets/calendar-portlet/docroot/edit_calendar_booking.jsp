@@ -405,6 +405,20 @@ for (long otherCalendarId : otherCalendarIds) {
 
 	var scheduler = window.<portlet:namespace />scheduler;
 
+	A.one('#<portlet:namespace />saveButton').on(
+		'click',
+		function() {
+			A.one('#<portlet:namespace />workflowAction').val('<%= WorkflowConstants.ACTION_SAVE_DRAFT %>');
+		}
+	);
+
+	A.one('#<portlet:namespace />publishButton').on(
+		'click',
+		function() {
+			A.one('#<portlet:namespace />workflowAction').val('<%= WorkflowConstants.ACTION_PUBLISH %>');
+		}
+	);
+
 	var syncCalendarsMap = function() {
 		Liferay.CalendarUtil.syncCalendarsMap(
 			[
