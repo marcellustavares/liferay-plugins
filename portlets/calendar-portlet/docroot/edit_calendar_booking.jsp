@@ -319,7 +319,9 @@ for (long otherCalendarId : otherCalendarIds) {
 	<%@ include file="/calendar_booking_recurrence_container.jspf" %>
 
 	<aui:button-row>
-		<aui:button type="submit" />
+		<aui:button name="publishButton" type="submit" value="publish" />
+
+		<aui:button name="saveButton" primary="<%= false %>" type="submit" value="save-as-draft" />
 
 		<c:if test="<%= calendarBooking != null %>">
 			<liferay-security:permissionsURL
