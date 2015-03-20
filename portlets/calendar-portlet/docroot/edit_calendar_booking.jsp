@@ -330,7 +330,16 @@ for (long otherCalendarId : otherCalendarIds) {
 	<%@ include file="/calendar_booking_recurrence_container.jspf" %>
 
 	<aui:button-row>
-		<aui:button name="publishButton" type="submit" value="publish" />
+
+		<%
+		String publishButtonLabel = "publish";
+
+		if (hasWorkflowDefinitionLink) {
+			publishButtonLabel = "submit-for-publication";
+		}
+		%>
+
+		<aui:button name="publishButton" type="submit" value="<%= publishButtonLabel %>" />
 
 		<aui:button name="saveButton" primary="<%= false %>" type="submit" value="save-as-draft" />
 
