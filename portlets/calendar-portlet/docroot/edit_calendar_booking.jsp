@@ -81,7 +81,9 @@ JSONArray declinedCalendarsJSONArray = JSONFactoryUtil.createJSONArray();
 JSONArray maybeCalendarsJSONArray = JSONFactoryUtil.createJSONArray();
 JSONArray pendingCalendarsJSONArray = JSONFactoryUtil.createJSONArray();
 
+boolean approved = false;
 boolean hasChildCalendarBookings = false;
+boolean hasWorkflowDefinitionLink = false;
 boolean invitable = true;
 boolean masterBooking = true;
 Recurrence recurrence = null;
@@ -90,6 +92,9 @@ boolean recurring = false;
 Calendar calendar = CalendarServiceUtil.fetchCalendar(calendarId);
 
 if (calendarBooking != null) {
+	calendar = calendarBooking.getCalendar();
+	CalendarResource calendarResource = calendar.getCalendarResource();
+
 	acceptedCalendarsJSONArray = CalendarUtil.toCalendarBookingsJSONArray(themeDisplay, CalendarBookingServiceUtil.getChildCalendarBookings(calendarBooking.getParentCalendarBookingId(), CalendarBookingWorkflowConstants.STATUS_APPROVED));
 	declinedCalendarsJSONArray = CalendarUtil.toCalendarBookingsJSONArray(themeDisplay, CalendarBookingServiceUtil.getChildCalendarBookings(calendarBooking.getParentCalendarBookingId(), CalendarBookingWorkflowConstants.STATUS_DENIED));
 	maybeCalendarsJSONArray = CalendarUtil.toCalendarBookingsJSONArray(themeDisplay, CalendarBookingServiceUtil.getChildCalendarBookings(calendarBooking.getParentCalendarBookingId(), CalendarBookingWorkflowConstants.STATUS_MAYBE));
@@ -112,9 +117,12 @@ if (calendarBooking != null) {
 	}
 
 	recurrence = calendarBooking.getRecurrenceObj();
+	approved = calendarBooking.isApproved();
+	hasWorkflowDefinitionLink = WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(themeDisplay.getCompanyId(), calendarResource.getGroupId(), CalendarBooking.class.getName());
 }
 else if (calendar != null) {
 	JSONObject calendarJSONObject = CalendarUtil.toCalendarJSONObject(themeDisplay, calendar);
+	CalendarResource calendarResource = calendar.getCalendarResource();
 
 	if (calendar.getUserId() == themeDisplay.getUserId()) {
 		acceptedCalendarsJSONArray.put(calendarJSONObject);
@@ -122,6 +130,8 @@ else if (calendar != null) {
 	else {
 		pendingCalendarsJSONArray.put(calendarJSONObject);
 	}
+
+	hasWorkflowDefinitionLink = WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(themeDisplay.getCompanyId(), calendarResource.getGroupId(), CalendarBooking.class.getName());
 }
 
 List<Calendar> manageableCalendars = CalendarServiceUtil.search(themeDisplay.getCompanyId(), new long[] {user.getGroupId(), scopeGroupId}, null, null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new CalendarNameComparator(true), ActionKeys.MANAGE_BOOKINGS);
