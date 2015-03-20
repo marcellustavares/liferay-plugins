@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.WorkflowDefinitionLinkLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import java.util.ArrayList;
@@ -334,6 +335,11 @@ public class CalendarUtil {
 		jsonObject.put("classNameId", calendarResource.getClassNameId());
 		jsonObject.put("classPK", calendarResource.getClassPK());
 		jsonObject.put("groupId", calendar.getGroupId());
+		jsonObject.put(
+			"hasWorkflowDefinitionLink",
+			WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(
+				themeDisplay.getCompanyId(), calendarResource.getGroupId(),
+				CalendarBooking.class.getName()));
 		jsonObject.put("name", calendar.getName(themeDisplay.getLocale()));
 		jsonObject.put(
 			"permissions",
