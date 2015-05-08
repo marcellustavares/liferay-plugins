@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.BaseRepositoryImpl;
 import com.liferay.portal.kernel.repository.RepositoryException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.repository.model.FileShortcut;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.search.Document;
@@ -103,6 +104,14 @@ public class ExtRepositoryAdapter extends BaseRepositoryImpl {
 
 		return _toExtRepositoryObjectAdapter(
 			ExtRepositoryObjectAdapterType.FILE, extRepositoryFileEntry);
+	}
+
+	@Override
+	public FileShortcut addFileShortcut(
+		long userId, long folderId, long toFileEntryId,
+		ServiceContext serviceContext) {
+
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -229,6 +238,16 @@ public class ExtRepositoryAdapter extends BaseRepositoryImpl {
 			ExtRepositoryAdapterCache.getInstance();
 
 		extRepositoryAdapterCache.remove(extRepositoryFileEntryKey);
+	}
+
+	@Override
+	public void deleteFileShortcut(long fileShortcutId) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void deleteFileShortcuts(long toFileEntryId) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -406,6 +425,11 @@ public class ExtRepositoryAdapter extends BaseRepositoryImpl {
 
 		return _toExtRepositoryObjectAdapter(
 			ExtRepositoryObjectAdapterType.FILE, extRepositoryFileEntry);
+	}
+
+	@Override
+	public FileShortcut getFileShortcut(long fileShortcutId) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -1009,6 +1033,21 @@ public class ExtRepositoryAdapter extends BaseRepositoryImpl {
 
 		return _toExtRepositoryObjectAdapter(
 			ExtRepositoryObjectAdapterType.FILE, extRepositoryFileEntry);
+	}
+
+	@Override
+	public FileShortcut updateFileShortcut(
+		long userId, long fileShortcutId, long folderId, long toFileEntryId,
+		ServiceContext serviceContext) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void updateFileShortcuts(
+		long oldToFileEntryId, long newToFileEntryId) {
+
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
