@@ -14,6 +14,8 @@
 
 package com.liferay.calendar.service;
 
+import com.liferay.calendar.model.CalendarBooking;
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -22,6 +24,7 @@ import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalServiceUtil;
@@ -37,7 +40,9 @@ import java.util.TimeZone;
 import org.jboss.arquillian.junit.Arquillian;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -66,6 +71,48 @@ public class CalendarImporterLocalServiceTest {
 		GroupLocalServiceUtil.deleteGroup(_group);
 
 		UserLocalServiceUtil.deleteUser(_user);
+	}
+
+	@Test
+	public void testImportCalEvent() throws Exception {
+		String uuid = PortalUUIDUtil.generate();
+		long eventId = CounterLocalServiceUtil.increment(_CAL_EVENT_CLASS_NAME);
+		Timestamp createDate = new Timestamp(_randomTime());
+
+		String title = RandomTestUtil.randomString();
+		String description = RandomTestUtil.randomString();
+		String location = RandomTestUtil.randomString();
+
+		Timestamp startDate = new Timestamp(_randomTime());
+		int durationHour = RandomTestUtil.randomInt(0, 23);
+		int durationMinute = RandomTestUtil.randomInt(0, 59);
+
+		_insertCalEvent(
+			uuid, eventId, _groupId, _companyId, _userId, _userName, createDate,
+			createDate, title, description, location, startDate, null,
+			durationHour, durationMinute, false, true, "anniversary", false,
+			null, 1, 900000, 300000);
+
+		CalendarImporterLocalServiceUtil.importCalEvents();
+
+		CalendarBooking calendarBooking =
+			CalendarBookingLocalServiceUtil.fetchCalendarBooking(
+				uuid, _group.getGroupId());
+
+		Assert.assertNotNull(calendarBooking);
+		Assert.assertEquals(title, calendarBooking.getTitleCurrentValue());
+
+		Calendar calendar = CalendarFactoryUtil.getCalendar(
+			startDate.getTime());
+
+		Assert.assertEquals(
+			calendar.getTimeInMillis(), calendarBooking.getStartTime());
+
+		calendar.add(Calendar.HOUR, durationHour);
+		calendar.add(Calendar.MINUTE, durationMinute);
+
+		Assert.assertEquals(
+			calendar.getTimeInMillis(), calendarBooking.getEndTime());
 	}
 
 	private void _insertCalEvent(
