@@ -25,10 +25,12 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.util.PortalUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -54,6 +56,10 @@ public class CalendarImporterLocalServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		_connection = DataAccess.getUpgradeOptimizedConnection();
+
+		_calEventClassNameId = PortalUtil.getClassNameId(_CAL_EVENT_CLASS_NAME);
+		_calendarBookingClassNameId = PortalUtil.getClassNameId(
+			CalendarBooking.class);
 
 		_user = UserTestUtil.addUser();
 		_userId = _user.getUserId();
@@ -165,6 +171,126 @@ public class CalendarImporterLocalServiceTest {
 		ps.executeUpdate();
 	}
 
+	private void _insertMBDiscussion(
+			long discussionId, long threadId, long eventId,
+			Timestamp createDate)
+		throws Exception {
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append("insert into MBDiscussion (discussionId, classNameId, ");
+		sb.append("classPK, threadId, uuid_, groupId, companyId, userId, ");
+		sb.append("userName, createDate, modifiedDate) values (?, ?, ?, ?, ");
+		sb.append("?, ?, ?, ?, ?, ?, ?)");
+
+		PreparedStatement ps = _connection.prepareStatement(sb.toString());
+
+		ps.setLong(1, discussionId);
+		ps.setLong(2, _calEventClassNameId);
+		ps.setLong(3, eventId);
+		ps.setLong(4, threadId);
+		ps.setString(5, PortalUUIDUtil.generate());
+		ps.setLong(6, _groupId);
+		ps.setLong(7, _companyId);
+		ps.setLong(8, _userId);
+		ps.setString(9, _userName);
+		ps.setTimestamp(10, createDate);
+		ps.setTimestamp(11, createDate);
+
+		ps.executeUpdate();
+	}
+
+	private void _insertMBMessage(
+			long messageId, long eventId, String subject, String body,
+			Timestamp createDate)
+		throws Exception {
+
+		long discussionId = CounterLocalServiceUtil.increment(
+			_MB_DISCUSSION_CLASS_NAME);
+		long threadId = CounterLocalServiceUtil.increment(
+			_MB_THREAD_CLASS_NAME);
+
+		_insertMBThread(threadId, messageId, createDate);
+		_insertMBDiscussion(discussionId, threadId, eventId, createDate);
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append("insert into MBMessage (uuid_, messageId, groupId, ");
+		sb.append("companyId, userId, userName, createDate, modifiedDate, ");
+		sb.append("classNameId, classPK, categoryId, threadId, ");
+		sb.append("rootMessageId, parentMessageId, subject, body, format, ");
+		sb.append("anonymous, priority, allowPingbacks, answer, status, ");
+		sb.append("statusByUserId, statusByUserName, statusDate) values (?, ");
+		sb.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+		sb.append("?, ?, ?, ?, ?)");
+
+		PreparedStatement ps = _connection.prepareStatement(sb.toString());
+
+		ps.setString(1, PortalUUIDUtil.generate());
+		ps.setLong(2, messageId);
+		ps.setLong(3, _groupId);
+		ps.setLong(4, _companyId);
+		ps.setLong(5, _userId);
+		ps.setString(6, _userName);
+		ps.setTimestamp(7, createDate);
+		ps.setTimestamp(8, createDate);
+		ps.setLong(9, _calEventClassNameId);
+		ps.setLong(10, eventId);
+		ps.setLong(11, -1);
+		ps.setLong(12, threadId);
+		ps.setLong(13, messageId);
+		ps.setLong(14, 0);
+		ps.setString(15, subject);
+		ps.setString(16, body);
+		ps.setString(17, "bbcode");
+		ps.setBoolean(18, false);
+		ps.setInt(19, 0);
+		ps.setBoolean(20, false);
+		ps.setBoolean(21, false);
+		ps.setInt(22, WorkflowConstants.STATUS_APPROVED);
+		ps.setLong(23, _userId);
+		ps.setString(24, _userName);
+		ps.setTimestamp(25, createDate);
+
+		ps.executeUpdate();
+	}
+
+	private void _insertMBThread(
+			long threadId, long messageId, Timestamp createDate)
+		throws Exception {
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append("insert into MBThread (uuid_, threadId, groupId, ");
+		sb.append("companyId, categoryId, rootMessageId, rootMessageUserId, ");
+		sb.append("messageCount, viewCount, lastPostByUserId, lastPostDate, ");
+		sb.append("priority, question, status, statusByUserId, ");
+		sb.append("statusByUserName, statusDate) values (?, ?, ?, ?, ?, ?, ");
+		sb.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+		PreparedStatement ps = _connection.prepareStatement(sb.toString());
+
+		ps.setString(1, PortalUUIDUtil.generate());
+		ps.setLong(2, threadId);
+		ps.setLong(3, _groupId);
+		ps.setLong(4, _companyId);
+		ps.setLong(5, -1);
+		ps.setLong(6, messageId);
+		ps.setLong(7, _userId);
+		ps.setInt(8, 1);
+		ps.setInt(9, 0);
+		ps.setLong(10, _userId);
+		ps.setTimestamp(11, createDate);
+		ps.setInt(12, 0);
+		ps.setBoolean(13, false);
+		ps.setInt(14, WorkflowConstants.STATUS_APPROVED);
+		ps.setLong(15, _userId);
+		ps.setString(16, _userName);
+		ps.setTimestamp(17, createDate);
+
+		ps.executeUpdate();
+	}
+
 	private long _randomTime() {
 		int day = RandomTestUtil.randomInt(1, 31);
 		int hour = RandomTestUtil.randomInt(0, 23);
@@ -182,9 +308,20 @@ public class CalendarImporterLocalServiceTest {
 	private static final String _CAL_EVENT_CLASS_NAME =
 		"com.liferay.portlet.calendar.model.CalEvent";
 
+	private static final String _MB_DISCUSSION_CLASS_NAME =
+		"com.liferay.portlet.messageboards.model.MBDiscussion";
+
+	private static final String _MB_MESSAGE_CLASS_NAME =
+		"com.liferay.portlet.messageboards.model.MBMessage";
+
+	private static final String _MB_THREAD_CLASS_NAME =
+		"com.liferay.portlet.messageboards.model.MBThread";
+
 	private static final TimeZone _UTC_TIME_ZONE = TimeZoneUtil.getTimeZone(
 		StringPool.UTC);
 
+	private long _calendarBookingClassNameId;
+	private long _calEventClassNameId;
 	private long _companyId;
 	private Connection _connection;
 	private Group _group;
