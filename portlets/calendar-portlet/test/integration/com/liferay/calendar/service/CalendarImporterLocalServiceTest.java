@@ -31,12 +31,17 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portlet.messageboards.model.MBDiscussion;
+import com.liferay.portlet.messageboards.model.MBMessage;
+import com.liferay.portlet.messageboards.service.MBDiscussionLocalServiceUtil;
+import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 import org.jboss.arquillian.junit.Arquillian;
@@ -119,6 +124,56 @@ public class CalendarImporterLocalServiceTest {
 
 		Assert.assertEquals(
 			calendar.getTimeInMillis(), calendarBooking.getEndTime());
+	}
+
+	@Test
+	public void testImportComment() throws Exception {
+		String uuid = PortalUUIDUtil.generate();
+		long eventId = CounterLocalServiceUtil.increment(_CAL_EVENT_CLASS_NAME);
+		Timestamp createDate = new Timestamp(_randomTime());
+
+		long messageId = CounterLocalServiceUtil.increment(
+			_MB_MESSAGE_CLASS_NAME);
+		String subject = RandomTestUtil.randomString();
+		String body = RandomTestUtil.randomString();
+
+		_insertCalEvent(
+			uuid, eventId, _groupId, _companyId, _userId, _userName, createDate,
+			createDate, RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			new Timestamp(_randomTime()), null, RandomTestUtil.randomInt(0, 23),
+			RandomTestUtil.randomInt(0, 59), false, true, "anniversary", false,
+			null, 1, 900000, 300000);
+		_insertMBMessage(messageId, eventId, subject, body, createDate);
+
+		CalendarImporterLocalServiceUtil.importCalEvents();
+
+		CalendarBooking calendarBooking =
+			CalendarBookingLocalServiceUtil.fetchCalendarBooking(
+				uuid, _groupId);
+		MBDiscussion discussion = MBDiscussionLocalServiceUtil.fetchDiscussion(
+			CalendarBooking.class.getName(),
+			calendarBooking.getCalendarBookingId());
+
+		Assert.assertNotNull(discussion);
+		Assert.assertEquals(
+			_calendarBookingClassNameId, discussion.getClassNameId());
+		Assert.assertEquals(
+			calendarBooking.getCalendarBookingId(), discussion.getClassPK());
+
+		List<MBMessage> messages = MBMessageLocalServiceUtil.getThreadMessages(
+			discussion.getThreadId(), WorkflowConstants.STATUS_APPROVED);
+
+		Assert.assertEquals(1, messages.size());
+
+		MBMessage message = messages.get(0);
+
+		Assert.assertEquals(
+			_calendarBookingClassNameId, message.getClassNameId());
+		Assert.assertEquals(
+			calendarBooking.getCalendarBookingId(), message.getClassPK());
+		Assert.assertEquals(subject, message.getSubject());
+		Assert.assertEquals(body, message.getBody());
 	}
 
 	private void _insertCalEvent(
