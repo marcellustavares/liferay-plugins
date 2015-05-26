@@ -35,6 +35,8 @@ import com.liferay.portlet.messageboards.model.MBDiscussion;
 import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.portlet.messageboards.service.MBDiscussionLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
+import com.liferay.portlet.ratings.model.RatingsEntry;
+import com.liferay.portlet.ratings.service.RatingsEntryLocalServiceUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -176,6 +178,50 @@ public class CalendarImporterLocalServiceTest {
 			calendarBooking.getCalendarBookingId(), message.getClassPK());
 		Assert.assertEquals(subject, message.getSubject());
 		Assert.assertEquals(body, message.getBody());
+	}
+
+	@Test
+	public void testImportCommentRating() throws Exception {
+		String uuid = PortalUUIDUtil.generate();
+		long eventId = CounterLocalServiceUtil.increment(_CAL_EVENT_CLASS_NAME);
+		Timestamp createDate = new Timestamp(_randomTime());
+
+		long messageId = CounterLocalServiceUtil.increment(
+			_MB_MESSAGE_CLASS_NAME);
+
+		double score = RandomTestUtil.randomDouble();
+
+		_insertCalEvent(
+			uuid, eventId, _groupId, _companyId, _userId, _userName, createDate,
+			createDate, RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			new Timestamp(_randomTime()), null, RandomTestUtil.randomInt(0, 23),
+			RandomTestUtil.randomInt(0, 59), false, true, "anniversary", false,
+			null, 1, 900000, 300000);
+		_insertMBMessage(
+			messageId, eventId, RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), createDate);
+		_insertRatingsEntry(
+			_mbDiscussionClassNameId, messageId, score, createDate);
+
+		CalendarImporterLocalServiceUtil.importCalEvents();
+
+		CalendarBooking calendarBooking =
+			CalendarBookingLocalServiceUtil.fetchCalendarBooking(
+				uuid, _group.getGroupId());
+		MBDiscussion discussion = MBDiscussionLocalServiceUtil.fetchDiscussion(
+			CalendarBooking.class.getName(),
+			calendarBooking.getCalendarBookingId());
+		List<MBMessage> messages = MBMessageLocalServiceUtil.getThreadMessages(
+			discussion.getThreadId(), WorkflowConstants.STATUS_APPROVED);
+		MBMessage message = messages.get(0);
+
+		RatingsEntry ratingsEntry = RatingsEntryLocalServiceUtil.getEntry(
+			_user.getUserId(), _MB_DISCUSSION_CLASS_NAME,
+			message.getMessageId());
+
+		Assert.assertNotNull(ratingsEntry);
+		Assert.assertEquals(score, ratingsEntry.getScore(), 1e-5);
 	}
 
 	private void _insertCalEvent(
