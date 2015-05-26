@@ -65,6 +65,8 @@ public class CalendarImporterLocalServiceTest {
 		_calEventClassNameId = PortalUtil.getClassNameId(_CAL_EVENT_CLASS_NAME);
 		_calendarBookingClassNameId = PortalUtil.getClassNameId(
 			CalendarBooking.class);
+		_mbDiscussionClassNameId = PortalUtil.getClassNameId(
+			_MB_DISCUSSION_CLASS_NAME);
 
 		_user = UserTestUtil.addUser();
 		_userId = _user.getUserId();
@@ -346,6 +348,35 @@ public class CalendarImporterLocalServiceTest {
 		ps.executeUpdate();
 	}
 
+	private void _insertRatingsEntry(
+			long classNameId, long classPK, double score, Timestamp createDate)
+		throws Exception {
+
+		long ratingsEntryId = CounterLocalServiceUtil.increment(
+			_RATINGS_ENTRY_CLASS_NAME);
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append("insert into RatingsEntry (uuid_, entryId, companyId, ");
+		sb.append("userId, userName, createDate, modifiedDate, classNameId, ");
+		sb.append("classPK, score) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+		PreparedStatement ps = _connection.prepareStatement(sb.toString());
+
+		ps.setString(1, PortalUUIDUtil.generate());
+		ps.setLong(2, ratingsEntryId);
+		ps.setLong(3, _companyId);
+		ps.setLong(4, _userId);
+		ps.setString(5, _userName);
+		ps.setTimestamp(6, createDate);
+		ps.setTimestamp(7, createDate);
+		ps.setLong(8, classNameId);
+		ps.setLong(9, classPK);
+		ps.setDouble(10, score);
+
+		ps.executeUpdate();
+	}
+
 	private long _randomTime() {
 		int day = RandomTestUtil.randomInt(1, 31);
 		int hour = RandomTestUtil.randomInt(0, 23);
@@ -372,6 +403,9 @@ public class CalendarImporterLocalServiceTest {
 	private static final String _MB_THREAD_CLASS_NAME =
 		"com.liferay.portlet.messageboards.model.MBThread";
 
+	private static final String _RATINGS_ENTRY_CLASS_NAME =
+		"com.liferay.portlet.ratings.model.RatingsEntry";
+
 	private static final TimeZone _UTC_TIME_ZONE = TimeZoneUtil.getTimeZone(
 		StringPool.UTC);
 
@@ -381,6 +415,7 @@ public class CalendarImporterLocalServiceTest {
 	private Connection _connection;
 	private Group _group;
 	private long _groupId;
+	private long _mbDiscussionClassNameId;
 	private User _user;
 	private long _userId;
 	private String _userName;
