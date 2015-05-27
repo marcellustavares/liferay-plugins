@@ -15,11 +15,17 @@
 package com.liferay.calendar.service;
 
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
+import com.liferay.portal.model.Group;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,11 +49,23 @@ public class CalendarImporterLocalServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		_connection = DataAccess.getUpgradeOptimizedConnection();
+
+		_user = UserTestUtil.addUser();
+		_userId = _user.getUserId();
+		_userName = _user.getFullName();
+
+		_group = GroupTestUtil.addGroup();
+		_groupId = _group.getGroupId();
+		_companyId = _group.getCompanyId();
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		DataAccess.cleanUp(_connection);
+
+		GroupLocalServiceUtil.deleteGroup(_group);
+
+		UserLocalServiceUtil.deleteUser(_user);
 	}
 
 	private void _insertCalEvent(
@@ -114,9 +132,18 @@ public class CalendarImporterLocalServiceTest {
 		return calendar.getTimeInMillis();
 	}
 
+	private static final String _CAL_EVENT_CLASS_NAME =
+		"com.liferay.portlet.calendar.model.CalEvent";
+
 	private static final TimeZone _UTC_TIME_ZONE = TimeZoneUtil.getTimeZone(
 		StringPool.UTC);
 
+	private long _companyId;
 	private Connection _connection;
+	private Group _group;
+	private long _groupId;
+	private User _user;
+	private long _userId;
+	private String _userName;
 
 }
