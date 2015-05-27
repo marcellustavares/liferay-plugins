@@ -15,11 +15,18 @@
 package com.liferay.calendar.service;
 
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.TimeZoneUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
+
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import org.jboss.arquillian.junit.Arquillian;
 
@@ -92,6 +99,23 @@ public class CalendarImporterLocalServiceTest {
 
 		ps.executeUpdate();
 	}
+
+	private long _randomTime() {
+		int day = RandomTestUtil.randomInt(1, 31);
+		int hour = RandomTestUtil.randomInt(0, 23);
+		int minute = RandomTestUtil.randomInt(0, 59);
+		int month = RandomTestUtil.randomInt(
+			Calendar.JANUARY, Calendar.DECEMBER);
+		int year = RandomTestUtil.randomInt(1970, 2050);
+
+		Calendar calendar = CalendarFactoryUtil.getCalendar(
+			year, month, day, hour, minute, 0, 0, _UTC_TIME_ZONE);
+
+		return calendar.getTimeInMillis();
+	}
+
+	private static final TimeZone _UTC_TIME_ZONE = TimeZoneUtil.getTimeZone(
+		StringPool.UTC);
 
 	private Connection _connection;
 
