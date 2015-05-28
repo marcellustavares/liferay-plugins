@@ -41,6 +41,7 @@ import com.liferay.portlet.ratings.service.RatingsEntryLocalServiceUtil;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -237,6 +238,106 @@ public class CalendarImporterLocalServiceTest {
 
 		Assert.assertNotNull(ratingsEntry);
 		Assert.assertEquals(score, ratingsEntry.getScore(), 1e-5);
+	}
+
+	@Test
+	public void testImportCommentTree() throws Exception {
+		long calEventClassNameId = PortalUtil.getClassNameId(
+			"com.liferay.portlet.calendar.model.CalEvent");
+		long calendarBookingClassNameId = PortalUtil.getClassNameId(
+			CalendarBooking.class.getName());
+
+		String uuid = PortalUUIDUtil.generate();
+
+		long eventId = increment();
+
+		Timestamp createDate = new Timestamp(randomTimeInMillis());
+
+		_calendarImporterTestHelper.addCalEvent(
+			uuid, eventId, _groupId, _companyId, _userId, _userName, createDate,
+			createDate, RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			new Timestamp(randomTimeInMillis()), null,
+			RandomTestUtil.randomInt(0, 23), RandomTestUtil.randomInt(0, 59),
+			false, true, "anniversary", false, null, 1, 900000, 300000);
+
+		long messageId = increment();
+		long threadId = increment();
+
+		_calendarImporterTestHelper.addMBThread(
+			threadId, _groupId, _companyId, _userId, _userName, createDate,
+			messageId);
+
+		_calendarImporterTestHelper.addMBDiscussion(
+			increment(), _groupId, _companyId, _userId, _userName, createDate,
+			calEventClassNameId, eventId, threadId);
+
+		long rootMessageId = messageId;
+		long parentMessageId = MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID;
+
+		List<String> bodies = new ArrayList<>();
+		List<String> subjects = new ArrayList<>();
+
+		for (int i = 0; i < 3; i++) {
+			String body = RandomTestUtil.randomString();
+			String subject = RandomTestUtil.randomString();
+
+			addMBMessage(
+				messageId, createDate, eventId, threadId, rootMessageId,
+				parentMessageId, subject, body);
+
+			bodies.add(body);
+			subjects.add(subject);
+
+			parentMessageId = messageId;
+			messageId = increment();
+		}
+
+		CalendarImporterLocalServiceUtil.importCalEvents();
+
+		CalendarBooking calendarBooking =
+			CalendarBookingLocalServiceUtil.fetchCalendarBooking(
+				uuid, _group.getGroupId());
+
+		long calendarBookingId = calendarBooking.getCalendarBookingId();
+		MBDiscussion discussion = MBDiscussionLocalServiceUtil.fetchDiscussion(
+			CalendarBooking.class.getName(), calendarBookingId);
+
+		List<MBMessage> messages = MBMessageLocalServiceUtil.getThreadMessages(
+			discussion.getThreadId(), WorkflowConstants.STATUS_APPROVED);
+
+		Assert.assertEquals(3, messages.size());
+
+		Map<Long, MBMessage> messageMap = getParentMessageMap(messages);
+
+		MBMessage message1 = messageMap.get(
+			MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID);
+
+		Assert.assertEquals(
+			calendarBookingClassNameId, message1.getClassNameId());
+		Assert.assertEquals(calendarBookingId, message1.getClassPK());
+		Assert.assertEquals(subjects.get(0), message1.getSubject());
+		Assert.assertEquals(bodies.get(0), message1.getBody());
+
+		MBMessage message2 = messageMap.get(message1.getMessageId());
+
+		Assert.assertEquals(
+			calendarBookingClassNameId, message2.getClassNameId());
+		Assert.assertEquals(calendarBookingId, message2.getClassPK());
+		Assert.assertEquals(
+			message1.getMessageId(), message2.getRootMessageId());
+		Assert.assertEquals(subjects.get(1), message2.getSubject());
+		Assert.assertEquals(bodies.get(1), message2.getBody());
+
+		MBMessage message3 = messageMap.get(message2.getMessageId());
+
+		Assert.assertEquals(
+			calendarBookingClassNameId, message3.getClassNameId());
+		Assert.assertEquals(calendarBookingId, message3.getClassPK());
+		Assert.assertEquals(
+			message1.getMessageId(), message3.getRootMessageId());
+		Assert.assertEquals(subjects.get(2), message3.getSubject());
+		Assert.assertEquals(bodies.get(2), message3.getBody());
 	}
 
 	protected void addMBMessage(
