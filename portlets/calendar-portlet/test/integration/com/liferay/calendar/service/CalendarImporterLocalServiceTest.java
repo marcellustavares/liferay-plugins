@@ -33,6 +33,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.messageboards.model.MBDiscussion;
 import com.liferay.portlet.messageboards.model.MBMessage;
+import com.liferay.portlet.messageboards.model.MBMessageConstants;
 import com.liferay.portlet.messageboards.service.MBDiscussionLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
 import com.liferay.portlet.ratings.model.RatingsEntry;
@@ -41,7 +42,9 @@ import com.liferay.portlet.ratings.service.RatingsEntryLocalServiceUtil;
 import java.sql.Timestamp;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -272,6 +275,24 @@ public class CalendarImporterLocalServiceTest {
 		addMBMessage(
 			messageId, createDate, eventId, threadId, messageId, 0, subject,
 			body);
+	}
+
+	protected Map<Long, MBMessage> getParentMessageMap(
+		List<MBMessage> messages) {
+
+		Map<Long, MBMessage> parentMessageMap = new HashMap<>();
+
+		for (MBMessage message : messages) {
+			if (message.isRoot()) {
+				parentMessageMap.put(
+					MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID, message);
+			}
+			else {
+				parentMessageMap.put(message.getParentMessageId(), message);
+			}
+		}
+
+		return parentMessageMap;
 	}
 
 	protected long increment() {
