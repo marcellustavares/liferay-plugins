@@ -237,6 +237,21 @@ public class CalendarImporterLocalServiceTest {
 	}
 
 	protected void addMBMessage(
+			long messageId, Timestamp createDate, long eventId, long threadId,
+			long rootMessageId, long parentMessageId, String subject,
+			String body)
+		throws Exception {
+
+		long calEventClassNameId = PortalUtil.getClassNameId(
+			"com.liferay.portlet.calendar.model.CalEvent");
+
+		_calendarImporterTestHelper.addMBMessage(
+			messageId, _groupId, _companyId, _userId, _userName, createDate,
+			calEventClassNameId, eventId, threadId, rootMessageId,
+			parentMessageId, subject, body);
+	}
+
+	protected void addMBMessage(
 			long messageId, Timestamp createDate, long eventId, String subject,
 			String body)
 		throws Exception {
@@ -254,9 +269,9 @@ public class CalendarImporterLocalServiceTest {
 			increment(), _groupId, _companyId, _userId, _userName, createDate,
 			calEventClassNameId, eventId, threadId);
 
-		_calendarImporterTestHelper.addMBMessage(
-			messageId, _groupId, _companyId, _userId, _userName, createDate,
-			calEventClassNameId, eventId, threadId, subject, body);
+		addMBMessage(
+			messageId, createDate, eventId, threadId, messageId, 0, subject,
+			body);
 	}
 
 	protected long increment() {
