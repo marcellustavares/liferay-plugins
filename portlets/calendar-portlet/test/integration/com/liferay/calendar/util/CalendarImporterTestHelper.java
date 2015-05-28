@@ -102,24 +102,24 @@ public class CalendarImporterTestHelper {
 
 			StringBundler sb = new StringBundler(4);
 
-			sb.append("insert into MBDiscussion (discussionId, classNameId, ");
-			sb.append("classPK, threadId, uuid_, groupId, companyId, userId, ");
-			sb.append("userName, createDate, modifiedDate) values (?, ?, ?, ");
-			sb.append("?, ?, ?, ?, ?, ?, ?, ?)");
+			sb.append("insert into MBDiscussion (uuid_, discussionId, ");
+			sb.append("groupId, companyId, userId, userName, createDate, ");
+			sb.append("modifiedDate, classNameId, classPK, threadId) values ");
+			sb.append("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 			PreparedStatement ps = con.prepareStatement(sb.toString());
 
-			ps.setLong(1, discussionId);
-			ps.setLong(2, classNameId);
-			ps.setLong(3, classPK);
-			ps.setLong(4, threadId);
-			ps.setString(5, PortalUUIDUtil.generate());
-			ps.setLong(6, groupId);
-			ps.setLong(7, companyId);
-			ps.setLong(8, userId);
-			ps.setString(9, userName);
-			ps.setTimestamp(10, createDate);
-			ps.setTimestamp(11, createDate);
+			ps.setString(1, PortalUUIDUtil.generate());
+			ps.setLong(2, discussionId);
+			ps.setLong(3, groupId);
+			ps.setLong(4, companyId);
+			ps.setLong(5, userId);
+			ps.setString(6, userName);
+			ps.setTimestamp(7, createDate);
+			ps.setTimestamp(8, createDate);
+			ps.setLong(9, classNameId);
+			ps.setLong(10, classPK);
+			ps.setLong(11, threadId);
 
 			ps.executeUpdate();
 		}
@@ -131,7 +131,8 @@ public class CalendarImporterTestHelper {
 	public void addMBMessage(
 			long messageId, long groupId, long companyId, long userId,
 			String userName, Timestamp createDate, long classNameId,
-			long classPK, long threadId, String subject, String body)
+			long classPK, long threadId, long rootMessageId,
+			long parentMessageId, String subject, String body)
 		throws Exception {
 
 		Connection con = null;
@@ -164,8 +165,8 @@ public class CalendarImporterTestHelper {
 			ps.setLong(10, classPK);
 			ps.setLong(11, -1);
 			ps.setLong(12, threadId);
-			ps.setLong(13, messageId);
-			ps.setLong(14, 0);
+			ps.setLong(13, rootMessageId);
+			ps.setLong(14, parentMessageId);
 			ps.setString(15, subject);
 			ps.setString(16, body);
 			ps.setString(17, "bbcode");
