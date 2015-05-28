@@ -14,6 +14,7 @@
 
 package com.liferay.calendar.service;
 
+import com.liferay.ant.arquillian.WebArchiveBuilder;
 import com.liferay.calendar.model.CalendarBooking;
 import com.liferay.calendar.util.CalendarImporterTestHelper;
 import com.liferay.counter.service.CounterLocalServiceUtil;
@@ -43,7 +44,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -56,6 +60,15 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Arquillian.class)
 public class CalendarImporterLocalServiceTest {
+
+	@Deployment
+	public static Archive<?> getDeployment() {
+		WebArchive webArchive = WebArchiveBuilder.build();
+
+		webArchive.addClass(CalendarImporterTestHelper.class);
+
+		return webArchive;
+	}
 
 	@Before
 	public void setUp() throws Exception {
