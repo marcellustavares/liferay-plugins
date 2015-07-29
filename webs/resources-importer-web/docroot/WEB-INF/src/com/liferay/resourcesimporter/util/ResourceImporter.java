@@ -15,6 +15,8 @@
 package com.liferay.resourcesimporter.util;
 
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -22,9 +24,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
-import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
-import com.liferay.portlet.dynamicdatamapping.model.DDMTemplateConstants;
-import com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalServiceUtil;
+import com.liferay.portlet.dynamicdatamapping.DDMTemplateManager;
 
 import java.io.File;
 import java.io.InputStream;
@@ -120,7 +120,7 @@ public class ResourceImporter extends FileSystemImporter {
 			addDDMTemplate(
 				groupId, ddmStructure.getStructureId(), resourcePath,
 				getDDMTemplateLanguage(resourcePath), script,
-				DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY, StringPool.BLANK);
+				DDMTemplateManager.TEMPLATE_TYPE_DISPLAY, StringPool.BLANK);
 		}
 	}
 
@@ -160,8 +160,8 @@ public class ResourceImporter extends FileSystemImporter {
 
 			addDDMTemplate(
 				groupId, ddmStructure.getStructureId(), resourcePath, "xsd",
-				script, DDMTemplateConstants.TEMPLATE_TYPE_FORM,
-				DDMTemplateConstants.TEMPLATE_MODE_CREATE);
+				script, DDMTemplateManager.TEMPLATE_TYPE_FORM,
+				DDMTemplateManager.TEMPLATE_MODE_CREATE);
 		}
 	}
 

@@ -14,6 +14,9 @@
 
 package com.liferay.defaultwebcontent.hook.upgrade.v1_0_0;
 
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
+import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalServiceUtil;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.util.JournalConverterUtil;
 import com.liferay.portal.kernel.template.TemplateConstants;
@@ -27,11 +30,8 @@ import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
-import com.liferay.portlet.dynamicdatamapping.model.DDMStructureConstants;
-import com.liferay.portlet.dynamicdatamapping.model.DDMTemplateConstants;
-import com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalServiceUtil;
-import com.liferay.portlet.dynamicdatamapping.service.DDMTemplateLocalServiceUtil;
+import com.liferay.portlet.dynamicdatamapping.DDMStructureManager;
+import com.liferay.portlet.dynamicdatamapping.DDMTemplateManager;
 
 import java.io.InputStream;
 
@@ -72,7 +72,7 @@ public class UpgradeJournal extends UpgradeProcess {
 			userId, groupId, 0, PortalUtil.getClassNameId(JournalArticle.class),
 			"ARTICLE", nameMap, descriptionMap,
 			JournalConverterUtil.getDDMXSD(xsd), "xml",
-			DDMStructureConstants.TYPE_DEFAULT, serviceContext);
+			DDMStructureManager.STRUCTURE_TYPE_DEFAULT, serviceContext);
 
 		_ddmStructureIds.put(
 			groupId + "#" + "ARTICLE", ddmStructure.getStructureId());
@@ -92,7 +92,7 @@ public class UpgradeJournal extends UpgradeProcess {
 			userId, groupId, 0, PortalUtil.getClassNameId(JournalArticle.class),
 			"MULTIPLE-ITEM-CAROUSEL", nameMap, descriptionMap,
 			JournalConverterUtil.getDDMXSD(xsd), "xml",
-			DDMStructureConstants.TYPE_DEFAULT, serviceContext);
+			DDMStructureManager.STRUCTURE_TYPE_DEFAULT, serviceContext);
 
 		_ddmStructureIds.put(
 			groupId + "#" + "MULTIPLE-ITEM-CAROUSEL",
@@ -114,7 +114,7 @@ public class UpgradeJournal extends UpgradeProcess {
 			userId, groupId, 0, PortalUtil.getClassNameId(JournalArticle.class),
 			"MULTIPLE-ITEM", nameMap, descriptionMap,
 			JournalConverterUtil.getDDMXSD(xsd), "xml",
-			DDMStructureConstants.TYPE_DEFAULT, serviceContext);
+			DDMStructureManager.STRUCTURE_TYPE_DEFAULT, serviceContext);
 
 		_ddmStructureIds.put(
 			groupId + "#" + "MULTIPLE-ITEM", ddmStructure.getStructureId());
@@ -148,8 +148,8 @@ public class UpgradeJournal extends UpgradeProcess {
 			userId, groupId, PortalUtil.getClassNameId(DDMStructure.class),
 			classPK, PortalUtil.getClassNameId(JournalArticle.class),
 			"ARTICLE-DESCRIPTION", nameMap, descriptionMap,
-			DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,
-			DDMTemplateConstants.TEMPLATE_MODE_CREATE,
+			DDMTemplateManager.TEMPLATE_TYPE_DISPLAY,
+			DDMTemplateManager.TEMPLATE_MODE_CREATE,
 			TemplateConstants.LANG_TYPE_VM, script, true, false,
 			StringPool.BLANK, null, serviceContext);
 
@@ -169,8 +169,8 @@ public class UpgradeJournal extends UpgradeProcess {
 			userId, groupId, PortalUtil.getClassNameId(DDMStructure.class),
 			classPK, PortalUtil.getClassNameId(JournalArticle.class),
 			"REGULAR-ARTICLE", nameMap, descriptionMap,
-			DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,
-			DDMTemplateConstants.TEMPLATE_MODE_CREATE,
+			DDMTemplateManager.TEMPLATE_TYPE_DISPLAY,
+			DDMTemplateManager.TEMPLATE_MODE_CREATE,
 			TemplateConstants.LANG_TYPE_VM, script, true, false,
 			StringPool.BLANK, null, serviceContext);
 
@@ -192,8 +192,8 @@ public class UpgradeJournal extends UpgradeProcess {
 			userId, groupId, PortalUtil.getClassNameId(DDMStructure.class),
 			classPK, PortalUtil.getClassNameId(JournalArticle.class),
 			"MULTIPLE-ITEM-CAROUSEL", nameMap, descriptionMap,
-			DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,
-			DDMTemplateConstants.TEMPLATE_MODE_CREATE,
+			DDMTemplateManager.TEMPLATE_TYPE_DISPLAY,
+			DDMTemplateManager.TEMPLATE_MODE_CREATE,
 			TemplateConstants.LANG_TYPE_VM, script, true, false,
 			StringPool.BLANK, null, serviceContext);
 
@@ -214,8 +214,8 @@ public class UpgradeJournal extends UpgradeProcess {
 			userId, groupId, PortalUtil.getClassNameId(DDMStructure.class),
 			classPK, PortalUtil.getClassNameId(JournalArticle.class),
 			"MULTIPLE-ITEM-FEATURE", nameMap, descriptionMap,
-			DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,
-			DDMTemplateConstants.TEMPLATE_MODE_CREATE,
+			DDMTemplateManager.TEMPLATE_TYPE_DISPLAY,
+			DDMTemplateManager.TEMPLATE_MODE_CREATE,
 			TemplateConstants.LANG_TYPE_VM, script, true, false,
 			StringPool.BLANK, null, serviceContext);
 	}
