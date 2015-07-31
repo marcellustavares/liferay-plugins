@@ -15,6 +15,11 @@
 package com.liferay.resourcesimporter.util;
 
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.model.DDMTemplate;
+import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
+import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalServiceUtil;
+import com.liferay.dynamic.data.mapping.storage.StorageType;
 import com.liferay.journal.configuration.JournalServiceConfigurationValues;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
@@ -83,13 +88,8 @@ import com.liferay.portlet.documentlibrary.service.DLAppLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.util.DLUtil;
-import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
-import com.liferay.portlet.dynamicdatamapping.model.DDMStructureConstants;
-import com.liferay.portlet.dynamicdatamapping.model.DDMTemplate;
-import com.liferay.portlet.dynamicdatamapping.model.DDMTemplateConstants;
-import com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalServiceUtil;
-import com.liferay.portlet.dynamicdatamapping.service.DDMTemplateLocalServiceUtil;
-import com.liferay.portlet.dynamicdatamapping.storage.StorageType;
+import com.liferay.portlet.dynamicdatamapping.DDMStructureManager;
+import com.liferay.portlet.dynamicdatamapping.DDMTemplateManager;
 import com.liferay.wiki.model.WikiPage;
 
 import java.io.BufferedInputStream;
@@ -163,18 +163,17 @@ public class FileSystemImporter extends BaseImporter {
 					userId, groupId, classNameId, 0,
 					PortalUtil.getClassNameId(JournalArticle.class),
 					getKey(fileName), getMap(name), null,
-					DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,
-					StringPool.BLANK, getDDMTemplateLanguage(file.getName()),
-					script, false, false, StringPool.BLANK, null,
-					serviceContext);
+					DDMTemplateManager.TEMPLATE_TYPE_DISPLAY, StringPool.BLANK,
+					getDDMTemplateLanguage(file.getName()), script, false,
+					false, StringPool.BLANK, null, serviceContext);
 			}
 			else {
 				DDMTemplateLocalServiceUtil.updateTemplate(
 					userId, ddmTemplate.getTemplateId(),
 					ddmTemplate.getClassPK(), getMap(name), null,
-					DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,
-					StringPool.BLANK, getDDMTemplateLanguage(file.getName()),
-					script, false, serviceContext);
+					DDMTemplateManager.TEMPLATE_TYPE_DISPLAY, StringPool.BLANK,
+					getDDMTemplateLanguage(file.getName()), script, false,
+					serviceContext);
 			}
 		}
 		catch (PortalException e) {
@@ -254,7 +253,7 @@ public class FileSystemImporter extends BaseImporter {
 			addDDMTemplate(
 				groupId, ddmStructure.getStructureId(), file.getName(),
 				getDDMTemplateLanguage(file.getName()), script,
-				DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY, null);
+				DDMTemplateManager.TEMPLATE_TYPE_DISPLAY, null);
 		}
 	}
 
@@ -284,8 +283,8 @@ public class FileSystemImporter extends BaseImporter {
 
 			addDDMTemplate(
 				groupId, ddmStructure.getStructureId(), file.getName(), "xsd",
-				script, DDMTemplateConstants.TEMPLATE_TYPE_FORM,
-				DDMTemplateConstants.TEMPLATE_MODE_CREATE);
+				script, DDMTemplateManager.TEMPLATE_TYPE_FORM,
+				DDMTemplateManager.TEMPLATE_MODE_CREATE);
 		}
 	}
 
@@ -336,16 +335,16 @@ public class FileSystemImporter extends BaseImporter {
 			if (!updateModeEnabled || (ddmStructure == null)) {
 				ddmStructure = DDMStructureLocalServiceUtil.addStructure(
 					userId, groupId,
-					DDMStructureConstants.DEFAULT_PARENT_STRUCTURE_ID,
+					DDMStructureManager.STRUCTURE_DEFAULT_PARENT_STRUCTURE_ID,
 					PortalUtil.getClassNameId(DDLRecordSet.class),
 					getKey(fileName), getMap(name), null,
 					StringUtil.read(inputStream), StorageType.JSON.toString(),
-					DDMStructureConstants.TYPE_DEFAULT, serviceContext);
+					DDMStructureManager.STRUCTURE_TYPE_DEFAULT, serviceContext);
 			}
 			else {
 				ddmStructure = DDMStructureLocalServiceUtil.updateStructure(
 					ddmStructure.getStructureId(),
-					DDMStructureConstants.DEFAULT_PARENT_STRUCTURE_ID,
+					DDMStructureManager.STRUCTURE_DEFAULT_PARENT_STRUCTURE_ID,
 					getMap(name), null, StringUtil.read(inputStream),
 					serviceContext);
 			}
@@ -442,7 +441,7 @@ public class FileSystemImporter extends BaseImporter {
 					getKey(fileName), getMap(name), null, xsd,
 					JournalServiceConfigurationValues.
 						JOURNAL_ARTICLE_STORAGE_TYPE,
-					DDMStructureConstants.TYPE_DEFAULT, serviceContext);
+					DDMStructureManager.STRUCTURE_TYPE_DEFAULT, serviceContext);
 			}
 			else {
 				DDMStructure parentStructure =
@@ -452,7 +451,7 @@ public class FileSystemImporter extends BaseImporter {
 						parentDDMStructureKey);
 
 				long parentDDMStructureId =
-					DDMStructureConstants.DEFAULT_PARENT_STRUCTURE_ID;
+					DDMStructureManager.STRUCTURE_DEFAULT_PARENT_STRUCTURE_ID;
 
 				if (parentStructure != null) {
 					parentDDMStructureId = parentStructure.getStructureId();
@@ -530,7 +529,7 @@ public class FileSystemImporter extends BaseImporter {
 				DDMTemplateLocalServiceUtil.updateTemplate(
 					userId, ddmTemplate.getTemplateId(),
 					PortalUtil.getClassNameId(DDMStructure.class), getMap(name),
-					null, DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY, null,
+					null, DDMTemplateManager.TEMPLATE_TYPE_DISPLAY, null,
 					language, script, false, false, null, null, serviceContext);
 			}
 		}
@@ -617,7 +616,7 @@ public class FileSystemImporter extends BaseImporter {
 					ddmStructure.getStructureId(),
 					PortalUtil.getClassNameId(JournalArticle.class),
 					getKey(fileName), getMap(name), null,
-					DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY, null, language,
+					DDMTemplateManager.TEMPLATE_TYPE_DISPLAY, null, language,
 					replaceFileEntryURL(xsl), false, false, null, null,
 					serviceContext);
 			}
@@ -625,7 +624,7 @@ public class FileSystemImporter extends BaseImporter {
 				ddmTemplate = DDMTemplateLocalServiceUtil.updateTemplate(
 					userId, ddmTemplate.getTemplateId(),
 					PortalUtil.getClassNameId(DDMStructure.class), getMap(name),
-					null, DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY, null,
+					null, DDMTemplateManager.TEMPLATE_TYPE_DISPLAY, null,
 					language, replaceFileEntryURL(xsl), false, false, null,
 					null, serviceContext);
 			}
