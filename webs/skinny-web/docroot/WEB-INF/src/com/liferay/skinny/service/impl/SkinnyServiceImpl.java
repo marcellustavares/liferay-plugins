@@ -16,11 +16,15 @@ package com.liferay.skinny.service.impl;
 
 import com.liferay.dynamic.data.lists.model.DDLRecord;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
+import com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.journal.exception.NoSuchArticleException;
 import com.liferay.journal.model.JournalArticle;
+import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
@@ -28,15 +32,12 @@ import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.model.Value;
 import com.liferay.portlet.dynamicdatamapping.storage.DDMFormFieldValue;
 import com.liferay.portlet.dynamicdatamapping.storage.DDMFormValues;
 import com.liferay.skinny.model.SkinnyDDLRecord;
 import com.liferay.skinny.model.SkinnyJournalArticle;
 import com.liferay.skinny.service.base.SkinnyServiceBaseImpl;
-
-import java.text.Format;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -208,7 +209,13 @@ public class SkinnyServiceImpl extends SkinnyServiceBaseImpl {
 		}
 	}
 
-	private Format _format = FastDateFormatFactoryUtil.getSimpleDateFormat(
-		"yyyy-MM-dd");
+	@BeanReference(type = DDLRecordSetLocalService.class)
+	protected DDLRecordSetLocalService ddlRecordSetLocalService;
+
+	@BeanReference(type = DDMStructureLocalService.class)
+	protected DDMStructureLocalService ddmStructureLocalService;
+
+	@BeanReference(type = JournalArticleLocalService.class)
+	protected JournalArticleLocalService journalArticleLocalService;
 
 }

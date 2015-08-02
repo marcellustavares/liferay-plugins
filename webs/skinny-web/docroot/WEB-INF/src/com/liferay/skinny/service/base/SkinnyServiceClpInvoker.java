@@ -27,46 +27,46 @@ import java.util.Arrays;
 @ProviderType
 public class SkinnyServiceClpInvoker {
 	public SkinnyServiceClpInvoker() {
-		_methodName44 = "getBeanIdentifier";
+		_methodName26 = "getBeanIdentifier";
 
-		_methodParameterTypes44 = new String[] {  };
+		_methodParameterTypes26 = new String[] {  };
 
-		_methodName45 = "setBeanIdentifier";
+		_methodName27 = "setBeanIdentifier";
 
-		_methodParameterTypes45 = new String[] { "java.lang.String" };
+		_methodParameterTypes27 = new String[] { "java.lang.String" };
 
-		_methodName48 = "getSkinnyDDLRecords";
+		_methodName30 = "getSkinnyDDLRecords";
 
-		_methodParameterTypes48 = new String[] { "long" };
+		_methodParameterTypes30 = new String[] { "long" };
 
-		_methodName49 = "getSkinnyJournalArticles";
+		_methodName31 = "getSkinnyJournalArticles";
 
-		_methodParameterTypes49 = new String[] {
+		_methodParameterTypes31 = new String[] {
 				"long", "java.lang.String", "long", "java.lang.String"
 			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName44.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes44, parameterTypes)) {
+		if (_methodName26.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes26, parameterTypes)) {
 			return SkinnyServiceUtil.getBeanIdentifier();
 		}
 
-		if (_methodName45.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes45, parameterTypes)) {
+		if (_methodName27.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes27, parameterTypes)) {
 			SkinnyServiceUtil.setBeanIdentifier((java.lang.String)arguments[0]);
 
 			return null;
 		}
 
-		if (_methodName48.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes48, parameterTypes)) {
+		if (_methodName30.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes30, parameterTypes)) {
 			return SkinnyServiceUtil.getSkinnyDDLRecords(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName49.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes49, parameterTypes)) {
+		if (_methodName31.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes31, parameterTypes)) {
 			return SkinnyServiceUtil.getSkinnyJournalArticles(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1],
 				((Long)arguments[2]).longValue(), (java.lang.String)arguments[3]);
@@ -75,12 +75,12 @@ public class SkinnyServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName44;
-	private String[] _methodParameterTypes44;
-	private String _methodName45;
-	private String[] _methodParameterTypes45;
-	private String _methodName48;
-	private String[] _methodParameterTypes48;
-	private String _methodName49;
-	private String[] _methodParameterTypes49;
+	private String _methodName26;
+	private String[] _methodParameterTypes26;
+	private String _methodName27;
+	private String[] _methodParameterTypes27;
+	private String _methodName30;
+	private String[] _methodParameterTypes30;
+	private String _methodName31;
+	private String[] _methodParameterTypes31;
 }
