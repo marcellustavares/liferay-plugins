@@ -227,18 +227,22 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 	protected void validateFields(ActionRequest actionRequest)
 		throws Exception {
 
-		Locale defaultLocale = LocaleUtil.getSiteDefault();
-		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
-
-		boolean sendAsEmail = GetterUtil.getBoolean(
-			getParameter(actionRequest, "sendAsEmail"));
-		String subject = getParameter(actionRequest, "subject");
-
 		boolean saveToDatabase = GetterUtil.getBoolean(
 			getParameter(actionRequest, "saveToDatabase"));
 
 		boolean saveToFile = GetterUtil.getBoolean(
 			getParameter(actionRequest, "saveToFile"));
+
+		boolean sendAsEmail = GetterUtil.getBoolean(
+			getParameter(actionRequest, "sendAsEmail"));
+
+		String subject = getParameter(actionRequest, "subject");
+
+		String successURL = getParameter(actionRequest, "successURL");
+
+		if (Validator.isNotNull(successURL) && !Validator.isUrl(successURL)) {
+			SessionErrors.add(actionRequest, "successURLInvalid");
+		}
 
 		if (!sendAsEmail && !saveToDatabase && !saveToFile) {
 			SessionErrors.add(actionRequest, "handlingRequired");
