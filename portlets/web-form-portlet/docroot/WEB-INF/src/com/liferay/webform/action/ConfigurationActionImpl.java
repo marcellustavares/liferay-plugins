@@ -236,9 +236,13 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 
 		boolean saveToDatabase = GetterUtil.getBoolean(
 			getParameter(actionRequest, "saveToDatabase"));
+		String successURL = getParameter(actionRequest, "successURL");
 
 		boolean saveToFile = GetterUtil.getBoolean(
 			getParameter(actionRequest, "saveToFile"));
+		if (Validator.isNotNull(successURL) && !Validator.isUrl(successURL)) {
+			SessionErrors.add(actionRequest, "successURLInvalid");
+		}
 
 		if (!sendAsEmail && !saveToDatabase && !saveToFile) {
 			SessionErrors.add(actionRequest, "handlingRequired");
