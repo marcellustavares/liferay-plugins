@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,17 +11,31 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+package com.liferay.testsearchpagination.search;
 
-<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
-taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
+import com.liferay.portal.kernel.dao.search.DisplayTerms;
+import com.liferay.portal.kernel.util.ParamUtil;
 
-<%@ page import="com.liferay.portal.kernel.util.StringUtil" %><%@
-page import="com.liferay.testsearchpagination.search.FooDisplayTerms" %><%@
-page import="com.liferay.testsearchpagination.search.FooSearch" %>
+import javax.portlet.PortletRequest;
 
-<%@ page import="javax.portlet.PortletURL" %>
+/**
+ * @author Inácio Nery
+ */
+public class FooDisplayTerms extends DisplayTerms {
 
-<portlet:defineObjects />
+	public static final String FOOIDS = "fooIds";
+
+	public FooDisplayTerms(PortletRequest portletRequest) {
+		super(portletRequest);
+
+		fooIds = ParamUtil.getParameterValues(portletRequest, FOOIDS);
+	}
+
+	public String[] getFooIds() {
+		return fooIds;
+	}
+
+	protected String[] fooIds;
+
+}
